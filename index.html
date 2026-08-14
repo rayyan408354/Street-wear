@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Street#Wear — Premium Streetwear</title>
+  <meta name="description" content="Street#Wear — Premium oversized streetwear T-shirts for the next generation.">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f5f5f5;
+      color: #111;
+    }
+
+    header {
+      background: #000;
+      color: white;
+      padding: 18px 6%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: 900;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin-left: 20px;
+      font-size: 14px;
+    }
+
+    .hero {
+      min-height: 75vh;
+      background: #111;
+      color: white;
+      display: flex;
+      align-items: center;
+      padding: 60px 8%;
+    }
+
+    .hero-content {
+      max-width: 700px;
+    }
+
+    .hero h1 {
+      font-size: clamp(50px, 10vw, 100px);
+      line-height: .9;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    .hero p {
+      margin: 25px 0;
+      font-size: 18px;
+      color: #ccc;
+    }
+
+    .btn {
+      display: inline-block;
+      background: white;
+      color: black;
+      padding: 15px 25px;
+      text-decoration: none;
+      font-weight: bold;
+      border-radius: 4px;
+    }
+
+    .products {
+      padding: 60px 6%;
+    }
+
+    .products h2 {
+      font-size: 36px;
+      margin-bottom: 30px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+
+    .product {
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .product img {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+      background: #ddd;
+    }
+
+    .product-info {
+      padding: 18px;
+    }
+
+    .product h3 {
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+
+    .price {
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    .shop-btn {
+      display: block;
+      margin-top: 15px;
+      background: #000;
+      color: white;
+      text-align: center;
+      padding: 12px;
+      text-decoration: none;
+      border-radius: 4px;
+    }
+
+    footer {
+      background: #000;
+      color: white;
+      text-align: center;
+      padding: 35px 20px;
+    }
+
+    @media (max-width: 800px) {
+      .grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      nav a {
+        margin-left: 10px;
+      }
+    }
+
+    @media (max-width: 500px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      header {
+        padding: 16px 20px;
+      }
+
+      nav {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">Street#Wear</div>
+
+  <nav>
+    <a href="#home">Home</a>
+    <a href="#shop">Shop</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</header>
+
+<section class="hero" id="home">
+  <div class="hero-content">
+    <h1>Own<br>Your<br>Street.</h1>
+
+    <p>
+      Premium oversized streetwear built for the next generation.
+    </p>
+
+    <a href="#shop" class="btn">SHOP NOW</a>
+  </div>
+</section>
+
+<section class="products" id="shop">
+  <h2>Latest Drops</h2>
+
+  <div class="grid">
+
+    <div class="product">
+      <img src="https://placehold.co/600x600/111/fff?text=Street%23Wear" alt="Street#Wear T-Shirt">
+
+      <div class="product-info">
+        <h3>Fearless Oversized Tee</h3>
+        <p class="price">₹499</p>
+
+        <a class="shop-btn"
+           href="https://wa.me/918928057608?text=Hi%20Street%23Wear,%20I%20want%20to%20order%20the%20Fearless%20Oversized%20Tee%20for%20₹499."
+           target="_blank">
+          ORDER ON WHATSAPP
+        </a>
+      </div>
+    </div>
+
+    <div class="product">
+      <img src="https://placehold.co/600x600/222/fff?text=DROP+02" alt="Streetwear T-Shirt">
+
+      <div class="product-info">
+        <h3>Urban Shadow Tee</h3>
+        <p class="price">₹499</p>
+
+        <a class="shop-btn"
+           href="https://wa.me/918928057608?text=Hi%20Street%23Wear,%20I%20want%20to%20order%20the%20Urban%20Shadow%20Tee%20for%20₹499."
+           target="_blank">
+          ORDER ON WHATSAPP
+        </a>
+      </div>
+    </div>
+
+    <div class="product">
+      <img src="https://placehold.co/600x600/333/fff?text=DROP+03" alt="Streetwear T-Shirt">
+
+      <div class="product-info">
+        <h3>Street Code Tee</h3>
+        <p class="price">₹549</p>
+
+        <a class="shop-btn"
+           href="https://wa.me/918928057608?text=Hi%20Street%23Wear,%20I%20want%20to%20order%20the%20Street%20Code%20Tee%20for%20₹549."
+           target="_blank">
+          ORDER ON WHATSAPP
+        </a>
+      </div>
+    </div>
+
+    <div class="product">
+      <img src="https://placehold.co/600x600/444/fff?text=DROP+04" alt="Streetwear T-Shirt">
+
+      <div class="product-info">
+        <h3>Midnight Oversized Tee</h3>
+        <p class="price">₹599</p>
+
+        <a class="shop-btn"
+           href="https://wa.me/918928057608?text=Hi%20Street%23Wear,%20I%20want%20to%20order%20the%20Midnight%20Oversized%20Tee%20for%20₹599."
+           target="_blank">
+          ORDER ON WHATSAPP
+        </a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<footer id="contact">
+  <h3>Street#Wear</h3>
+  <p>Premium streetwear. Made for your movement.</p>
+  <br>
+  <p>© 2026 Street#Wear. All rights reserved.</p>
+</footer>
+
+</body>
+</html>
