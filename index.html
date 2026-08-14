@@ -1,1137 +1,207 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>Street#Wear — Own Your Street</title>
-
-  <meta name="description"
-    content="Street#Wear — Premium oversized streetwear for the next generation.">
-
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      font-family: Arial, Helvetica, sans-serif;
-      background: #f5f5f5;
-      color: #111;
-    }
-
-    button,
-    a {
-      font-family: inherit;
-    }
-
-    /* HEADER */
-
-    header {
-      height: 72px;
-      background: #050505;
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 6%;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      border-bottom: 1px solid #222;
-    }
-
-    .logo {
-      font-size: 25px;
-      font-weight: 900;
-      letter-spacing: -1px;
-    }
-
-    .logo span {
-      color: #888;
-    }
-
-    nav {
-      display: flex;
-      gap: 30px;
-    }
-
-    nav a {
-      color: white;
-      text-decoration: none;
-      font-size: 13px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-
-    nav a:hover {
-      color: #aaa;
-    }
-
-    .cart-button {
-      border: 1px solid #555;
-      background: transparent;
-      color: white;
-      padding: 10px 15px;
-      border-radius: 3px;
-      cursor: pointer;
-      font-weight: bold;
-    }
-
-    /* HERO */
-
-    .hero {
-      min-height: calc(100vh - 72px);
-      background:
-        linear-gradient(rgba(0,0,0,.58), rgba(0,0,0,.78)),
-        url("https://images.unsplash.com/photo-1523398002811-999ca8dec234?auto=format&fit=crop&w=1800&q=85")
-        center/cover;
-
-      color: white;
-      display: flex;
-      align-items: center;
-      padding: 80px 8%;
-    }
-
-    .hero-content {
-      max-width: 850px;
-    }
-
-    .eyebrow {
-      font-size: 13px;
-      letter-spacing: 4px;
-      font-weight: bold;
-      margin-bottom: 22px;
-      color: #ccc;
-    }
-
-    .hero h1 {
-      font-size: clamp(58px, 11vw, 150px);
-      line-height: .82;
-      letter-spacing: -7px;
-      text-transform: uppercase;
-      font-weight: 900;
-    }
-
-    .hero h1 span {
-      color: #aaa;
-    }
-
-    .hero-text {
-      max-width: 550px;
-      font-size: 18px;
-      line-height: 1.6;
-      color: #ccc;
-      margin: 35px 0;
-    }
-
-    .hero-buttons {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-
-    .primary-button,
-    .secondary-button {
-      padding: 16px 28px;
-      text-decoration: none;
-      font-size: 13px;
-      font-weight: 900;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-    }
-
-    .primary-button {
-      background: white;
-      color: black;
-    }
-
-    .secondary-button {
-      border: 1px solid white;
-      color: white;
-    }
-
-    /* MARQUEE */
-
-    .marquee {
-      background: #000;
-      color: white;
-      overflow: hidden;
-      white-space: nowrap;
-      padding: 18px 0;
-      border-top: 1px solid #333;
-      border-bottom: 1px solid #333;
-    }
-
-    .marquee-track {
-      display: inline-block;
-      animation: move 18s linear infinite;
-      font-size: 14px;
-      font-weight: 900;
-      letter-spacing: 3px;
-    }
-
-    @keyframes move {
-      from {
-        transform: translateX(0);
-      }
-
-      to {
-        transform: translateX(-50%);
-      }
-    }
-
-    /* SECTION */
-
-    section {
-      padding: 90px 6%;
-    }
-
-    .section-heading {
-      display: flex;
-      justify-content: space-between;
-      align-items: end;
-      margin-bottom: 40px;
-      gap: 20px;
-    }
-
-    .section-heading h2 {
-      font-size: clamp(36px, 6vw, 65px);
-      letter-spacing: -3px;
-      text-transform: uppercase;
-      font-weight: 900;
-    }
-
-    .section-heading p {
-      max-width: 350px;
-      color: #666;
-      line-height: 1.6;
-    }
-
-    /* PRODUCTS */
-
-    .products {
-      background: #f5f5f5;
-    }
-
-    .product-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 20px;
-    }
-
-    .product {
-      background: white;
-      overflow: hidden;
-      position: relative;
-    }
-
-    .product-image {
-      position: relative;
-      background: #ddd;
-      overflow: hidden;
-    }
-
-    .product-image img {
-      display: block;
-      width: 100%;
-      aspect-ratio: 4 / 5;
-      object-fit: cover;
-      transition: transform .5s;
-    }
-
-    .product:hover img {
-      transform: scale(1.04);
-    }
-
-    .tag {
-      position: absolute;
-      top: 15px;
-      left: 15px;
-      background: #000;
-      color: white;
-      padding: 8px 10px;
-      font-size: 10px;
-      font-weight: bold;
-      letter-spacing: 1px;
-    }
-
-    .product-info {
-      padding: 20px;
-    }
-
-    .product-info h3 {
-      font-size: 17px;
-      margin-bottom: 8px;
-    }
-
-    .product-category {
-      color: #777;
-      font-size: 12px;
-      margin-bottom: 14px;
-    }
-
-    .price {
-      font-size: 19px;
-      font-weight: 900;
-      margin-bottom: 15px;
-    }
-
-    .size-label {
-      font-size: 11px;
-      font-weight: bold;
-      letter-spacing: 1px;
-      margin-bottom: 8px;
-      display: block;
-    }
-
-    .sizes {
-      display: flex;
-      gap: 6px;
-      margin-bottom: 15px;
-    }
-
-    .size {
-      background: white;
-      border: 1px solid #ccc;
-      padding: 8px 11px;
-      cursor: pointer;
-      font-size: 12px;
-      font-weight: bold;
-    }
-
-    .size.selected {
-      background: #000;
-      color: white;
-      border-color: #000;
-    }
-
-    .add-cart {
-      width: 100%;
-      background: #000;
-      color: white;
-      border: none;
-      padding: 14px;
-      cursor: pointer;
-      font-weight: 900;
-      font-size: 12px;
-      letter-spacing: 1px;
-    }
-
-    .add-cart:hover {
-      background: #333;
-    }
-
-    /* BRAND SECTION */
-
-    .brand-section {
-      background: #000;
-      color: white;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      min-height: 500px;
-      padding: 0;
-    }
-
-    .brand-image {
-      background:
-        linear-gradient(rgba(0,0,0,.25), rgba(0,0,0,.45)),
-        url("https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=1200&q=85")
-        center/cover;
-      min-height: 500px;
-    }
-
-    .brand-content {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: 70px;
-    }
-
-    .brand-content small {
-      letter-spacing: 4px;
-      color: #aaa;
-      font-weight: bold;
-    }
-
-    .brand-content h2 {
-      font-size: clamp(40px, 5vw, 75px);
-      line-height: .9;
-      margin: 20px 0;
-      letter-spacing: -4px;
-    }
-
-    .brand-content p {
-      color: #bbb;
-      max-width: 480px;
-      line-height: 1.8;
-    }
-
-    /* INSTAGRAM */
-
-    .social {
-      text-align: center;
-      background: white;
-    }
-
-    .social h2 {
-      font-size: clamp(35px, 6vw, 60px);
-      text-transform: uppercase;
-      letter-spacing: -3px;
-      margin-bottom: 15px;
-    }
-
-    .social p {
-      color: #777;
-      margin-bottom: 25px;
-    }
-
-    .instagram {
-      display: inline-block;
-      background: #000;
-      color: white;
-      text-decoration: none;
-      padding: 15px 25px;
-      font-weight: bold;
-      letter-spacing: 1px;
-    }
-
-    /* CART */
-
-    .cart-overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,.6);
-      z-index: 200;
-    }
-
-    .cart {
-      position: absolute;
-      right: 0;
-      top: 0;
-      height: 100%;
-      width: min(420px, 92%);
-      background: white;
-      padding: 30px;
-      overflow-y: auto;
-    }
-
-    .cart-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 30px;
-    }
-
-    .cart-header h2 {
-      font-size: 25px;
-    }
-
-    .close-cart {
-      background: none;
-      border: none;
-      font-size: 25px;
-      cursor: pointer;
-    }
-
-    .cart-item {
-      border-bottom: 1px solid #ddd;
-      padding: 18px 0;
-    }
-
-    .cart-item h4 {
-      margin-bottom: 7px;
-    }
-
-    .cart-total {
-      margin-top: 25px;
-      font-size: 20px;
-      font-weight: 900;
-    }
-
-    .whatsapp {
-      display: block;
-      width: 100%;
-      background: #111;
-      color: white;
-      text-decoration: none;
-      text-align: center;
-      padding: 16px;
-      margin-top: 20px;
-      font-weight: bold;
-    }
-
-    /* FOOTER */
-
-    footer {
-      background: #050505;
-      color: white;
-      padding: 70px 6% 30px;
-    }
-
-    .footer-grid {
-      display: grid;
-      grid-template-columns: 2fr 1fr 1fr;
-      gap: 50px;
-      margin-bottom: 60px;
-    }
-
-    footer h3 {
-      font-size: 28px;
-      margin-bottom: 15px;
-    }
-
-    footer p {
-      color: #888;
-      line-height: 1.7;
-    }
-
-    footer a {
-      display: block;
-      color: #aaa;
-      text-decoration: none;
-      margin: 10px 0;
-    }
-
-    .copyright {
-      border-top: 1px solid #222;
-      padding-top: 25px;
-      color: #666;
-      font-size: 12px;
-    }
-
-    /* MOBILE */
-
-    @media (max-width: 1000px) {
-      .product-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .brand-section {
-        grid-template-columns: 1fr;
-      }
-
-      .brand-image {
-        min-height: 400px;
-      }
-
-      .brand-content {
-        padding: 60px 8%;
-      }
-    }
-
-    @media (max-width: 650px) {
-      header {
-        padding: 0 20px;
-      }
-
-      nav {
-        display: none;
-      }
-
-      .hero {
-        min-height: 85vh;
-        padding: 60px 25px;
-      }
-
-      .hero h1 {
-        font-size: 65px;
-        letter-spacing: -4px;
-      }
-
-      section {
-        padding: 65px 20px;
-      }
-
-      .section-heading {
-        display: block;
-      }
-
-      .section-heading h2 {
-        margin-bottom: 15px;
-      }
-
-      .product-grid {
-        grid-template-columns: 1fr 1fr;
-        gap: 10px;
-      }
-
-      .product-info {
-        padding: 12px;
-      }
-
-      .product-info h3 {
-        font-size: 14px;
-      }
-
-      .sizes {
-        gap: 3px;
-      }
-
-      .size {
-        padding: 7px 8px;
-      }
-
-      .footer-grid {
-        grid-template-columns: 1fr;
-        gap: 30px;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Street#Wear — Own Your Street</title>
+<meta name="description" content="Street#Wear — Premium oversized streetwear for the next generation.">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:Arial,Helvetica,sans-serif;background:#f5f5f5;color:#111}
+button,a{font-family:inherit}
+header{height:72px;background:#050505;color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 6%;position:sticky;top:0;z-index:100;border-bottom:1px solid #222}
+.logo{font-size:25px;font-weight:900;letter-spacing:-1px}.logo span{color:#888}
+nav{display:flex;gap:30px}nav a{color:#fff;text-decoration:none;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:1px}
+.cart-button{border:1px solid #555;background:transparent;color:#fff;padding:10px 15px;border-radius:3px;cursor:pointer;font-weight:bold}
+.hero{min-height:calc(100vh - 72px);background:linear-gradient(rgba(0,0,0,.58),rgba(0,0,0,.78)),url("https://images.unsplash.com/photo-1523398002811-999ca8dec234?auto=format&fit=crop&w=1800&q=85") center/cover;color:#fff;display:flex;align-items:center;padding:80px 8%}
+.hero-content{max-width:850px}.eyebrow{font-size:13px;letter-spacing:4px;font-weight:bold;margin-bottom:22px;color:#ccc}
+.hero h1{font-size:clamp(58px,11vw,150px);line-height:.82;letter-spacing:-7px;text-transform:uppercase;font-weight:900}.hero h1 span{color:#aaa}
+.hero-text{max-width:550px;font-size:18px;line-height:1.6;color:#ccc;margin:35px 0}.hero-buttons{display:flex;gap:12px;flex-wrap:wrap}
+.primary-button,.secondary-button{padding:16px 28px;text-decoration:none;font-size:13px;font-weight:900;letter-spacing:1px;text-transform:uppercase}
+.primary-button{background:#fff;color:#000}.secondary-button{border:1px solid #fff;color:#fff}
+.marquee{background:#000;color:#fff;overflow:hidden;white-space:nowrap;padding:18px 0;border-top:1px solid #333;border-bottom:1px solid #333}
+.marquee-track{display:inline-block;animation:move 18s linear infinite;font-size:14px;font-weight:900;letter-spacing:3px}
+@keyframes move{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+section{padding:90px 6%}.section-heading{display:flex;justify-content:space-between;align-items:end;margin-bottom:40px;gap:20px}
+.section-heading h2{font-size:clamp(36px,6vw,65px);letter-spacing:-3px;text-transform:uppercase;font-weight:900}.section-heading p{max-width:350px;color:#666;line-height:1.6}
+.product-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}.product{background:#fff;overflow:hidden}
+.product-image{position:relative;background:#ddd;overflow:hidden}.product-image img{display:block;width:100%;aspect-ratio:4/5;object-fit:cover;transition:transform .5s}.product:hover img{transform:scale(1.04)}
+.tag{position:absolute;top:15px;left:15px;background:#000;color:#fff;padding:8px 10px;font-size:10px;font-weight:bold;letter-spacing:1px;z-index:2}
+.product-info{padding:20px}.product-info h3{font-size:17px;margin-bottom:8px}.product-category{color:#777;font-size:12px;margin-bottom:14px}.price{font-size:19px;font-weight:900;margin-bottom:15px}
+.size-label{font-size:11px;font-weight:bold;letter-spacing:1px;margin-bottom:8px;display:block}.sizes{display:flex;gap:6px;margin-bottom:15px}
+.size{background:#fff;border:1px solid #ccc;padding:8px 11px;cursor:pointer;font-size:12px;font-weight:bold}.size.selected{background:#000;color:#fff;border-color:#000}
+.add-cart{width:100%;background:#000;color:#fff;border:none;padding:14px;cursor:pointer;font-weight:900;font-size:12px;letter-spacing:1px}.add-cart:hover{background:#333}
+.brand-section{background:#000;color:#fff;display:grid;grid-template-columns:1fr 1fr;min-height:500px;padding:0}.brand-image{background:linear-gradient(rgba(0,0,0,.25),rgba(0,0,0,.45)),url("https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=1200&q=85") center/cover;min-height:500px}
+.brand-content{display:flex;flex-direction:column;justify-content:center;padding:70px}.brand-content small{letter-spacing:4px;color:#aaa;font-weight:bold}.brand-content h2{font-size:clamp(40px,5vw,75px);line-height:.9;margin:20px 0;letter-spacing:-4px}.brand-content p{color:#bbb;max-width:480px;line-height:1.8}
+.social{text-align:center;background:#fff}.social h2{font-size:clamp(35px,6vw,60px);text-transform:uppercase;letter-spacing:-3px;margin-bottom:15px}.social p{color:#777;margin-bottom:25px}.instagram{display:inline-block;background:#000;color:#fff;text-decoration:none;padding:15px 25px;font-weight:bold;letter-spacing:1px}
+.cart-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200}.cart{position:absolute;right:0;top:0;height:100%;width:min(430px,94%);background:#fff;padding:30px;overflow-y:auto}
+.cart-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:25px}.cart-header h2{font-size:25px}.close-cart{background:none;border:none;font-size:25px;cursor:pointer}
+.cart-item{border-bottom:1px solid #ddd;padding:18px 0}.cart-item h4{margin-bottom:7px}.cart-item-meta{color:#666;font-size:13px;margin-bottom:12px}
+.qty-row{display:flex;align-items:center;gap:8px}.qty-btn{border:1px solid #ccc;background:#fff;width:32px;height:30px;cursor:pointer;font-weight:bold}.remove-btn{border:none;background:none;text-decoration:underline;cursor:pointer;margin-left:auto;font-size:12px}
+.cart-total{margin-top:25px;font-size:20px;font-weight:900}.whatsapp{display:block;width:100%;background:#111;color:#fff;text-decoration:none;text-align:center;padding:16px;margin-top:20px;font-weight:bold}
+footer{background:#050505;color:#fff;padding:70px 6% 30px}.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:50px;margin-bottom:60px}footer h3{font-size:28px;margin-bottom:15px}footer p{color:#888;line-height:1.7}footer a{display:block;color:#aaa;text-decoration:none;margin:10px 0}.copyright{border-top:1px solid #222;padding-top:25px;color:#666;font-size:12px}
+@media(max-width:1000px){.product-grid{grid-template-columns:repeat(2,1fr)}.brand-section{grid-template-columns:1fr}.brand-image{min-height:400px}.brand-content{padding:60px 8%}}
+@media(max-width:650px){header{padding:0 20px}nav{display:none}.hero{min-height:85vh;padding:60px 25px}.hero h1{font-size:65px;letter-spacing:-4px}section{padding:65px 20px}.section-heading{display:block}.section-heading h2{margin-bottom:15px}.product-grid{grid-template-columns:1fr 1fr;gap:10px}.product-info{padding:12px}.product-info h3{font-size:14px}.sizes{gap:3px}.size{padding:7px 8px}.footer-grid{grid-template-columns:1fr;gap:30px}}
+</style>
 </head>
-
 <body>
 
-<!-- HEADER -->
-
 <header>
-  <div class="logo">Street<span>#</span>Wear</div>
-
-  <nav>
-    <a href="#home">Home</a>
-    <a href="#shop">Shop</a>
-    <a href="#about">About</a>
-    <a href="#contact">Contact</a>
-  </nav>
-
-  <button class="cart-button" onclick="openCart()">
-    BAG (<span id="cart-count">0</span>)
-  </button>
+<div class="logo">Street<span>#</span>Wear</div>
+<nav><a href="#home">Home</a><a href="#shop">Shop</a><a href="#about">About</a><a href="#contact">Contact</a></nav>
+<button class="cart-button" onclick="openCart()">BAG (<span id="cart-count">0</span>)</button>
 </header>
 
-
-<!-- HERO -->
-
 <section class="hero" id="home">
-
-  <div class="hero-content">
-
-    <div class="eyebrow">
-      STREETWEAR / 2026 COLLECTION
-    </div>
-
-    <h1>
-      Own<br>
-      Your<br>
-      <span>Street.</span>
-    </h1>
-
-    <p class="hero-text">
-      Premium oversized streetwear made for people who don't follow
-      the crowd. Wear your attitude. Make your move.
-    </p>
-
-    <div class="hero-buttons">
-      <a href="#shop" class="primary-button">
-        Shop New Drops
-      </a>
-
-      <a href="#about" class="secondary-button">
-        Our Story
-      </a>
-    </div>
-
-  </div>
-
+<div class="hero-content">
+<div class="eyebrow">STREETWEAR / 2026 COLLECTION</div>
+<h1>Own<br>Your<br><span>Street.</span></h1>
+<p class="hero-text">Premium oversized streetwear made for people who don't follow the crowd. Wear your attitude. Make your move.</p>
+<div class="hero-buttons"><a href="#shop" class="primary-button">Shop New Drops</a><a href="#about" class="secondary-button">Our Story</a></div>
+</div>
 </section>
 
+<div class="marquee"><div class="marquee-track">STREET#WEAR &nbsp; • &nbsp; OWN YOUR STREET &nbsp; • &nbsp; NEW DROP &nbsp; • &nbsp; OVERSIZED FIT &nbsp; • &nbsp; STREET#WEAR &nbsp; • &nbsp; OWN YOUR STREET &nbsp; • &nbsp; NEW DROP &nbsp; • &nbsp; OVERSIZED FIT &nbsp; • &nbsp;</div></div>
 
-<!-- MARQUEE -->
+<section id="shop">
+<div class="section-heading"><div><p class="eyebrow">LATEST DROP</p><h2>New<br>Drops.</h2></div><p>Discover our first collection of oversized streetwear. More designs dropping soon.</p></div>
+<div class="product-grid">
 
-<div class="marquee">
-
-  <div class="marquee-track">
-    STREET#WEAR &nbsp; • &nbsp;
-    OWN YOUR STREET &nbsp; • &nbsp;
-    NEW DROP &nbsp; • &nbsp;
-    OVERSIZED FIT &nbsp; • &nbsp;
-    STREET#WEAR &nbsp; • &nbsp;
-    OWN YOUR STREET &nbsp; • &nbsp;
-    NEW DROP &nbsp; • &nbsp;
-    OVERSIZED FIT &nbsp; • &nbsp;
-  </div>
-
+<div class="product" data-name="Fearless Oversized Tee" data-price="499">
+<div class="product-image"><span class="tag">NEW</span><img src="https://placehold.co/800x1000/111/fff?text=FEARLESS" alt="Fearless Oversized T-Shirt"></div>
+<div class="product-info"><h3>Fearless Oversized Tee</h3><p class="product-category">Heavy Streetwear Fit</p><div class="price">₹499</div><span class="size-label">SELECT SIZE</span><div class="sizes"><button class="size" onclick="selectSize(this)">S</button><button class="size selected" onclick="selectSize(this)">M</button><button class="size" onclick="selectSize(this)">L</button><button class="size" onclick="selectSize(this)">XL</button></div><button class="add-cart" onclick="addProduct(this)">ADD TO BAG</button></div>
 </div>
 
-
-<!-- SHOP -->
-
-<section class="products" id="shop">
-
-  <div class="section-heading">
-
-    <div>
-      <p class="eyebrow">LATEST DROP</p>
-
-      <h2>New<br>Drops.</h2>
-    </div>
-
-    <p>
-      Discover our first collection of oversized streetwear.
-      More designs dropping soon.
-    </p>
-
-  </div>
-
-
-  <div class="product-grid">
-
-    <!-- PRODUCT 1 -->
-
-    <div class="product">
-
-      <div class="product-image">
-
-        <span class="tag">NEW</span>
-
-        <img
-          src="https://placehold.co/800x1000/111/fff?text=FEARLESS"
-          alt="Fearless Oversized T-Shirt">
-
-      </div>
-
-      <div class="product-info">
-
-        <h3>Fearless Oversized Tee</h3>
-
-        <p class="product-category">
-          Heavy Streetwear Fit
-        </p>
-
-        <div class="price">₹499</div>
-
-        <span class="size-label">SELECT SIZE</span>
-
-        <div class="sizes">
-          <button class="size" onclick="selectSize(this)">S</button>
-          <button class="size selected" onclick="selectSize(this)">M</button>
-          <button class="size" onclick="selectSize(this)">L</button>
-          <button class="size" onclick="selectSize(this)">XL</button>
-        </div>
-
-        <button
-          class="add-cart"
-          onclick="addToCart('Fearless Oversized Tee',499)">
-          ADD TO BAG
-        </button>
-
-      </div>
-
-    </div>
-
-
-    <!-- PRODUCT 2 -->
-
-    <div class="product">
-
-      <div class="product-image">
-
-        <span class="tag">DROP 02</span>
-
-        <img
-          src="https://placehold.co/800x1000/222/fff?text=URBAN+SHADOW"
-          alt="Urban Shadow T-Shirt">
-
-      </div>
-
-      <div class="product-info">
-
-        <h3>Urban Shadow Tee</h3>
-
-        <p class="product-category">
-          Oversized Street Fit
-        </p>
-
-        <div class="price">₹499</div>
-
-        <span class="size-label">SELECT SIZE</span>
-
-        <div class="sizes">
-          <button class="size" onclick="selectSize(this)">S</button>
-          <button class="size selected" onclick="selectSize(this)">M</button>
-          <button class="size" onclick="selectSize(this)">L</button>
-          <button class="size" onclick="selectSize(this)">XL</button>
-        </div>
-
-        <button
-          class="add-cart"
-          onclick="addToCart('Urban Shadow Tee',499)">
-          ADD TO BAG
-        </button>
-
-      </div>
-
-    </div>
-
-
-    <!-- PRODUCT 3 -->
-
-    <div class="product">
-
-      <div class="product-image">
-
-        <span class="tag">DROP 03</span>
-
-        <img
-          src="https://placehold.co/800x1000/333/fff?text=STREET+CODE"
-          alt="Street Code T-Shirt">
-
-      </div>
-
-      <div class="product-info">
-
-        <h3>Street Code Tee</h3>
-
-        <p class="product-category">
-          Gen-Z Oversized Fit
-        </p>
-
-        <div class="price">₹549</div>
-
-        <span class="size-label">SELECT SIZE</span>
-
-        <div class="sizes">
-          <button class="size" onclick="selectSize(this)">S</button>
-          <button class="size selected" onclick="selectSize(this)">M</button>
-          <button class="size" onclick="selectSize(this)">L</button>
-          <button class="size" onclick="selectSize(this)">XL</button>
-        </div>
-
-        <button
-          class="add-cart"
-          onclick="addToCart('Street Code Tee',549)">
-          ADD TO BAG
-        </button>
-
-      </div>
-
-    </div>
-
-
-    <!-- PRODUCT 4 -->
-
-    <div class="product">
-
-      <div class="product-image">
-
-        <span class="tag">LIMITED</span>
-
-        <img
-          src="https://placehold.co/800x1000/444/fff?text=MIDNIGHT"
-          alt="Midnight Oversized T-Shirt">
-
-      </div>
-
-      <div class="product-info">
-
-        <h3>Midnight Oversized Tee</h3>
-
-        <p class="product-category">
-          Premium Oversized Fit
-        </p>
-
-        <div class="price">₹599</div>
-
-        <span class="size-label">SELECT SIZE</span>
-
-        <div class="sizes">
-          <button class="size" onclick="selectSize(this)">S</button>
-          <button class="size selected" onclick="selectSize(this)">M</button>
-          <button class="size" onclick="selectSize(this)">L</button>
-          <button class="size" onclick="selectSize(this)">XL</button>
-        </div>
-
-        <button
-          class="add-cart"
-          onclick="addToCart('Midnight Oversized Tee',599)">
-          ADD TO BAG
-        </button>
-
-      </div>
-
-    </div>
-
-  </div>
-
+<div class="product" data-name="Urban Shadow Tee" data-price="499">
+<div class="product-image"><span class="tag">DROP 02</span><img src="https://placehold.co/800x1000/222/fff?text=URBAN+SHADOW" alt="Urban Shadow T-Shirt"></div>
+<div class="product-info"><h3>Urban Shadow Tee</h3><p class="product-category">Oversized Street Fit</p><div class="price">₹499</div><span class="size-label">SELECT SIZE</span><div class="sizes"><button class="size" onclick="selectSize(this)">S</button><button class="size selected" onclick="selectSize(this)">M</button><button class="size" onclick="selectSize(this)">L</button><button class="size" onclick="selectSize(this)">XL</button></div><button class="add-cart" onclick="addProduct(this)">ADD TO BAG</button></div>
+</div>
+
+<div class="product" data-name="Street Code Tee" data-price="549">
+<div class="product-image"><span class="tag">DROP 03</span><img src="https://placehold.co/800x1000/333/fff?text=STREET+CODE" alt="Street Code T-Shirt"></div>
+<div class="product-info"><h3>Street Code Tee</h3><p class="product-category">Gen-Z Oversized Fit</p><div class="price">₹549</div><span class="size-label">SELECT SIZE</span><div class="sizes"><button class="size" onclick="selectSize(this)">S</button><button class="size selected" onclick="selectSize(this)">M</button><button class="size" onclick="selectSize(this)">L</button><button class="size" onclick="selectSize(this)">XL</button></div><button class="add-cart" onclick="addProduct(this)">ADD TO BAG</button></div>
+</div>
+
+<div class="product" data-name="Midnight Oversized Tee" data-price="599">
+<div class="product-image"><span class="tag">LIMITED</span><img src="https://placehold.co/800x1000/444/fff?text=MIDNIGHT" alt="Midnight Oversized T-Shirt"></div>
+<div class="product-info"><h3>Midnight Oversized Tee</h3><p class="product-category">Premium Oversized Fit</p><div class="price">₹599</div><span class="size-label">SELECT SIZE</span><div class="sizes"><button class="size" onclick="selectSize(this)">S</button><button class="size selected" onclick="selectSize(this)">M</button><button class="size" onclick="selectSize(this)">L</button><button class="size" onclick="selectSize(this)">XL</button></div><button class="add-cart" onclick="addProduct(this)">ADD TO BAG</button></div>
+</div>
+
+</div>
 </section>
-
-
-<!-- BRAND STORY -->
 
 <section class="brand-section" id="about">
-
-  <div class="brand-image"></div>
-
-  <div class="brand-content">
-
-    <small>THE STREET#WEAR MINDSET</small>
-
-    <h2>
-      DON'T<br>
-      FOLLOW.<br>
-      LEAD.
-    </h2>
-
-    <p>
-      Street#Wear is built around individuality, confidence and
-      street culture. Our goal is simple — create pieces that
-      make you feel like yourself when you step outside.
-    </p>
-
-  </div>
-
+<div class="brand-image"></div>
+<div class="brand-content"><small>THE STREET#WEAR MINDSET</small><h2>DON'T<br>FOLLOW.<br>LEAD.</h2><p>Street#Wear is built around individuality, confidence and street culture. Our goal is simple — create pieces that make you feel like yourself when you step outside.</p></div>
 </section>
-
-
-<!-- SOCIAL -->
 
 <section class="social">
-
-  <p class="eyebrow">FOLLOW THE MOVEMENT</p>
-
-  <h2>@Street#Wear</h2>
-
-  <p>
-    New drops, outfits and behind-the-scenes content.
-  </p>
-
-  <a
-    href="https://instagram.com/"
-    target="_blank"
-    class="instagram">
-    FOLLOW ON INSTAGRAM
-  </a>
-
+<p class="eyebrow">FOLLOW THE MOVEMENT</p><h2>@Street#Wear</h2><p>New drops, outfits and behind-the-scenes content.</p>
+<a href="https://instagram.com/" target="_blank" class="instagram">FOLLOW ON INSTAGRAM</a>
 </section>
 
-
-<!-- FOOTER -->
-
 <footer id="contact">
-
-  <div class="footer-grid">
-
-    <div>
-      <h3>Street#Wear</h3>
-
-      <p>
-        Premium streetwear for the next generation.
-        Own your street.
-      </p>
-    </div>
-
-    <div>
-      <h3>Explore</h3>
-
-      <a href="#home">Home</a>
-      <a href="#shop">Shop</a>
-      <a href="#about">About</a>
-    </div>
-
-    <div>
-      <h3>Contact</h3>
-
-      <a href="https://wa.me/918928057608" target="_blank">
-        WhatsApp
-      </a>
-
-      <a href="https://instagram.com/" target="_blank">
-        Instagram
-      </a>
-    </div>
-
-  </div>
-
-  <div class="copyright">
-    © 2026 Street#Wear. All rights reserved.
-  </div>
-
+<div class="footer-grid"><div><h3>Street#Wear</h3><p>Premium streetwear for the next generation. Own your street.</p></div><div><h3>Explore</h3><a href="#home">Home</a><a href="#shop">Shop</a><a href="#about">About</a></div><div><h3>Contact</h3><a href="https://wa.me/918928057608" target="_blank">WhatsApp</a><a href="https://instagram.com/" target="_blank">Instagram</a></div></div>
+<div class="copyright">© 2026 Street#Wear. All rights reserved.</div>
 </footer>
 
-
-<!-- CART -->
-
 <div class="cart-overlay" id="cart-overlay">
-
-  <div class="cart">
-
-    <div class="cart-header">
-
-      <h2>Your Bag</h2>
-
-      <button
-        class="close-cart"
-        onclick="closeCart()">
-        ×
-      </button>
-
-    </div>
-
-    <div id="cart-items">
-      <p>Your bag is empty.</p>
-    </div>
-
-    <div class="cart-total">
-      Total: ₹<span id="cart-total">0</span>
-    </div>
-
-    <a
-      href="#"
-      id="whatsapp-order"
-      class="whatsapp"
-      target="_blank">
-      ORDER ON WHATSAPP
-    </a>
-
-  </div>
-
+<div class="cart">
+<div class="cart-header"><h2>Your Bag</h2><button class="close-cart" onclick="closeCart()">×</button></div>
+<div id="cart-items"><p>Your bag is empty.</p></div>
+<div class="cart-total">Total: ₹<span id="cart-total">0</span></div>
+<a href="#" id="whatsapp-order" class="whatsapp" target="_blank">ORDER ON WHATSAPP</a>
+</div>
 </div>
 
-
 <script>
+let cart=[];
 
-  let cart = [];
+function selectSize(button){
+const parent=button.parentElement;
+parent.querySelectorAll(".size").forEach(btn=>btn.classList.remove("selected"));
+button.classList.add("selected");
+}
 
-  let total = 0;
+function addProduct(button){
+const product=button.closest(".product");
+const name=product.dataset.name;
+const price=Number(product.dataset.price);
+const selected=product.querySelector(".size.selected");
+const size=selected ? selected.textContent : "M";
 
+const existing=cart.find(item=>item.name===name && item.size===size);
+if(existing){existing.quantity+=1;}
+else{cart.push({name,price,size,quantity:1});}
 
-  function selectSize(button) {
+updateCart();
+openCart();
+}
 
-    const parent = button.parentElement;
+function changeQuantity(index,amount){
+cart[index].quantity+=amount;
+if(cart[index].quantity<=0) cart.splice(index,1);
+updateCart();
+}
 
-    const buttons = parent.querySelectorAll(".size");
+function removeItem(index){
+cart.splice(index,1);
+updateCart();
+}
 
-    buttons.forEach(function(btn) {
-      btn.classList.remove("selected");
-    });
+function updateCart(){
+document.getElementById("cart-count").textContent=cart.reduce((sum,item)=>sum+item.quantity,0);
 
-    button.classList.add("selected");
+const items=document.getElementById("cart-items");
+let total=0;
 
-  }
+if(cart.length===0){
+items.innerHTML="<p>Your bag is empty.</p>";
+}else{
+items.innerHTML="";
+cart.forEach((item,index)=>{
+total+=item.price*item.quantity;
+const div=document.createElement("div");
+div.className="cart-item";
+div.innerHTML=`
+<h4>${item.name}</h4>
+<div class="cart-item-meta">Size: ${item.size} · ₹${item.price} each</div>
+<div class="qty-row">
+<button class="qty-btn" onclick="changeQuantity(${index},-1)">−</button>
+<strong>${item.quantity}</strong>
+<button class="qty-btn" onclick="changeQuantity(${index},1)">+</button>
+<button class="remove-btn" onclick="removeItem(${index})">Remove</button>
+</div>`;
+items.appendChild(div);
+});
+}
 
+document.getElementById("cart-total").textContent=total;
 
-  function addToCart(name, price) {
+let message="Hi Street#Wear!%0A%0AI want to order:%0A";
+cart.forEach(item=>{
+message+=`- ${item.name} | Size: ${item.size} | Qty: ${item.quantity} | ₹${item.price*item.quantity}%0A`;
+});
+message+=`%0ATotal: ₹${total}%0A%0APlease share payment and delivery details.`;
 
-    cart.push({
-      name: name,
-      price: price
-    });
+document.getElementById("whatsapp-order").href=
+"https://wa.me/918928057608?text="+message;
+}
 
-    total += price;
+function openCart(){
+document.getElementById("cart-overlay").style.display="block";
+}
 
-    updateCart();
+function closeCart(){
+document.getElementById("cart-overlay").style.display="none";
+}
 
-    openCart();
+document.getElementById("cart-overlay").addEventListener("click",function(e){
+if(e.target===this) closeCart();
+});
 
-  }
-
-
-  function updateCart() {
-
-    const count = document.getElementById("cart-count");
-
-    const items = document.getElementById("cart-items");
-
-    const totalElement = document.getElementById("cart-total");
-
-    count.textContent = cart.length;
-
-    totalElement.textContent = total;
-
-
-    if (cart.length === 0) {
-
-      items.innerHTML =
-        "<p>Your bag is empty.</p>";
-
-    } else {
-
-      items.innerHTML = "";
-
-      cart.forEach(function(item, index) {
-
-        const div = document.createElement("div");
-
-        div.className = "cart-item";
-
-        div.innerHTML = `
-          <h4>${item.name}</h4>
-          <p>₹${item.price}</p>
-        `;
-
-        items.appendChild(div);
-
-      });
-
-    }
-
-
-    let message =
-      "Hi Street#Wear!%0A%0A" +
-      "I want to order:%0A";
-
-    cart.forEach(function(item) {
-
-      message +=
-        "- " +
-        item.name +
-        " — ₹" +
-        item.price +
-        "%0A";
-
-    });
-
-    message +=
-      "%0ATotal: ₹" +
-      total +
-      "%0A%0APlease share available sizes and payment details.";
-
-
-    document.getElementById("whatsapp-order").href =
-      "https://wa.me/918928057608?text=" +
-      message;
-
-  }
-
-
-  function openCart() {
-
-    document.getElementById("cart-overlay").style.display =
-      "block";
-
-  }
-
-
-  function closeCart() {
-
-    document.getElementById("cart-overlay").style.display =
-      "none";
-
-  }
-
-
-  document
-    .getElementById("cart-overlay")
-    .addEventListener("click", function(event) {
-
-      if (event.target === this) {
-        closeCart();
-      }
-
-    });
-
-
-  updateCart();
-
+updateCart();
 </script>
-
 </body>
 </html>
