@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Street#Wear Admin</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Arial,Helvetica,sans-serif;
+  background:#f5f5f5;
+  color:#111;
+}
+.container{
+  width:min(900px,92%);
+  margin:40px auto;
+}
+.card{
+  background:#fff;
+  padding:30px;
+  border-radius:12px;
+  box-shadow:0 5px 25px rgba(0,0,0,.08);
+  margin-bottom:20px;
+}
+h1,h2{margin-top:0}
+input,textarea{
+  width:100%;
+  padding:13px;
+  margin:7px 0 15px;
+  border:1px solid #ccc;
+  border-radius:6px;
+  font-size:15px;
+}
+textarea{min-height:100px;resize:vertical}
+button{
+  border:0;
+  background:#000;
+  color:#fff;
+  padding:13px 20px;
+  border-radius:6px;
+  cursor:pointer;
+  font-weight:bold;
+}
+button:hover{opacity:.85}
+.logout{float:right;background:#777}
+.hidden{display:none}
+.message{
+  padding:12px;
+  background:#eee;
+  border-radius:6px;
+  margin:10px 0;
+}
+.product{
+  border:1px solid #ddd;
+  padding:15px;
+  margin:12px 0;
+  border-radius:8px;
+}
+.product img{
+  width:100px;
+  height:120px;
+  object-fit:cover;
+  border-radius:5px;
+}
+label{
+  font-size:13px;
+  font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <!-- LOGIN -->
+  <div id="login-section" class="card">
+    <h1>Street#Wear Admin</h1>
+    <p>Private admin login</p>
+
+    <label>Email</label>
+    <input id="login-email"
+           type="email"
+           value="streetwear.official@gmail.com">
+
+    <label>Password</label>
+    <input id="login-password"
+           type="password"
+           placeholder="Admin password">
+
+    <button onclick="login()">LOGIN</button>
+
+    <div id="login-message" class="message hidden"></div>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div id="dashboard" class="hidden">
+
+    <div class="card">
+      <button class="logout" onclick="logout()">LOGOUT</button>
+      <h1>Street#Wear Admin</h1>
+      <p>Product Management Dashboard</p>
+    </div>
+
+    <div class="card">
+      <h2>Add Product</h2>
+
+      <label>Product Name</label>
+      <input id="product-name" type="text" placeholder="Fearless Oversized Tee">
+
+      <label>Price (₹)</label>
+      <input id="product-price" type="number" placeholder="499">
+
+      <label>Description</label>
+      <textarea id="product-description"
+        placeholder="Premium oversized streetwear fit"></textarea>
+
+      <label>Image URL</label>
+      <input id="product-image"
+        type="url"
+        placeholder="https://...">
+
+      <label>Sizes</label>
+      <input id="product-sizes"
+        type="text"
+        placeholder="S, M, L, XL">
+
+      <label>Color</label>
+      <input id="product-color"
+        type="text"
+        placeholder="Black">
+
+      <label>Stock</label>
+      <input id="product-stock"
+        type="number"
+        placeholder="25">
+
+      <button onclick="addProduct()">ADD PRODUCT</button>
+
+      <div id="product-message" class="message hidden"></div>
+    </div>
+
+    <div class="card">
+      <h2>Products</h2>
+      <div id="products-list">Loading...</div>
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+const SUPABASE_URL = "https://ezfldwapvcownpozhxww.supabase.co";
+
+/*
+  IMPORTANT:
+  Paste your Supabase PUBLISHABLE key between the quotes below.
+  Do NOT use the Secret key.
+*/
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_NOoVPD0PlqvsdEhiFh6Spg_ctXTd1ve";
+
+const supabaseClient = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_PUBLISHABLE_KEY
+);
+
+async function login(){
+  const email=document.getElementById("login-email").value.trim();
+  const password=document.getElementById("login-password").value;
+
+  const message=document.getElementById("login-message");
+
+  const {error}=await supabaseClient.auth.signInWithPassword({
+    email:email,
+    password:password
+  });
+
+  if(error){
+    message.textContent=error.message;
+    message.classList.remove("hidden");
+    return;
+  }
+
+  message.classList.add("hidden");
+  showDashboard();
+}
+
+async function logout(){
+  await supabaseClient.auth.signOut();
+  document.getElementById("dashboard").classList.add("hidden");
+  document.getElementById("login-section").classList.remove("hidden");
+  document.getElementById("login-password").value="";
+}
+
+async function showDashboard(){
+  document.getElementById("login-section").classList.add("hidden");
+  document.getElementById("dashboard").classList.remove("hidden");
+  loadProducts();
+}
+
+async function addProduct(){
+
+  const name=document.getElementById("product-name").value.trim();
+  const price=Number(document.getElementById("product-price").value);
+  const description=document.getElementById("product-description").value.trim();
+  const image_url=document.getElementById("product-image").value.trim();
+  const sizes=document.getElementById("product-sizes").value.trim();
+  const color=document.getElementById("product-color").value.trim();
+  const stock=Number(document.getElementById("product-stock").value);
+
+  const message=document.getElementById("product-message");
+
+  if(!name || !price){
+    message.textContent="Product name and price are required.";
+    message.classList.remove("hidden");
+    return;
+  }
+
+  const {error}=await supabaseClient
+    .from("product")
+    .insert([{
+      name:name,
+      Price:price,
+      description:description,
+      image_url:image_url,
+      sizes:sizes,
+      color:color,
+      stock:stock
+    }]);
+
+  if(error){
+    message.textContent=error.message;
+    message.classList.remove("hidden");
+    return;
+  }
+
+  message.textContent="Product added successfully!";
+  message.classList.remove("hidden");
+
+  document.getElementById("product-name").value="";
+  document.getElementById("product-price").value="";
+  document.getElementById("product-description").value="";
+  document.getElementById("product-image").value="";
+  document.getElementById("product-sizes").value="";
+  document.getElementById("product-color").value="";
+  document.getElementById("product-stock").value="";
+
+  loadProducts();
+}
+
+async function loadProducts(){
+
+  const list=document.getElementById("products-list");
+
+  const {data,error}=await supabaseClient
+    .from("product")
+    .select("*")
+    .order("created_at",{ascending:false});
+
+  if(error){
+    list.innerHTML="<p>"+error.message+"</p>";
+    return;
+  }
+
+  if(!data || data.length===0){
+    list.innerHTML="<p>No products yet.</p>";
+    return;
+  }
+
+  list.innerHTML="";
+
+  data.forEach(product=>{
+
+    const div=document.createElement("div");
+    div.className="product";
+
+    div.innerHTML=`
+      ${product.image_url ? `<img src="${product.image_url}" alt="">` : ""}
+      <h3>${product.name || ""}</h3>
+      <p>₹${product.Price || 0}</p>
+      <p>Sizes: ${product.sizes || ""}</p>
+      <p>Color: ${product.color || ""}</p>
+      <p>Stock: ${product.stock ?? 0}</p>
+    `;
+
+    list.appendChild(div);
+  });
+}
+
+supabaseClient.auth.getSession().then(({data})=>{
+  if(data.session){
+    showDashboard();
+  }
+});
+</script>
+
+</body>
+</html>
