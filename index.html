@@ -125,11 +125,6 @@ footer{background:#050505;color:#fff;padding:70px 6% 30px}.footer-grid{display:g
 
     <div id="customer-details" style="margin-top:25px;">
       <h3 style="margin-bottom:15px;">Delivery Details</h3>
-      </div>
-</div>
-
-<script>
-let cart=[];
 
       <input id="customer-name" type="text"
         placeholder="Full Name"
@@ -170,77 +165,124 @@ let cart=[];
 
   </div>
 </div>
+
 <script>
-let cart=[];
-
-function selectSize(button){
-const parent=button.parentElement;
-parent.querySelectorAll(".size").forEach(btn=>btn.classList.remove("selected"));
-button.classList.add("selected");
-}
-
-function addProduct(button){
-const product=button.closest(".product");
-const name=product.dataset.name;
-const price=Number(product.dataset.price);
-const selected=product.querySelector(".size.selected");
-const size=selected ? selected.textContent : "M";
-
-const existing=cart.find(item=>item.name===name && item.size===size);
-if(existing){existing.quantity+=1;}
-else{cart.push({name,price,size,quantity:1});}
-
-updateCart();
-openCart();
-}
-
-function changeQuantity(index,amount){
-cart[index].quantity+=amount;
-if(cart[index].quantity<=0) cart.splice(index,1);
-updateCart();
-}
-
-function removeItem(index){
-cart.splice(index,1);
-updateCart();
-}
-
-function updateCart(){
-document.getElementById("cart-count").textContent=cart.reduce((sum,item)=>sum+item.quantity,0);
-
-const items=document.getElementById("cart-items");
-let total=0;
-
-if(cart.length===0){
-items.innerHTML="<p>Your bag is empty.</p>";
-}else{
-items.innerHTML="";
-cart.forEach((item,index)=>{
-total+=item.price*item.quantity;
-const div=document.createElement("div");
-div.className="cart-item";
-div.innerHTML=`
-<h4>${item.name}</h4>
-<div class="cart-item-meta">Size: ${item.size} · ₹${item.price} each</div>
-<div class="qty-row">
-<button class="qty-btn" onclick="changeQuantity(${index},-1)">−</button>
-<strong>${item.quantity}</strong>
-<button class="qty-btn" onclick="changeQuantity(${index},1)">+</button>
-<button class="remove-btn" onclick="removeItem(${index})">Remove</button>
-</div>`;
-items.appendChild(div);
-});
-}
-
-document.getElementById("cart-total").textContent=total;
-
+let cart = [];
 let customerLatitude = null;
 let customerLongitude = null;
 
-function getCurrentLocation(){
+function selectSize(button) {
+  const parent = button.parentElement;
+
+  parent.querySelectorAll(".size").forEach(function(btn) {
+    btn.classList.remove("selected");
+  });
+
+  button.classList.add("selected");
+}
+
+function addProduct(button) {
+  const product = button.closest(".product");
+
+  const name = product.dataset.name;
+  const price = Number(product.dataset.price);
+
+  const selected = product.querySelector(".size.selected");
+  const size = selected ? selected.textContent.trim() : "M";
+
+  const existing = cart.find(function(item) {
+    return item.name === name && item.size === size;
+  });
+
+  if (existing) {
+    existing.quantity += 1;
+  } else {
+    cart.push({
+      name: name,
+      price: price,
+      size: size,
+      quantity: 1
+    });
+  }
+
+  updateCart();
+  openCart();
+}
+
+function changeQuantity(index, amount) {
+  cart[index].quantity += amount;
+
+  if (cart[index].quantity <= 0) {
+    cart.splice(index, 1);
+  }
+
+  updateCart();
+}
+
+function removeItem(index) {
+  cart.splice(index, 1);
+  updateCart();
+}
+
+function updateCart() {
+  const cartCount = document.getElementById("cart-count");
+  const items = document.getElementById("cart-items");
+  const cartTotal = document.getElementById("cart-total");
+
+  let total = 0;
+
+  const count = cart.reduce(function(sum, item) {
+    return sum + item.quantity;
+  }, 0);
+
+  cartCount.textContent = count;
+
+  if (cart.length === 0) {
+    items.innerHTML = "<p>Your bag is empty.</p>";
+    cartTotal.textContent = "0";
+    return;
+  }
+
+  items.innerHTML = "";
+
+  cart.forEach(function(item, index) {
+    total += item.price * item.quantity;
+
+    const div = document.createElement("div");
+    div.className = "cart-item";
+
+    div.innerHTML = `
+      <h4>${item.name}</h4>
+      <div class="cart-item-meta">
+        Size: ${item.size} · ₹${item.price} each
+      </div>
+
+      <div class="qty-row">
+        <button class="qty-btn" onclick="changeQuantity(${index}, -1)">−</button>
+        <strong>${item.quantity}</strong>
+        <button class="qty-btn" onclick="changeQuantity(${index}, 1)">+</button>
+        <button class="remove-btn" onclick="removeItem(${index})">Remove</button>
+      </div>
+    `;
+
+    items.appendChild(div);
+  });
+
+  cartTotal.textContent = total;
+}
+
+function openCart() {
+  document.getElementById("cart-overlay").style.display = "block";
+}
+
+function closeCart() {
+  document.getElementById("cart-overlay").style.display = "none";
+}
+
+function getCurrentLocation() {
   const status = document.getElementById("location-status");
 
-  if(!navigator.geolocation){
+  if (!navigator.geolocation) {
     status.textContent = "Location is not supported on this device.";
     return;
   }
@@ -248,26 +290,25 @@ function getCurrentLocation(){
   status.textContent = "Getting your location...";
 
   navigator.geolocation.getCurrentPosition(
-    function(position){
+    function(position) {
       customerLatitude = position.coords.latitude;
       customerLongitude = position.coords.longitude;
       status.textContent = "✓ Location detected successfully.";
     },
-    function(){
+    function() {
       status.textContent =
         "Unable to get location. Please enter your address manually.";
     },
     {
-      enableHighAccuracy:true,
-      timeout:10000,
-      maximumAge:0
+      enableHighAccuracy: true,
+      timeout: 10000,
+      maximumAge: 0
     }
   );
 }
 
-function placeWhatsAppOrder(){
-
-  if(cart.length === 0){
+function placeWhatsAppOrder() {
+  if (cart.length === 0) {
     alert("Your bag is empty.");
     return;
   }
@@ -277,22 +318,22 @@ function placeWhatsAppOrder(){
   const address = document.getElementById("customer-address").value.trim();
   const pincode = document.getElementById("customer-pincode").value.trim();
 
-  if(!name){
+  if (!name) {
     alert("Please enter your full name.");
     return;
   }
 
-  if(!/^[0-9]{10}$/.test(phone)){
+  if (!/^[0-9]{10}$/.test(phone)) {
     alert("Please enter a valid 10-digit mobile number.");
     return;
   }
 
-  if(!address){
+  if (!address) {
     alert("Please enter your delivery address.");
     return;
   }
 
-  if(!/^[0-9]{6}$/.test(pincode)){
+  if (!/^[0-9]{6}$/.test(pincode)) {
     alert("Please enter a valid 6-digit pincode.");
     return;
   }
@@ -309,7 +350,7 @@ function placeWhatsAppOrder(){
     "Address: " + encodeURIComponent(address) + "%0A" +
     "Pincode: " + encodeURIComponent(pincode) + "%0A";
 
-  if(customerLatitude !== null && customerLongitude !== null){
+  if (customerLatitude !== null && customerLongitude !== null) {
     message +=
       "Location: " +
       encodeURIComponent(
@@ -321,7 +362,7 @@ function placeWhatsAppOrder(){
 
   message += "%0A*Order Details*%0A";
 
-  cart.forEach(function(item){
+  cart.forEach(function(item) {
     const itemTotal = item.price * item.quantity;
     total += itemTotal;
 
@@ -342,21 +383,16 @@ function placeWhatsAppOrder(){
   );
 }
 
-function openCart(){
-document.getElementById("cart-overlay").style.display="block";
-}
-
-function closeCart(){
-document.getElementById("cart-overlay").style.display="none";
-}
-
-document.getElementById("cart-overlay").addEventListener("click",function(e){
-if(e.target===this) closeCart();
+document.getElementById("cart-overlay").addEventListener("click", function(e) {
+  if (e.target === this) {
+    closeCart();
+  }
 });
 
 updateCart();
 </script>
-<div style="text-align:center;padding:20px;">
+
+
   <a href="admin.html" style="color:#777;font-size:12px;text-decoration:none;">
     Admin Login
   </a>
