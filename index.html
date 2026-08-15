@@ -390,6 +390,50 @@ document.getElementById("cart-overlay").addEventListener("click", function(e) {
 });
 
 updateCart();
+  updateCart();
+
+async function checkProductStock(){
+
+  const { data, error } = await supabaseClient
+    .from("product")
+    .select("Id, stock");
+
+  if(error){
+    console.log("Stock check error:", error);
+    return;
+  }
+
+  document.querySelectorAll(".product[data-product-id]").forEach(product => {
+
+    const productId = Number(product.dataset.productId);
+
+    const databaseProduct = data.find(item => Number(item.Id) === productId);
+
+    if(!databaseProduct) return;
+
+    const stock = Number(databaseProduct.stock || 0);
+    const button = product.querySelector(".add-cart");
+
+    if(stock <= 0){
+
+      button.textContent = "OUT OF STOCK";
+      button.disabled = true;
+      button.style.background = "#999";
+      button.style.cursor = "not-allowed";
+
+    }else{
+
+      button.textContent = "ADD TO BAG";
+      button.disabled = false;
+      button.style.background = "#000";
+      button.style.cursor = "pointer";
+
+    }
+  });
+}
+
+checkProductStock();
+</script>
 </script>
 
 
