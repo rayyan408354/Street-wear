@@ -292,7 +292,7 @@ async function loadProducts(){
         </strong>
       </p>
 
-      <button onclick="toggleStock('${product.id}', ${stock})">
+      <button onclick="toggleStock('${product.Id}', ${stock})">
         ${stock > 0 ? "MARK OUT OF STOCK" : "MARK IN STOCK"}
       </button>
 
@@ -315,7 +315,7 @@ async function toggleStock(id,currentStock){
   const {error}=await supabaseClient
     .from("product")
     .update({stock:newStock})
-    .eq("id",id);
+    .eq("Id",id);
 
   if(error){
     alert("Could not update stock: " + error.message);
@@ -339,7 +339,7 @@ async function deleteProduct(id){
   const {error}=await supabaseClient
     .from("product")
     .delete()
-    .eq("id",id);
+    .eq("Id",id);
 
   if(error){
     alert("Could not delete product: " + error.message);
