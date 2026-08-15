@@ -251,7 +251,6 @@ async function addProduct(){
 
   loadProducts();
 }
-
 async function loadProducts(){
 
   const list=document.getElementById("products-list");
@@ -278,22 +277,85 @@ async function loadProducts(){
     const div=document.createElement("div");
     div.className="product";
 
+    const stock = Number(product.stock || 0);
+
     div.innerHTML=`
       ${product.image_url ? `<img src="${product.image_url}" alt="">` : ""}
       <h3>${product.name || ""}</h3>
       <p>₹${product.Price || 0}</p>
       <p>Sizes: ${product.sizes || ""}</p>
       <p>Color: ${product.color || ""}</p>
-      <p>Stock: ${product.stock ?? 0}</p>
+      <p>
+        Stock:
+        <strong style="color:${stock > 0 ? "green" : "red"}">
+          ${stock > 0 ? stock + " IN STOCK" : "OUT OF STOCK"}
+        </strong>
+      </p>
+
+      <button onclick="toggleStock('${product.id}', ${stock})">
+        ${stock > 0 ? "MARK OUT OF STOCK" : "MARK IN STOCK"}
+      </button>
+
+      <button
+        onclick="deleteProduct('${product.id}')"
+        style="background:#b00020;margin-left:8px;">
+        DELETE
+      </button>
     `;
 
     list.appendChild(div);
   });
 }
 
+
+async function toggleStock(id,currentStock){
+
+  const newStock = currentStock > 0 ? 0 : 1;
+
+  const {error}=await supabaseClient
+    .from("product")
+    .update({stock:newStock})
+    .eq("id",id);
+
+  if(error){
+    alert("Could not update stock: " + error.message);
+    return;
+  }
+
+  loadProducts();
+}
+
+
+async function deleteProduct(id){
+
+  const confirmDelete = confirm(
+    "Are you sure you want to permanently delete this product?"
+  );
+
+  if(!confirmDelete){
+    return;
+  }
+
+  const {error}=await supabaseClient
+    .from("product")
+    .delete()
+    .eq("id",id);
+
+  if(error){
+    alert("Could not delete product: " + error.message);
+    return;
+  }
+
+  alert("Product deleted successfully.");
+
+  loadProducts();
+}
+
 supabaseClient.auth.getSession().then(({data})=>{
   if(data.session){
     showDashboard();
+
+ 
   }
 });
 </script>
