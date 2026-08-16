@@ -390,13 +390,12 @@ document.getElementById("cart-overlay").addEventListener("click", function(e) {
 });
 
 updateCart();
-  updateCart();
 
 async function checkProductStock(){
 
   const { data, error } = await supabaseClient
     .from("product")
-    .select("Id, stock");
+    .select("id, stock");
 
   if(error){
     console.log("Stock check error:", error);
@@ -407,7 +406,7 @@ async function checkProductStock(){
 
     const productId = Number(product.dataset.productId);
 
-    const databaseProduct = data.find(item => Number(item.Id) === productId);
+    const databaseProduct = data.find(item => Number(item.id) === productId);
 
     if(!databaseProduct) return;
 
@@ -434,7 +433,7 @@ async function checkProductStock(){
 
 checkProductStock();
 </script>
-</script>
+
 
 
   <a href="admin.html" style="color:#777;font-size:12px;text-decoration:none;">
