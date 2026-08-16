@@ -533,15 +533,14 @@ async function confirmOrder() {
 }
 
 
-loadOrderProducts();
-  async function loadOrderProducts() {
+async function loadOrderProducts() {
   const select = document.getElementById("order-product");
 
   if (!select) return;
 
   const { data, error } = await supabaseClient
     .from("product")
-    .select("Id, name")
+    .select("*")
     .order("created_at", { ascending: false });
 
   if (error) {
@@ -551,11 +550,15 @@ loadOrderProducts();
 
   select.innerHTML = '<option value="">Select Product</option>';
 
+  if (!data || data.length === 0) {
+    return;
+  }
+
   data.forEach(product => {
     const option = document.createElement("option");
 
-    option.value = product.Id;
-    option.textContent = product.name;
+    option.value = product.Id || product.id;
+    option.textContent = product.name || "Unnamed Product";
 
     select.appendChild(option);
   });
