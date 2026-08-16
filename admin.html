@@ -161,6 +161,38 @@ label{
 
       <div id="product-message" class="message hidden"></div>
     </div>
+    <hr style="margin:30px 0;">
+
+<h2>Confirm Order</h2>
+
+<label>Product</label>
+<select id="order-product">
+  <option value="">Select Product</option>
+</select>
+
+<label>Size</label>
+<select id="order-size">
+  <option value="">Select Size</option>
+  <option value="S">S</option>
+  <option value="M">M</option>
+  <option value="L">L</option>
+  <option value="XL">XL</option>
+</select>
+
+<label>Quantity</label>
+<input
+  id="order-quantity"
+  type="number"
+  min="1"
+  value="1"
+  placeholder="1"
+>
+
+<button onclick="confirmOrder()">
+  CONFIRM ORDER
+</button>
+
+<div id="order-message" class="message hidden"></div>
 
     <div class="card">
       <h2>Products</h2>
@@ -388,6 +420,120 @@ supabaseClient.auth.getSession().then(({data})=>{
  
   }
 });
+  async function loadOrderProducts() {
+  const select = document.getElementById("order-product");
+
+  if (!select) return;
+
+  const { data, error } = await supabaseClient
+    .from("product")
+    .select("Id,name,stock,stock_s,stock_m,stock_l,stock_xl")
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    console.error("Could not load order products:", error.message);
+    return;
+  }
+
+  select.innerHTML = '<option value="">Select Product</option>';
+
+  data.forEach(product => {
+    const option = document.createElement("option");
+
+    option.value = product.Id;
+    option.textContent = product.name;
+
+    select.appendChild(option);
+  });
+}
+
+
+async function confirmOrder() {
+
+  const productId =
+    document.getElementById("order-product").value;
+
+  const size =
+    document.getElementById("order-size").value;
+
+  const quantity =
+    Number(document.getElementById("order-quantity").value);
+
+  const message =
+    document.getElementById("order-message");
+
+  message.classList.remove("hidden");
+
+  if (!productId || !size || !quantity || quantity < 1) {
+    message.textContent =
+      "Please select a product, size and valid quantity.";
+    return;
+  }
+
+  const { data: product, error: fetchError } =
+    await supabaseClient
+      .from("product")
+      .select("Id,name,stock,stock_s,stock_m,stock_l,stock_xl")
+      .eq("Id", productId)
+      .single();
+
+  if (fetchError || !product) {
+    message.textContent =
+      "Could not find the product.";
+    return;
+  }
+
+  const column = "stock_" + size.toLowerCase();
+
+  const currentStock =
+    Number(product[column] || 0);
+
+  if (currentStock < quantity) {
+    message.textContent =
+      "Not enough " + size + " stock. Available: " + currentStock;
+    return;
+  }
+
+  const newSizeStock =
+    currentStock - quantity;
+
+  const newTotalStock =
+    Number(product.stock || 0) - quantity;
+
+  const updateData = {};
+
+  updateData[column] = newSizeStock;
+  updateData.stock = Math.max(0, newTotalStock);
+
+  const { error: updateError } =
+    await supabaseClient
+      .from("product")
+      .update(updateData)
+      .eq("Id", productId);
+
+  if (updateError) {
+    message.textContent =
+      "Could not confirm order: " +
+      updateError.message;
+    return;
+  }
+
+  message.textContent =
+    "Order confirmed! " +
+    product.name +
+    " (" + size + ") × " +
+    quantity +
+    " deducted from stock.";
+
+  document.getElementById("order-product").value = "";
+  document.getElementById("order-size").value = "";
+  document.getElementById("order-quantity").value = 1;
+
+  loadProducts();
+}
+
+
+loadOrderProducts();
 </script>
 
 </body>
