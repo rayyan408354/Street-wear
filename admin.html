@@ -339,7 +339,7 @@ async function deleteProduct(id){
   const {error}=await supabaseClient
     .from("product")
     .delete()
-    .eq("Id",id);
+    .eq("id",id);
 
   if(error){
     alert("Could not delete product: " + error.message);
