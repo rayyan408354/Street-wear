@@ -451,15 +451,27 @@ async function loadCustomerProducts() {
         </span>
 
         <div class="sizes">
-          ${sizes.map((size, index) => `
-            <button
-              class="size ${index === 0 ? "selected" : ""}"
-              onclick="selectSize(this)"
-            >
-              ${size}
-            </button>
-          `).join("")}
-        </div>
+         <div class="sizes">
+  ${sizes.map((size, index) => {
+    const sizeStock = Number(product["stock_" + size.toLowerCase()]) || 0;
+    const unavailable = sizeStock <= 0;
+
+    return `
+      <button
+        class="size ${index === 0 && !unavailable ? "selected" : ""}"
+        onclick="${unavailable ? "" : "selectSize(this)"}"
+        ${unavailable ? "disabled" : ""}
+        style="${
+          unavailable
+            ? "background:#ddd;color:#888;cursor:not-allowed;text-decoration:line-through;"
+            : ""
+        }"
+      >
+        ${size}${unavailable ? " - OUT OF STOCK" : ""}
+      </button>
+    `;
+  }).join("")}
+</div>
 
         <button
           class="add-cart"
