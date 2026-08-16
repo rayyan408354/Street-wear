@@ -65,33 +65,22 @@ footer{background:#050505;color:#fff;padding:70px 6% 30px}.footer-grid{display:g
 
 <div class="marquee"><div class="marquee-track">STREET#WEAR &nbsp; • &nbsp; OWN YOUR STREET &nbsp; • &nbsp; NEW DROP &nbsp; • &nbsp; OVERSIZED FIT &nbsp; • &nbsp; STREET#WEAR &nbsp; • &nbsp; OWN YOUR STREET &nbsp; • &nbsp; NEW DROP &nbsp; • &nbsp; OVERSIZED FIT &nbsp; • &nbsp;</div></div>
 
-<section id="shop">
-<div class="section-heading"><div><p class="eyebrow">LATEST DROP</p><h2>New<br>Drops.</h2></div><p>Discover our first collection of oversized streetwear. More designs dropping soon.</p></div>
-<div class="product-grid">
-
-<div class="product" data-product-id="1" data-name="Fearless Oversized Tee" data-price="499">
-<div class="product-image"><span class="tag">NEW</span><img src="https://placehold.co/800x1000/111/fff?text=FEARLESS" alt="Fearless Oversized T-Shirt"></div>
-<div class="product-info"><h3>Fearless Oversized Tee</h3><p class="product-category">Heavy Streetwear Fit</p><div class="price">₹499</div><span class="size-label">SELECT SIZE</span><div class="sizes"><button class="size" onclick="selectSize(this)">S</button><button class="size selected" onclick="selectSize(this)">M</button><button class="size" onclick="selectSize(this)">L</button><button class="size" onclick="selectSize(this)">XL</button></div><button class="add-cart" onclick="addProduct(this)">ADD TO BAG</button></div>
+  <section id="shop">
+<div class="section-heading">
+  <div>
+    <p class="eyebrow">LATEST DROP</p>
+    <h2>New<br>Drops.</h2>
+  </div>
+  <p>Discover our first collection of oversized streetwear. More designs dropping soon.</p>
 </div>
 
-<div class="product" data-product-id="2" data-name="Urban Shadow Tee" data-price="499">
-<div class="product-image"><span class="tag">DROP 02</span><img src="https://placehold.co/800x1000/222/fff?text=URBAN+SHADOW" alt="Urban Shadow T-Shirt"></div>
-<div class="product-info"><h3>Urban Shadow Tee</h3><p class="product-category">Oversized Street Fit</p><div class="price">₹499</div><span class="size-label">SELECT SIZE</span><div class="sizes"><button class="size" onclick="selectSize(this)">S</button><button class="size selected" onclick="selectSize(this)">M</button><button class="size" onclick="selectSize(this)">L</button><button class="size" onclick="selectSize(this)">XL</button></div><button class="add-cart" onclick="addProduct(this)">ADD TO BAG</button></div>
-</div>
-
-<div class="product" data-product-id="3" data-name="Street Code Tee" data-price="549">
-<div class="product-image"><span class="tag">DROP 03</span><img src="https://placehold.co/800x1000/333/fff?text=STREET+CODE" alt="Street Code T-Shirt"></div>
-<div class="product-info"><h3>Street Code Tee</h3><p class="product-category">Gen-Z Oversized Fit</p><div class="price">₹549</div><span class="size-label">SELECT SIZE</span><div class="sizes"><button class="size" onclick="selectSize(this)">S</button><button class="size selected" onclick="selectSize(this)">M</button><button class="size" onclick="selectSize(this)">L</button><button class="size" onclick="selectSize(this)">XL</button></div><button class="add-cart" onclick="addProduct(this)">ADD TO BAG</button></div>
-</div>
-
-<div class="product" data-product-id="4" data-name="Midnight Oversized Tee" data-price="599">
-<div class="product-image"><span class="tag">LIMITED</span><img src="https://placehold.co/800x1000/444/fff?text=MIDNIGHT" alt="Midnight Oversized T-Shirt"></div>
-<div class="product-info"><h3>Midnight Oversized Tee</h3><p class="product-category">Premium Oversized Fit</p><div class="price">₹599</div><span class="size-label">SELECT SIZE</span><div class="sizes"><button class="size" onclick="selectSize(this)">S</button><button class="size selected" onclick="selectSize(this)">M</button><button class="size" onclick="selectSize(this)">L</button><button class="size" onclick="selectSize(this)">XL</button></div><button class="add-cart" onclick="addProduct(this)">ADD TO BAG</button></div>
-</div>
-
+<div class="product-grid" id="product-grid">
+  <p>Loading products...</p>
 </div>
 </section>
 
+<section class="brand-section" id="about">
+<div class="section-heading"><div><p class="eyebrow">LATEST DROP</p><h2>New<br>Drops.</h2></div><p>Discover our first collection of oversized streetwear. More designs dropping soon.</p></div>
 <section class="brand-section" id="about">
 <div class="brand-image"></div>
 <div class="brand-content"><small>THE STREET#WEAR MINDSET</small><h2>DON'T<br>FOLLOW.<br>LEAD.</h2><p>Street#Wear is built around individuality, confidence and street culture. Our goal is simple — create pieces that make you feel like yourself when you step outside.</p></div>
@@ -388,51 +377,113 @@ document.getElementById("cart-overlay").addEventListener("click", function(e) {
     closeCart();
   }
 });
-
 updateCart();
 
-async function checkProductStock(){
+async function loadCustomerProducts() {
+  const productGrid = document.getElementById("product-grid");
 
-  const { data, error } = await supabaseClient
-    .from("product")
-    .select("id, stock");
-
-  if(error){
-    console.log("Stock check error:", error);
+  if (!productGrid) {
+    console.log("Product grid not found.");
     return;
   }
 
-  document.querySelectorAll(".product[data-product-id]").forEach(product => {
+  const { data, error } = await supabaseClient
+    .from("product")
+    .select("*")
+    .order("created_at", { ascending: false });
 
-    const productId = Number(product.dataset.productId);
+  if (error) {
+    console.error("Could not load products:", error.message);
+    productGrid.innerHTML = "<p>Unable to load products.</p>";
+    return;
+  }
 
-    const databaseProduct = data.find(item => Number(item.id) === productId);
+  if (!data || data.length === 0) {
+    productGrid.innerHTML = "<p>No products available.</p>";
+    return;
+  }
 
-    if(!databaseProduct) return;
+  productGrid.innerHTML = "";
 
-    const stock = Number(databaseProduct.stock || 0);
-    const button = product.querySelector(".add-cart");
+  data.forEach(product => {
+    const stock = Number(product.stock || 0);
 
-    if(stock <= 0){
+    const sizes = product.sizes
+      ? product.sizes.split(",").map(size => size.trim())
+      : ["S", "M", "L", "XL"];
 
-      button.textContent = "OUT OF STOCK";
-      button.disabled = true;
-      button.style.background = "#999";
-      button.style.cursor = "not-allowed";
+    const div = document.createElement("div");
 
-    }else{
+    div.className = "product";
+    div.dataset.productId = product.id;
+    div.dataset.name = product.name || "";
+    div.dataset.price = product.Price || 0;
 
-      button.textContent = "ADD TO BAG";
-      button.disabled = false;
-      button.style.background = "#000";
-      button.style.cursor = "pointer";
+    div.innerHTML = `
+      <div class="product-image">
+        ${
+          stock <= 0
+            ? '<span class="tag">OUT OF STOCK</span>'
+            : ""
+        }
 
-    }
+        <img
+          src="${product.image_url || "https://placehold.co/800x1000/111/fff?text=STREET%23WEAR"}"
+          alt="${product.name || "Street#Wear Product"}"
+        >
+      </div>
+
+      <div class="product-info">
+
+        <h3>${product.name || ""}</h3>
+
+        <p class="product-category">
+          ${product.description || ""}
+        </p>
+
+        <div class="price">
+          ₹${product.Price || 0}
+        </div>
+
+        <span class="size-label">
+          SELECT SIZE
+        </span>
+
+        <div class="sizes">
+          ${sizes.map((size, index) => `
+            <button
+              class="size ${index === 0 ? "selected" : ""}"
+              onclick="selectSize(this)"
+            >
+              ${size}
+            </button>
+          `).join("")}
+        </div>
+
+        <button
+          class="add-cart"
+          onclick="addProduct(this)"
+          ${stock <= 0 ? "disabled" : ""}
+          style="${
+            stock <= 0
+              ? "background:#999;cursor:not-allowed;"
+              : ""
+          }"
+        >
+          ${stock <= 0 ? "OUT OF STOCK" : "ADD TO BAG"}
+        </button>
+
+      </div>
+    `;
+
+    productGrid.appendChild(div);
   });
 }
 
-checkProductStock();
+loadCustomerProducts();
+
 </script>
+
 
 
 
