@@ -273,6 +273,7 @@ async function loadProducts(){
   list.innerHTML="";
 
   data.forEach(product=>{
+    const productId = product.Id ?? product.id;
     console.log("PRODUCT:", product);
 
     const div=document.createElement("div");
@@ -293,12 +294,12 @@ async function loadProducts(){
         </strong>
       </p>
 
-      <button onclick="toggleStock('${product.Id}', ${stock})">
+      <button onclick="toggleStock('${productId}', ${stock})">
         ${stock > 0 ? "MARK OUT OF STOCK" : "MARK IN STOCK"}
       </button>
 
       <button
-        onclick="deleteProduct('${product.Id}')"
+        onclick="deleteProduct('${productId}')"
         style="background:#b00020;margin-left:8px;">
         DELETE
       </button>
