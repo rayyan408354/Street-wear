@@ -534,6 +534,34 @@ async function confirmOrder() {
 
 
 loadOrderProducts();
+  async function loadOrderProducts() {
+  const select = document.getElementById("order-product");
+
+  if (!select) return;
+
+  const { data, error } = await supabaseClient
+    .from("product")
+    .select("Id, name")
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    console.error("Could not load order products:", error.message);
+    return;
+  }
+
+  select.innerHTML = '<option value="">Select Product</option>';
+
+  data.forEach(product => {
+    const option = document.createElement("option");
+
+    option.value = product.Id;
+    option.textContent = product.name;
+
+    select.appendChild(option);
+  });
+}
+
+loadOrderProducts();
 </script>
 
 </body>
