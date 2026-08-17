@@ -42,7 +42,77 @@ section{padding:90px 6%}.section-heading{display:flex;justify-content:space-betw
 .cart-total{margin-top:25px;font-size:20px;font-weight:900}.whatsapp{display:block;width:100%;background:#111;color:#fff;text-decoration:none;text-align:center;padding:16px;margin-top:20px;font-weight:bold}
 footer{background:#050505;color:#fff;padding:70px 6% 30px}.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:50px;margin-bottom:60px}footer h3{font-size:28px;margin-bottom:15px}footer p{color:#888;line-height:1.7}footer a{display:block;color:#aaa;text-decoration:none;margin:10px 0}.copyright{border-top:1px solid #222;padding-top:25px;color:#666;font-size:12px}
 @media(max-width:1000px){.product-grid{grid-template-columns:repeat(2,1fr)}.brand-section{grid-template-columns:1fr}.brand-image{min-height:400px}.brand-content{padding:60px 8%}}
-@media(max-width:650px){header{padding:0 20px}nav{display:none}.hero{min-height:85vh;padding:60px 25px}.hero h1{font-size:65px;letter-spacing:-4px}section{padding:65px 20px}.section-heading{display:block}.section-heading h2{margin-bottom:15px}.product-grid{grid-template-columns:1fr 1fr;gap:10px}.product-info{padding:12px}.product-info h3{font-size:14px}.sizes{gap:3px}.size{padding:7px 8px}.footer-grid{grid-template-columns:1fr;gap:30px}}
+@media(max-width:650px){
+  header{padding:0 20px}
+  nav{display:none}
+
+  .hero{
+    min-height:85vh;
+    padding:60px 25px
+  }
+
+  .hero h1{
+    font-size:65px;
+    letter-spacing:-4px
+  }
+
+  section{
+    padding:65px 20px
+  }
+
+  .section-heading{
+    display:block
+  }
+
+  .section-heading h2{
+    margin-bottom:15px
+  }
+
+  .product-grid{
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+  }
+
+  .product{
+    min-width:0;
+  }
+
+  .product-info{
+    padding:12px;
+    min-width:0;
+  }
+
+  .product-info h3{
+    font-size:14px;
+  }
+
+  .sizes{
+    display:flex;
+    flex-wrap:wrap;
+    gap:3px;
+    width:100%;
+    margin-bottom:12px;
+  }
+
+  .size{
+    padding:7px 8px;
+    flex-shrink:0;
+  }
+
+  .add-cart{
+    display:block;
+    width:100%;
+    margin-top:8px;
+    padding:12px 5px;
+    font-size:10px;
+    white-space:nowrap;
+  }
+
+  .footer-grid{
+    grid-template-columns:1fr;
+    gap:30px
+  }
+}
 </style>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase.js"></script>
