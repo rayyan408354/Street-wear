@@ -251,24 +251,124 @@ async function showDashboard(){
   document.getElementById("dashboard").classList.remove("hidden");
   loadProducts();
 }
-
 async function addProduct(){
 
-  const name=document.getElementById("product-name").value.trim();
-  const price=Number(document.getElementById("product-price").value);
-  const description=document.getElementById("product-description").value.trim();
-  const image_url=document.getElementById("product-image").value.trim();
-  const sizes=document.getElementById("product-sizes").value.trim();
-  const color=document.getElementById("product-color").value.trim();
+  const name = document.getElementById("product-name").value.trim();
+  const price = Number(document.getElementById("product-price").value);
 
-const stock_s=Number(document.getElementById("stock-s").value) || 0;
-const stock_m=Number(document.getElementById("stock-m").value) || 0;
-const stock_l=Number(document.getElementById("stock-l").value) || 0;
-const stock_xl=Number(document.getElementById("stock-xl").value) || 0;
+  const description =
+    document.getElementById("product-description").value.trim();
 
-const stock=stock_s + stock_m + stock_l + stock_xl;
+  // Existing image URL option
+  let image_url =
+    document.getElementById("product-image").value.trim();
 
-  const message=document.getElementById("product-message");
+  const sizes =
+    document.getElementById("product-sizes").value.trim();
+
+  const color =
+    document.getElementById("product-color").value.trim();
+
+  const stock_s =
+    Number(document.getElementById("stock-s").value) || 0;
+
+  const stock_m =
+    Number(document.getElementById("stock-m").value) || 0;
+
+  const stock_l =
+    Number(document.getElementById("stock-l").value) || 0;
+
+  const stock_xl =
+    Number(document.getElementById("stock-xl").value) || 0;
+
+  const stock =
+    stock_s + stock_m + stock_l + stock_xl;
+
+  const message =
+    document.getElementById("product-message");
+
+
+  // ==============================
+  // PHOTO UPLOAD
+  // ==============================
+
+  const photoInput = document.getElementById("product-photo");
+
+  if (photoInput && photoInput.files.length > 0) {
+
+    const file = photoInput.files[0];
+
+    const fileName =
+      Date.now() + "-" + file.name.replace(/\s+/g, "-");
+
+    const filePath = "products/" + fileName;
+
+    message.innerText = "Uploading photo...";
+
+    const { error: uploadError } =
+      await supabaseClient.storage
+        .from("product-images")
+        .upload(filePath, file);
+
+    if (uploadError) {
+      console.error(uploadError);
+      message.innerText =
+        "Photo upload failed: " + uploadError.message;
+      return;
+    }
+
+    // Get public URL
+    const { data: publicUrlData } =
+      supabaseClient.storage
+        .from("product-images")
+        .getPublicUrl(filePath);
+
+    image_url = publicUrlData.publicUrl;
+  }
+
+
+  // ==============================
+  // CHECK IMAGE
+  // ==============================
+
+  if (!image_url) {
+    message.innerText =
+      "Please select a photo or enter an image URL.";
+    return;
+  }
+
+
+  // ==============================
+  // ADD PRODUCT
+  // ==============================
+
+  const { error } = await supabaseClient
+    .from("product")
+    .insert([{
+      name: name,
+      Price: price,
+      description: description,
+      image_url: image_url,
+      sizes: sizes,
+      color: color,
+      stock: stock,
+      stock_s: stock_s,
+      stock_m: stock_m,
+      stock_l: stock_l,
+      stock_xl: stock_xl
+    }]);
+
+  if (error) {
+    console.error(error);
+    message.innerText =
+      "Error adding product: " + error.message;
+    return;
+  }
+
+  message.innerText = "Product added successfully!";
+}
+
+  
 
   if(!name || !price){
     message.textContent="Product name and price are required.";
