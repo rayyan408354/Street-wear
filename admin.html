@@ -119,10 +119,15 @@ label{
       <textarea id="product-description"
         placeholder="Premium oversized streetwear fit"></textarea>
 
-      <label>Image URL</label>
-      <input id="product-image"
-        type="url"
-        placeholder="https://...">
+      <label>Product Photo</label>
+<input id="product-photo"
+  type="file"
+  accept="image/*">
+
+<label>Or Image URL</label>
+<input id="product-image"
+  type="url"
+  placeholder="https://...">
 
       <label>Sizes</label>
       <input id="product-sizes"
@@ -370,47 +375,7 @@ async function addProduct(){
 
   
 
-  if(!name || !price){
-    message.textContent="Product name and price are required.";
-    message.classList.remove("hidden");
-    return;
-  }
-
-  const {error}=await supabaseClient
-    .from("product")
-    .insert([{
-      name:name,
-      Price:price,
-      description:description,
-      image_url:image_url,
-      sizes:sizes,
-      color:color,
-      stock:stock,
-    stock_s:stock_s,
-    stock_m:stock_m,
-    stock_l:stock_l,
-    stock_xl:stock_xl
-    }]);
-
-  if(error){
-    message.textContent=error.message;
-    message.classList.remove("hidden");
-    return;
-  }
-
-  message.textContent="Product added successfully!";
-  message.classList.remove("hidden");
-
-  document.getElementById("product-name").value="";
-  document.getElementById("product-price").value="";
-  document.getElementById("product-description").value="";
-  document.getElementById("product-image").value="";
-  document.getElementById("product-sizes").value="";
-  document.getElementById("product-color").value="";
-  document.getElementById("product-stock").value="";
-
-  loadProducts();
-}
+  
 async function loadProducts(){
 
   const list=document.getElementById("products-list");
