@@ -291,6 +291,7 @@ async function addProduct(){
 
   const message =
     document.getElementById("product-message");
+    message.classList.remove("hidden");
 
 
   // ==============================
@@ -364,13 +365,22 @@ async function addProduct(){
     }]);
 
   if (error) {
-    console.error(error);
-    message.innerText =
-      "Error adding product: " + error.message;
-    return;
-  }
+  console.error(error);
 
-  message.innerText = "Product added successfully!";
+  message.innerText =
+    "Error adding product: " + error.message;
+
+  message.classList.remove("hidden");
+
+  return;
+}
+
+message.innerText =
+  "Product added successfully!";
+
+message.classList.remove("hidden");
+
+loadProducts();
 }
 
   
