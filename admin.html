@@ -365,7 +365,9 @@ async function addProduct(){
     }]);
 
   if (error) {
-  console.error(error);
+  console.error("ADD PRODUCT ERROR:", error);
+
+  alert("ADD PRODUCT ERROR:\n\n" + error.message);
 
   message.innerText =
     "Error adding product: " + error.message;
@@ -373,8 +375,7 @@ async function addProduct(){
   message.classList.remove("hidden");
 
   return;
-}
-
+  }
 message.innerText =
   "Product added successfully!";
 
