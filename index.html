@@ -545,40 +545,10 @@ async function loadCustomerProducts() {
 
   productGrid.innerHTML = "";
 
-const productSchema = {
-  "@context": "https://schema.org",
-  "@graph": []
-};
 
 data.forEach(product => {
 
   const stock = Number(product.stock || 0);
-
-  const productUrl =
-    window.location.origin +
-    window.location.pathname +
-    "#product-" +
-    product.id;
-
-  productSchema["@graph"].push({
-    "@type": "Product",
-    "name": product.name || "Street#Wear T-Shirt",
-    "description": product.description || "Street#Wear oversized streetwear T-shirt",
-    "image": product.image_url || "",
-    "brand": {
-      "@type": "Brand",
-      "name": "Street#Wear"
-    },
-    "offers": {
-      "@type": "Offer",
-      "url": productUrl,
-      "priceCurrency": "INR",
-      "price": Number(product.Price || 0),
-      "availability": stock > 0
-        ? "https://schema.org/InStock"
-        : "https://schema.org/OutOfStock"
-    }
-  });
 
   const sizes = product.sizes
     ? product.sizes.split(",").map(size => size.trim())
@@ -662,24 +632,10 @@ data.forEach(product => {
     productGrid.appendChild(div);
   });
   
-  const oldSchema = document.getElementById("streetwear-product-schema");
-
-if (oldSchema) {
-  oldSchema.remove();
-}
-
-const schemaScript = document.createElement("script");
-schemaScript.type = "application/ld+json";
-schemaScript.id = "streetwear-product-schema";
-schemaScript.textContent = JSON.stringify(productSchema);
-
-document.head.appendChild(schemaScript);
-}
-
+  
 loadCustomerProducts();
 
 </script>
-
 
 
 
