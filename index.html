@@ -469,45 +469,48 @@ function placeWhatsAppOrder() {
 
   let total = 0;
 
-  let message =
-    "Hi Street#Wear!%0A%0A*NEW ORDER*%0A%0A";
+  let message = "Hi Street#Wear!\n\n";
+  message += "*NEW ORDER*\n\n";
 
-  message +=
-    "*Customer Details*%0A" +
-    "Name: " + encodeURIComponent(name) + "%0A" +
-    "Phone: " + encodeURIComponent(phone) + "%0A" +
-    "Address: " + encodeURIComponent(address) + "%0A" +
-    "Pincode: " + encodeURIComponent(pincode) + "%0A";
+  message += "*Customer Details*\n";
+  message += "Name: " + name + "\n";
+  message += "Phone: " + phone + "\n";
+  message += "Address: " + address + "\n";
+  message += "Pincode: " + pincode + "\n";
 
   if (customerLatitude !== null && customerLongitude !== null) {
     message +=
-      "Location: " +
-      encodeURIComponent(
-        "https://www.google.com/maps?q=" +
-        customerLatitude + "," + customerLongitude
-      ) +
-      "%0A";
+      "Location: https://www.google.com/maps?q=" +
+      customerLatitude +
+      "," +
+      customerLongitude +
+      "\n";
   }
 
-  message += "%0A*Order Details*%0A";
+  message += "\n*Order Details*\n";
 
   cart.forEach(function(item) {
     const itemTotal = item.price * item.quantity;
     total += itemTotal;
 
     message +=
-      "- " + encodeURIComponent(item.name) +
-      " | Size: " + encodeURIComponent(item.size) +
-      " | Qty: " + item.quantity +
-      " | ₹" + itemTotal + "%0A";
+      "- " +
+      item.name +
+      " | Size: " +
+      item.size +
+      " | Qty: " +
+      item.quantity +
+      " | ₹" +
+      itemTotal +
+      "\n";
   });
 
-  message +=
-    "%0A*Total: ₹" + total +
-    "*%0A%0APlease confirm my order and share payment/delivery details.";
+  message += "\n*Total: ₹" + total + "*\n";
+  message += "\nPlease confirm my order and share payment/delivery details.";
 
   window.open(
-    "https://wa.me/918928057608?text=" + message,
+    "https://wa.me/918928057608?text=" +
+      encodeURIComponent(message),
     "_blank"
   );
 }
