@@ -2,9 +2,16 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Street#Wear — Own Your Street</title>
-<meta name="description" content="Street#Wear — Premium oversized streetwear for the next generation.">
+<title>Street#Wear | Oversized Streetwear & T-Shirts</title>
+<meta name="description" content="Shop Street#Wear — premium oversized streetwear and Gen-Z oversized T-shirts. Discover new drops, bold designs and streetwear made to own your street.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://rayyan408354.github.io/Street-wear/">
+  <meta name="keywords" content="Street#Wear, Streetwear, oversized t-shirts, oversized streetwear, Gen Z fashion, oversized T-shirts India, streetwear India">
+
+<meta property="og:title" content="Street#Wear | Oversized Streetwear & T-Shirts">
+<meta property="og:description" content="Premium oversized streetwear and Gen-Z T-shirts. Own Your Street.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://rayyan408354.github.io/Street-wear/">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
@@ -176,12 +183,26 @@ footer{background:#050505;color:#fff;padding:70px 6% 30px}.footer-grid{display:g
 </section>
 
 <section class="brand-section" id="about">
-<div class="section-heading"><div><p class="eyebrow">LATEST DROP</p><h2>New<br>Drops.</h2></div><p>Discover our first collection of oversized streetwear. More designs dropping soon.</p></div>
-<section class="brand-section" id="about">
-<div class="brand-image"></div>
-<div class="brand-content"><small>THE STREET#WEAR MINDSET</small><h2>DON'T<br>FOLLOW.<br>LEAD.</h2><p>Street#Wear is built around individuality, confidence and street culture. Our goal is simple — create pieces that make you feel like yourself when you step outside.</p></div>
-</section>
 
+  <div class="brand-image"></div>
+
+  <div class="brand-content">
+    <small>THE STREET#WEAR MINDSET</small>
+
+    <h2>
+      DON'T<br>
+      FOLLOW.<br>
+      LEAD.
+    </h2>
+
+    <p>
+      Street#Wear is built around individuality, confidence and street culture.
+      Our goal is simple — create pieces that make you feel like yourself
+      when you step outside.
+    </p>
+  </div>
+
+</section>
 <section class="social">
 <p class="eyebrow">FOLLOW THE MOVEMENT</p><h2>@Street#Wear</h2><p>New drops, outfits and behind-the-scenes content.</p>
 <a href="https://instagram.com/" target="_blank" class="instagram">FOLLOW ON INSTAGRAM</a>
@@ -548,7 +569,6 @@ async function loadCustomerProducts() {
         </span>
 
         <div class="sizes">
-         <div class="sizes">
   ${sizes.map((size, index) => {
     const sizeStock = Number(product["stock_" + size.toLowerCase()]) || 0;
     const unavailable = sizeStock <= 0;
@@ -600,6 +620,5 @@ loadCustomerProducts();
   <a href="admin.html" style="color:#777;font-size:12px;text-decoration:none;">
     Admin Login
   </a>
-</div>
 </body>
 </html>
