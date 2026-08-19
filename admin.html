@@ -301,16 +301,21 @@ async function addProduct(){
 
   const photoInput = document.getElementById("product-photo");
 
-  if (photoInput && photoInput.files.length > 0) {
+let uploadedPhotoUrls = [];
 
-    const file = photoInput.files[0];
+if (photoInput && photoInput.files.length > 0) {
+
+  message.innerText = "Uploading photos...";
+
+  for (let i = 0; i < photoInput.files.length; i++) {
+
+    const file = photoInput.files[i];
 
     const fileName =
-      Date.now() + "-" + file.name.replace(/\s+/g, "-");
+      Date.now() + "-" + i + "-" +
+      file.name.replace(/\s+/g, "-");
 
     const filePath = "products/" + fileName;
-
-    message.innerText = "Uploading photo...";
 
     const { error: uploadError } =
       await supabaseClient.storage
@@ -319,20 +324,24 @@ async function addProduct(){
 
     if (uploadError) {
       console.error(uploadError);
+
       message.innerText =
         "Photo upload failed: " + uploadError.message;
+
       return;
     }
 
-    // Get public URL
     const { data: publicUrlData } =
       supabaseClient.storage
         .from("product-images")
         .getPublicUrl(filePath);
 
-    image_url = publicUrlData.publicUrl;
+    uploadedPhotoUrls.push(publicUrlData.publicUrl);
   }
 
+  // First photo remains the main product image
+  image_url = uploadedPhotoUrls[0];
+}
 
   // ==============================
   // CHECK IMAGE
@@ -349,21 +358,60 @@ async function addProduct(){
   // ADD PRODUCT
   // ==============================
 
-  const { error } = await supabaseClient
-    .from("product")
-    .insert([{
-      name: name,
-      Price: price,
-      description: description,
-      image_url: image_url,
-      sizes: sizes,
-      color: color,
-      stock: stock,
-      stock_s: stock_s,
-      stock_m: stock_m,
-      stock_l: stock_l,
-      stock_xl: stock_xl
-    }]);
+  const { data: newProduct, error } = await supabaseClient
+  .from("product")
+  .insert([{
+    name: name,
+    Price: price,
+    description: description,
+    image_url: image_url,
+    sizes: sizes,
+    color: color,
+    stock: stock,
+    stock_s: stock_s,
+    stock_m: stock_m,
+    stock_l: stock_l,
+    stock_xl: stock_xl
+  }])
+  .select("id")
+  .single();
+
+if (error) {
+  console.error(error);
+
+  message.innerText =
+    "Error adding product: " + error.message;
+
+  message.classList.remove("hidden");
+
+  return;
+}
+  // Save all product photos
+if (uploadedPhotoUrls.length > 0) {
+
+  const imageRows = uploadedPhotoUrls.map(function(url) {
+    return {
+      product_id: newProduct.id,
+      image_url: url
+    };
+  });
+
+  const { error: imageError } = await supabaseClient
+    .from("product_images")
+    .insert(imageRows);
+
+  if (imageError) {
+    console.error(imageError);
+
+    message.innerText =
+      "Product added, but some photos could not be saved: " +
+      imageError.message;
+
+    message.classList.remove("hidden");
+
+    return;
+  }
+}
 
   if (error) {
   console.error("ADD PRODUCT ERROR:", error);
