@@ -39,6 +39,43 @@ header{height:72px;background:#050505;color:#fff;display:flex;align-items:center
 .logo{font-size:25px;font-weight:900;letter-spacing:-1px}.logo span{color:#888}
 nav{display:flex;gap:30px}nav a{color:#fff;text-decoration:none;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:1px}
 .cart-button{border:1px solid #555;background:transparent;color:#fff;padding:10px 15px;border-radius:3px;cursor:pointer;font-weight:bold}
+  .search-button{
+  border:1px solid #555;
+  background:transparent;
+  color:#fff;
+  padding:10px 12px;
+  cursor:pointer;
+  border-radius:3px;
+  font-size:16px;
+}
+
+.search-box{
+  display:none;
+  background:#fff;
+  padding:15px 6%;
+  border-bottom:1px solid #ddd;
+  position:sticky;
+  top:72px;
+  z-index:90;
+}
+
+.search-box input{
+  width:100%;
+  padding:14px;
+  border:1px solid #ccc;
+  font-size:15px;
+  outline:none;
+}
+
+.search-box button{
+  position:absolute;
+  right:7%;
+  top:22px;
+  border:none;
+  background:none;
+  font-size:22px;
+  cursor:pointer;
+}
 .hero{min-height:calc(100vh - 72px);background:linear-gradient(rgba(0,0,0,.58),rgba(0,0,0,.78)),url("https://images.unsplash.com/photo-1523398002811-999ca8dec234?auto=format&fit=crop&w=1800&q=85") center/cover;color:#fff;display:flex;align-items:center;padding:80px 8%}
 .hero-content{max-width:850px}.eyebrow{font-size:13px;letter-spacing:4px;font-weight:bold;margin-bottom:22px;color:#ccc}
 .hero h1{font-size:clamp(58px,11vw,150px);line-height:.82;letter-spacing:-7px;text-transform:uppercase;font-weight:900}.hero h1 span{color:#aaa}
@@ -168,13 +205,37 @@ footer{background:#050505;color:#fff;padding:70px 6% 30px}.footer-grid{display:g
 <script src="supabase.js"></script>
 </head>
 <body>
-
 <header>
-<div class="logo">Street<span>#</span>Wear</div>
-<nav><a href="#home">Home</a><a href="#shop">Shop</a><a href="#about">About</a><a href="#contact">Contact</a></nav>
-<button class="cart-button" onclick="openCart()">BAG (<span id="cart-count">0</span>)</button>
-</header>
+  <div class="logo">Street<span>#</span>Wear</div>
 
+  <nav>
+    <a href="#home">Home</a>
+    <a href="#shop">Shop</a>
+    <a href="#about">About</a>
+    <a href="#contact">Contact</a>
+  </nav>
+
+  <div style="display:flex;align-items:center;gap:8px;">
+
+    <button class="search-button" onclick="toggleSearch()">
+      🔍
+    </button>
+
+    <button class="cart-button" onclick="openCart()">
+      BAG (<span id="cart-count">0</span>)
+    </button>
+
+  </div>
+</header>
+<div id="search-box" class="search-box">
+  <input
+    type="search"
+    id="product-search"
+    placeholder="Search Street#Wear..."
+    oninput="searchProducts()"
+  >
+  <button onclick="toggleSearch()">×</button>
+</div>
 <section class="hero" id="home">
 <div class="hero-content">
 <div class="eyebrow">STREETWEAR / 2026 COLLECTION</div>
@@ -636,7 +697,43 @@ data.forEach(product => {
   });
 
 }
+function toggleSearch() {
+  const searchBox = document.getElementById("search-box");
+  const input = document.getElementById("product-search");
 
+  if (searchBox.style.display === "block") {
+    searchBox.style.display = "none";
+    input.value = "";
+    searchProducts();
+  } else {
+    searchBox.style.display = "block";
+    input.focus();
+  }
+}
+
+function searchProducts() {
+  const search = document
+    .getElementById("product-search")
+    .value
+    .trim()
+    .toLowerCase();
+
+  document.querySelectorAll(".product").forEach(function(product) {
+    const name = (product.dataset.name || "").toLowerCase();
+    const description =
+      product.querySelector(".product-category")?.textContent.toLowerCase() || "";
+
+    if (
+      search === "" ||
+      name.includes(search) ||
+      description.includes(search)
+    ) {
+      product.style.display = "";
+    } else {
+      product.style.display = "none";
+    }
+  });
+}
 loadCustomerProducts();
 </script>
 
