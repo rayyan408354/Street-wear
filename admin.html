@@ -458,7 +458,7 @@ async function loadProducts(){
   list.innerHTML="";
 
   data.forEach(product=>{
-    const productId = product.Id ?? product.id;
+    const productId = product.Id;
     console.log("PRODUCT:", product);
 
     const div=document.createElement("div");
