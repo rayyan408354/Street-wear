@@ -351,11 +351,11 @@ footer{background:#050505;color:#fff;padding:70px 6% 30px}.footer-grid{display:g
 </header>
 <div id="search-box" class="search-box">
   <input
-    type="search"
-    id="product-search"
-    placeholder="Search Street#Wear..."
-    oninput="searchProducts()"
-  >
+  id="product-search"
+  type="text"
+  placeholder="Search products..."
+  oninput="searchProducts()"
+>
   <button onclick="toggleSearch()">×</button>
 </div>
 <section class="hero" id="home">
@@ -1094,7 +1094,7 @@ function setupPhotoSwipe(product) {
         return;
       }
 
-      if (difference > 0) {
+            if (difference > 0) {
         changeProductPhoto(
           slider.querySelector(".slider-next"),
           1
@@ -1110,6 +1110,84 @@ function setupPhotoSwipe(product) {
     { passive: true }
   );
 }
+
+
+/* SEARCH */
+
+function toggleSearch() {
+
+  const searchBox =
+    document.getElementById("search-box");
+
+  const input =
+    document.getElementById("product-search");
+
+  if (!searchBox || !input) {
+    return;
+  }
+
+  if (searchBox.style.display === "block") {
+
+    searchBox.style.display = "none";
+
+    input.value = "";
+
+    searchProducts();
+
+  } else {
+
+    searchBox.style.display = "block";
+
+    input.focus();
+
+  }
+}
+
+
+function searchProducts() {
+
+  const input =
+    document.getElementById("product-search");
+
+  if (!input) return;
+
+  const search =
+    input.value.trim().toLowerCase();
+
+  document
+    .querySelectorAll(".product")
+    .forEach(function(product) {
+
+      const name =
+        (product.dataset.name || "")
+          .toLowerCase();
+
+      const description =
+        product
+          .querySelector(".product-category")
+          ?.textContent
+          .toLowerCase() || "";
+
+      if (
+        search === "" ||
+        name.includes(search) ||
+        description.includes(search)
+      ) {
+
+        product.style.display = "";
+
+      } else {
+
+        product.style.display = "none";
+
+      }
+
+    });
+}
+
+
+loadCustomerProducts();
+
 </script>
 
 
