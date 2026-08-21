@@ -1009,7 +1009,6 @@ function setupPhotoSwipe(product) {
 }
 }
 
-loadCustomerProducts();
   function changeProductPhoto(button, direction) {
 
   const slider =
@@ -1094,23 +1093,39 @@ function setupPhotoSwipe(product) {
         return;
       }
 
-            if (difference > 0) {
-        changeProductPhoto(
-          slider.querySelector(".slider-next"),
-          1
-        );
-      } else {
-        changeProductPhoto(
-          slider.querySelector(".slider-prev"),
-          -1
-        );
-      }
+          slider.addEventListener(
+  "touchend",
+  function(e) {
 
-    },
-    { passive: true }
-  );
-}
+    endX =
+      e.changedTouches[0].clientX;
 
+    const difference =
+      startX - endX;
+
+    if (Math.abs(difference) < 40) {
+      return;
+    }
+
+    if (difference > 0) {
+
+      changeProductPhoto(
+        slider.querySelector(".slider-next"),
+        1
+      );
+
+    } else {
+
+      changeProductPhoto(
+        slider.querySelector(".slider-prev"),
+        -1
+      );
+
+    }
+
+  },
+  { passive: true }
+); 
 
 /* SEARCH */
 
