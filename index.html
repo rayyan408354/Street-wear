@@ -246,6 +246,82 @@ footer{background:#050505;color:#fff;padding:70px 6% 30px}.footer-grid{display:g
   flex: 0 0 100% !important;
   object-fit: cover !important;
 }
+  .product-image {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.photo-slider {
+  position: relative !important;
+  width: 100% !important;
+  height: 500px !important;
+  overflow: hidden !important;
+  touch-action: pan-y;
+}
+
+.photo-track {
+  display: flex !important;
+  flex-direction: row !important;
+  width: 100% !important;
+  height: 100% !important;
+  transition: transform 0.3s ease;
+}
+
+.slide-photo {
+  display: block !important;
+  width: 100% !important;
+  min-width: 100% !important;
+  height: 100% !important;
+  flex: 0 0 100% !important;
+  object-fit: cover !important;
+}
+
+.slider-prev,
+.slider-next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.55);
+  color: white;
+  font-size: 28px;
+  z-index: 5;
+}
+
+.slider-prev {
+  left: 10px;
+}
+
+.slider-next {
+  right: 10px;
+}
+
+.photo-dots {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 6px;
+  z-index: 5;
+}
+
+.photo-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: white;
+  opacity: 0.5;
+}
+
+.photo-dot.active {
+  opacity: 1;
+}
 </style>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase.js"></script>
