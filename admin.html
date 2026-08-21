@@ -598,8 +598,8 @@ async function confirmOrder() {
   const { data: product, error: fetchError } =
     await supabaseClient
       .from("product")
-      .select("Id,name,stock,stock_s,stock_m,stock_l,stock_xl")
-      .eq("Id", productId)
+      .select("id,name,stock,stock_s,stock_m,stock_l,stock_xl")
+      .eq("id", productId)
       .single();
 
   if (fetchError || !product) {
@@ -682,7 +682,7 @@ async function loadOrderProducts() {
   data.forEach(product => {
     const option = document.createElement("option");
 
-    option.value = product.Id || product.id;
+    option.value = product.id;
     option.textContent = product.name || "Unnamed Product";
 
     select.appendChild(option);
