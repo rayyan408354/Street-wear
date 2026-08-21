@@ -1050,6 +1050,7 @@ function setupPhotoSwipe(product) {
 }
 
 
+
 function setupPhotoSwipe(product) {
 
   const slider =
@@ -1057,16 +1058,12 @@ function setupPhotoSwipe(product) {
 
   if (!slider) return;
 
-  const track =
-    slider.querySelector(".photo-track");
-
   const photos =
     slider.querySelectorAll(".slide-photo");
 
   if (photos.length <= 1) return;
 
   let startX = 0;
-  let endX = 0;
 
   slider.addEventListener(
     "touchstart",
@@ -1083,7 +1080,7 @@ function setupPhotoSwipe(product) {
     "touchend",
     function(e) {
 
-      endX =
+      const endX =
         e.changedTouches[0].clientX;
 
       const difference =
@@ -1093,39 +1090,27 @@ function setupPhotoSwipe(product) {
         return;
       }
 
-          slider.addEventListener(
-  "touchend",
-  function(e) {
+      if (difference > 0) {
 
-    endX =
-      e.changedTouches[0].clientX;
+        changeProductPhoto(
+          slider.querySelector(".slider-next"),
+          1
+        );
 
-    const difference =
-      startX - endX;
+      } else {
 
-    if (Math.abs(difference) < 40) {
-      return;
-    }
+        changeProductPhoto(
+          slider.querySelector(".slider-prev"),
+          -1
+        );
 
-    if (difference > 0) {
+      }
 
-      changeProductPhoto(
-        slider.querySelector(".slider-next"),
-        1
-      );
+    },
+    { passive: true }
+  );
+}
 
-    } else {
-
-      changeProductPhoto(
-        slider.querySelector(".slider-prev"),
-        -1
-      );
-
-    }
-
-  },
-  { passive: true }
-); 
 
 /* SEARCH */
 
