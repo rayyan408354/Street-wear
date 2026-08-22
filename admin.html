@@ -469,7 +469,7 @@ async function loadProducts(){
     div.innerHTML=`
       ${product.image_url ? `<img src="${product.image_url}" alt="">` : ""}
       <h3>${product.name || ""}</h3>
-      <p>₹${product.price || 0}</p>
+      <p>₹${product.Price || 0}</p>
       <p>Sizes: ${product.sizes || ""}</p>
       <p>Color: ${product.color || ""}</p>
       <p>
@@ -545,33 +545,7 @@ supabaseClient.auth.getSession().then(({data})=>{
  
   }
 });
-  async function loadOrderProducts() {
-  const select = document.getElementById("order-product");
-
-  if (!select) return;
-
-  const { data, error } = await supabaseClient
-    .from("product")
-    .select("Id,name,stock,stock_s,stock_m,stock_l,stock_xl")
-    .order("created_at", { ascending: false });
-
-  if (error) {
-    console.error("Could not load order products:", error.message);
-    return;
-  }
-
-  select.innerHTML = '<option value="">Select Product</option>';
-
-  data.forEach(product => {
-    const option = document.createElement("option");
-
-    option.value = product.id;
-    option.textContent = product.name;
-
-    select.appendChild(option);
-  });
-}
-
+  
 
 async function confirmOrder() {
 
@@ -634,7 +608,7 @@ async function confirmOrder() {
     await supabaseClient
       .from("product")
       .update(updateData)
-      .eq("Id", productId);
+      .eq("id", productId);
 
   if (updateError) {
     message.textContent =
