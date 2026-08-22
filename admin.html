@@ -565,7 +565,7 @@ supabaseClient.auth.getSession().then(({data})=>{
   data.forEach(product => {
     const option = document.createElement("option");
 
-    option.value = product.Id;
+    option.value = product.id;
     option.textContent = product.name;
 
     select.appendChild(option);
