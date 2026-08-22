@@ -456,6 +456,16 @@ footer{background:#050505;color:#fff;padding:70px 6% 30px}.footer-grid{display:g
         inputmode="numeric"
         maxlength="6"
         style="width:100%;padding:13px;margin-bottom:10px;border:1px solid #ccc;border-radius:5px;">
+      <label style="display:block;margin:10px 0 8px;font-weight:bold;">
+  Payment Method
+</label>
+
+<select id="payment-method"
+  style="width:100%;padding:13px;margin-bottom:10px;border:1px solid #ccc;border-radius:5px;">
+  <option value="">Select Payment Method</option>
+  <option value="Cash on Delivery">Cash on Delivery (COD)</option>
+  <option value="Online Payment">Online Payment</option>
+</select>
 
       <button type="button"
         onclick="getCurrentLocation()"
@@ -629,6 +639,8 @@ function placeWhatsAppOrder() {
   const phone = document.getElementById("customer-phone").value.trim();
   const address = document.getElementById("customer-address").value.trim();
   const pincode = document.getElementById("customer-pincode").value.trim();
+  const paymentMethod =
+  document.getElementById("payment-method").value;
 
   if (!name) {
     alert("Please enter your full name.");
@@ -649,6 +661,11 @@ function placeWhatsAppOrder() {
     alert("Please enter a valid 6-digit pincode.");
     return;
   }
+  
+  if (!paymentMethod) {
+  alert("Please select a payment method.");
+  return;
+}
 
   let total = 0;
 
@@ -689,8 +706,8 @@ function placeWhatsAppOrder() {
   });
 
   message += "\n*Total: ₹" + total + "*\n";
-  message += "\nPlease confirm my order and share payment/delivery details.";
-
+  message += "\n*Payment Method*\n" + paymentMethod;
+message += "\nPlease confirm my order and share payment/delivery details.";
   window.open(
     "https://wa.me/918928057608?text=" +
       encodeURIComponent(message),
