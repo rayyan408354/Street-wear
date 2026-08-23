@@ -422,56 +422,54 @@ if (photoInput && photoInput.files.length > 0) {
 
   for (let i = 0; i < photoInput.files.length; i++) {
 
-    const file = photoInput.files[i];
+  const file = photoInput.files[i];
 
-    const fileName =
-      Date.now() + "-" + i + "-" +
-      file.name.replace(/\s+/g, "-");
+  message.innerText =
+    "Uploading photo " + (i + 1) + " of " +
+    photoInput.files.length + "...";
 
-    const filePath = "products/" + fileName;
+  const fileName =
+    Date.now() + "-" + i + "-" +
+    file.name.replace(/\s+/g, "-");
 
-    const { error: uploadError } =
-      await supabaseClient.storage
-        .from("product-images")
-        .upload(filePath, file);
+  const filePath = "products/" + fileName;
 
-    if (uploadError) {
-      console.error(uploadError);
+  const { error: uploadError } =
+    await supabaseClient.storage
+      .from("product-images")
+      .upload(filePath, file);
 
-      message.innerText =
-        "Photo upload failed: " + uploadError.message;
+  if (uploadError) {
 
-      return;
-    }
+    console.error("UPLOAD ERROR:", uploadError);
 
-    const { data: publicUrlData } =
-      supabaseClient.storage
-        .from("product-images")
-        .getPublicUrl(filePath);
+    message.innerText =
+      "Photo upload failed: " +
+      uploadError.message;
 
-    uploadedPhotoUrls.push(publicUrlData.publicUrl);
+    return;
   }
 
-  // First photo remains the main product image
+  const { data: publicUrlData } =
+    supabaseClient.storage
+      .from("product-images")
+      .getPublicUrl(filePath);
+
+  uploadedPhotoUrls.push(
+    publicUrlData.publicUrl
+  );
+
+  console.log("Uploaded:", file.name);
+}
+
+message.innerText =
+  "Photos uploaded. Adding product...";
   image_url = uploadedPhotoUrls[0];
-}
-
-  // ==============================
-  // CHECK IMAGE
-  // ==============================
-
-  if (!image_url) {
-  message.innerText =
-    "Please select a photo or enter an image URL.";
-  return;
-}
-
 
 // ==============================
 // ADD PRODUCT
 // ==============================
 
-message.innerText = "Photos uploaded. Adding product...";
 
 const { data: newProduct, error } =
   await supabaseClient
