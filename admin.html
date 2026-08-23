@@ -248,10 +248,19 @@ const SUPABASE_URL = "https://ezfldwapvcownpozhxww.supabase.co";
 */
 const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_NOoVPD0PlqvsdEhiFh6Spg_ctXTd1ve";
 
-const supabaseClient = window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_PUBLISHABLE_KEY
-);
+let supabaseClient;
+
+try {
+  supabaseClient = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
+
+  alert("SUPABASE CLIENT CREATED");
+} catch (error) {
+  alert("SUPABASE CLIENT ERROR: " + error.message);
+  console.error(error);
+}
   
 
 alert("SUPABASE CLIENT CREATED");
