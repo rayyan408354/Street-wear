@@ -246,52 +246,8 @@ const supabaseClient = window.supabase.createClient(
   SUPABASE_URL,
   SUPABASE_PUBLISHABLE_KEY
 );
-async function login() {
-
+function login() {
   alert("LOGIN FUNCTION IS WORKING");
-
-  const email =
-    document.getElementById("login-email").value.trim();
-
-  const password =
-    document.getElementById("login-password").value;
-
-  const message =
-    document.getElementById("login-message");
-
-  message.classList.remove("hidden");
-  message.textContent = "Logging in...";
-
-  try {
-
-    console.log("LOGIN BUTTON WORKED");
-    console.log("Email:", email);
-    const { data, error } =
-      await supabaseClient.auth.signInWithPassword({
-        email: email,
-        password: password
-      });
-
-    console.log("LOGIN RESULT:", data);
-    console.log("LOGIN ERROR:", error);
-
-    if (error) {
-      message.textContent =
-        "Login error: " + error.message;
-      return;
-    }
-
-    message.textContent = "Login successful!";
-
-    showDashboard();
-
-  } catch (err) {
-
-    console.error("LOGIN CRASH:", err);
-
-    message.textContent =
-      "Login crashed: " + err.message;
-  }
 }
 
 
