@@ -461,33 +461,36 @@ if (photoInput && photoInput.files.length > 0) {
   // ==============================
 
   if (!image_url) {
-    message.innerText =
-      "Please select a photo or enter an image URL.";
-    return;
-  }
+  message.innerText =
+    "Please select a photo or enter an image URL.";
+  return;
+}
 
 
-  // ==============================
-  // ADD PRODUCT
-  // ==============================
+// ==============================
+// ADD PRODUCT
+// ==============================
 
-  const { data: newProduct, error } = await supabaseClient
-  .from("product")
-  .insert([{
-    name: name,
-    Price: price,
-    description: description,
-    image_url: image_url,
-    sizes: sizes,
-    color: color,
-    stock: stock,
-    stock_s: stock_s,
-    stock_m: stock_m,
-    stock_l: stock_l,
-    stock_xl: stock_xl
-  }])
-  .select("id")
-  .single();
+message.innerText = "Photos uploaded. Adding product...";
+
+const { data: newProduct, error } =
+  await supabaseClient
+    .from("product")
+    .insert([{
+      name: name,
+      Price: price,
+      description: description,
+      image_url: image_url,
+      sizes: sizes,
+      color: variantData.map(v => v.color).join(", "),
+      stock: totalStock,
+      stock_s: 0,
+      stock_m: 0,
+      stock_l: 0,
+      stock_xl: 0
+    }])
+    .select("id")
+    .single();
 
 if (error) {
   console.error(error);
