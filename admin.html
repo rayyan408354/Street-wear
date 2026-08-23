@@ -7,10 +7,22 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
-alert(
-  "Supabase loaded: " +
-  (typeof window.supabase)
+const SUPABASE_URL = "https://ezfldwapvcownpozhxww.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_NOoVPD0PlqvsdEhiFh6Spg_ctXTd1ve";
+
+const supabaseClient = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_PUBLISHABLE_KEY
 );
+
+alert("SUPABASE CLIENT CREATED");
+
+function login() {
+  alert("LOGIN FUNCTION WORKS");
+}
+document.getElementById("login-button").addEventListener("click", login);
   </script>
 
 <style>
