@@ -248,6 +248,11 @@ const supabaseClient = window.supabase.createClient(
 );
 async function login() {
 
+  alert("LOGIN FUNCTION IS WORKING");
+
+  const email =
+    document.getElementById("login-email").value.trim();
+
   const email =
     document.getElementById("login-email").value.trim();
 
@@ -264,7 +269,6 @@ async function login() {
 
     console.log("LOGIN BUTTON WORKED");
     console.log("Email:", email);
-
     const { data, error } =
       await supabaseClient.auth.signInWithPassword({
         email: email,
