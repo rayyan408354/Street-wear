@@ -92,7 +92,7 @@ label{
            type="password"
            placeholder="Admin password">
 
-    <button onclick="login()">LOGIN</button>
+    <button id="login-button">LOGIN</button>
 
     <div id="login-message" class="message hidden"></div>
   </div>
@@ -826,7 +826,10 @@ async function loadOrderProducts() {
   });
 }
 
-loadOrderProducts();
+loadOrderProducts()
+  document.getElementById("login-button").addEventListener("click", function () {
+  alert("LOGIN BUTTON WORKS");
+});
 </script>
 </body>
 </html>
