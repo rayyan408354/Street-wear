@@ -135,34 +135,57 @@ label{
         type="text"
         placeholder="S, M, L, XL">
 
-      <label>Color</label>
-      <input id="product-color"
-        type="text"
-        placeholder="Black">
+      <label>Product Colors & Stock</label>
 
-      <label>S Stock</label>
-<input id="stock-s"
-  type="number"
-  min="0"
-  placeholder="0">
+<div id="color-variants">
 
-<label>M Stock</label>
-<input id="stock-m"
-  type="number"
-  min="0"
-  placeholder="0">
+  <div class="color-variant">
 
-<label>L Stock</label>
-<input id="stock-l"
-  type="number"
-  min="0"
-  placeholder="0">
+    <input
+      type="text"
+      class="variant-color"
+      placeholder="Color e.g. Black"
+    >
 
-<label>XL Stock</label>
-<input id="stock-xl"
-  type="number"
-  min="0"
-  placeholder="0">
+    <input
+      type="number"
+      class="variant-stock-s"
+      min="0"
+      placeholder="S Stock"
+    >
+
+    <input
+      type="number"
+      class="variant-stock-m"
+      min="0"
+      placeholder="M Stock"
+    >
+
+    <input
+      type="number"
+      class="variant-stock-l"
+      min="0"
+      placeholder="L Stock"
+    >
+
+    <input
+      type="number"
+      class="variant-stock-xl"
+      min="0"
+      placeholder="XL Stock"
+    >
+
+  </div>
+
+</div>
+
+<button
+  type="button"
+  onclick="addColorVariant()"
+  style="margin-bottom:15px;"
+>
+  + ADD ANOTHER COLOR
+</button>
       <button onclick="addProduct()">ADD PRODUCT</button>
 
       <div id="product-message" class="message hidden"></div>
@@ -257,6 +280,61 @@ async function showDashboard(){
   document.getElementById("dashboard").classList.remove("hidden");
   loadProducts();
 }
+  function addColorVariant() {
+
+  const container =
+    document.getElementById("color-variants");
+
+  const variant =
+    document.createElement("div");
+
+  variant.className = "color-variant";
+
+  variant.style.marginTop = "15px";
+  variant.style.padding = "15px";
+  variant.style.border = "1px solid #ddd";
+  variant.style.borderRadius = "8px";
+
+  variant.innerHTML = `
+
+    <input
+      type="text"
+      class="variant-color"
+      placeholder="Color e.g. White"
+    >
+
+    <input
+      type="number"
+      class="variant-stock-s"
+      min="0"
+      placeholder="S Stock"
+    >
+
+    <input
+      type="number"
+      class="variant-stock-m"
+      min="0"
+      placeholder="M Stock"
+    >
+
+    <input
+      type="number"
+      class="variant-stock-l"
+      min="0"
+      placeholder="L Stock"
+    >
+
+    <input
+      type="number"
+      class="variant-stock-xl"
+      min="0"
+      placeholder="XL Stock"
+    >
+
+  `;
+
+  container.appendChild(variant);
+}
 async function addProduct(){
 
   const name = document.getElementById("product-name").value.trim();
@@ -272,23 +350,58 @@ async function addProduct(){
   const sizes =
     document.getElementById("product-sizes").value.trim();
 
+  const variants =
+  document.querySelectorAll(".color-variant");
+
+let totalStock = 0;
+let variantData = [];
+
+variants.forEach(function(variant) {
+
   const color =
-    document.getElementById("product-color").value.trim();
+    variant.querySelector(".variant-color").value.trim();
 
   const stock_s =
-    Number(document.getElementById("stock-s").value) || 0;
+    Number(
+      variant.querySelector(".variant-stock-s").value
+    ) || 0;
 
   const stock_m =
-    Number(document.getElementById("stock-m").value) || 0;
+    Number(
+      variant.querySelector(".variant-stock-m").value
+    ) || 0;
 
   const stock_l =
-    Number(document.getElementById("stock-l").value) || 0;
+    Number(
+      variant.querySelector(".variant-stock-l").value
+    ) || 0;
 
   const stock_xl =
-    Number(document.getElementById("stock-xl").value) || 0;
+    Number(
+      variant.querySelector(".variant-stock-xl").value
+    ) || 0;
 
-  const stock =
-    stock_s + stock_m + stock_l + stock_xl;
+  const colorTotal =
+    stock_s +
+    stock_m +
+    stock_l +
+    stock_xl;
+
+  totalStock += colorTotal;
+
+  if (color) {
+
+    variantData.push({
+      color: color,
+      stock_s: stock_s,
+      stock_m: stock_m,
+      stock_l: stock_l,
+      stock_xl: stock_xl
+    });
+
+  }
+
+});
 
   const message =
     document.getElementById("product-message");
@@ -385,6 +498,72 @@ if (error) {
   message.classList.remove("hidden");
 
   return;
+}
+  // ==============================
+// SAVE PRODUCT VARIANTS
+// ==============================
+
+let variantRows = [];
+
+variantData.forEach(function(variant) {
+
+  if (variant.stock_s > 0) {
+    variantRows.push({
+      product_id: newProduct.id,
+      color: variant.color,
+      size: "S",
+      stock: variant.stock_s
+    });
+  }
+
+  if (variant.stock_m > 0) {
+    variantRows.push({
+      product_id: newProduct.id,
+      color: variant.color,
+      size: "M",
+      stock: variant.stock_m
+    });
+  }
+
+  if (variant.stock_l > 0) {
+    variantRows.push({
+      product_id: newProduct.id,
+      color: variant.color,
+      size: "L",
+      stock: variant.stock_l
+    });
+  }
+
+  if (variant.stock_xl > 0) {
+    variantRows.push({
+      product_id: newProduct.id,
+      color: variant.color,
+      size: "XL",
+      stock: variant.stock_xl
+    });
+  }
+
+});
+
+if (variantRows.length > 0) {
+
+  const { error: variantError } =
+    await supabaseClient
+      .from("product_variants")
+      .insert(variantRows);
+
+  if (variantError) {
+
+    console.error(variantError);
+
+    message.innerText =
+      "Product added, but variants could not be saved: " +
+      variantError.message;
+
+    message.classList.remove("hidden");
+
+    return;
+  }
 }
   // Save all product photos
 if (uploadedPhotoUrls.length > 0) {
