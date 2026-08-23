@@ -22,7 +22,17 @@ alert("SUPABASE CLIENT CREATED");
 function login() {
   alert("LOGIN FUNCTION WORKS");
 }
-document.getElementById("login-button").addEventListener("click", login);
+window.addEventListener("DOMContentLoaded", function () {
+
+  const loginButton = document.getElementById("login-button");
+
+  console.log("LOGIN BUTTON FOUND:", loginButton);
+
+  loginButton.addEventListener("click", function () {
+    alert("LOGIN FUNCTION WORKS");
+  });
+
+});
   </script>
 
 <style>
