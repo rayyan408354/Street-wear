@@ -874,18 +874,7 @@ async function loadOrderProducts() {
 
 loadOrderProducts();
 
-window.addEventListener("DOMContentLoaded", function () {
-
-  const loginButton =
-    document.getElementById("login-button");
-
-  console.log("LOGIN BUTTON FOUND:", loginButton);
-
-  if (loginButton) {
-    loginButton.addEventListener("click", login);
-  }
-
-});
+<button id="login-button" type="button" onclick="login()">LOGIN</button>
 </script>
 </body>
 </html>
