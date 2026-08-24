@@ -873,8 +873,12 @@ async function loadOrderProducts() {
 }
 
 loadOrderProducts();
+const loginButton = document.getElementById("login-button");
 
-<button id="login-button" type="button" onclick="login()">LOGIN</button>
+console.log("LOGIN BUTTON FOUND:", loginButton);
+
+loginButton.addEventListener("click", login);
+
 </script>
 </body>
 </html>
