@@ -752,6 +752,15 @@ updateCart();
 
     const stock = Number(product.stock || 0);
 
+console.log(
+  "CUSTOMER PRODUCT STOCK:",
+  product.name,
+  "stock =",
+  product.stock,
+  "calculated stock =",
+  stock
+);
+
     const sizes = product.sizes
       ? product.sizes.split(",").map(size => size.trim())
       : ["S", "M", "L", "XL"];
