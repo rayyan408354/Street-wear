@@ -92,7 +92,12 @@ label{
            type="password"
            placeholder="Admin password">
 
-    <button id="login-button" type="button">LOGIN</button>
+    <button
+  id="login-button"
+  type="button"
+  onclick="alert('BUTTON WORKS'); login();">
+  LOGIN
+    </button>
     <div id="login-message" class="message hidden"></div>
   </div>
 
@@ -873,11 +878,6 @@ async function loadOrderProducts() {
 }
 
 loadOrderProducts();
-const loginButton = document.getElementById("login-button");
-
-console.log("LOGIN BUTTON FOUND:", loginButton);
-
-loginButton.addEventListener("click", login);
 
 </script>
 </body>
