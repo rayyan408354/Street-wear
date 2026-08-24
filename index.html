@@ -752,13 +752,12 @@ updateCart();
 
     const stock = Number(product.stock || 0);
 
-console.log(
-  "CUSTOMER PRODUCT STOCK:",
-  product.name,
-  "stock =",
-  product.stock,
-  "calculated stock =",
-  stock
+const stock = Number(product.stock || 0);
+
+alert(
+  "Product: " + product.name +
+  "\nDatabase stock: " + product.stock +
+  "\nCalculated stock: " + stock
 );
 
     const sizes = product.sizes
