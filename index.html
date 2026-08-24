@@ -1362,56 +1362,16 @@ detailsImages.innerHTML = `
               ></span>
             `).join("")}
           </div>
-        `
-       
+                  `
       : ""
-      ;
     }
 
   </div>
 `;
 
 detailsImages.dataset.index = "0";
-   setupDetailsPhotoSwipe();
-   function changeDetailsPhoto(direction) {
 
-  const container =
-    document.getElementById("product-details-images");
-
-  const slider =
-    container.querySelector(".details-photo-slider");
-
-  const track =
-    slider.querySelector(".details-photo-track");
-
-  const photos =
-    slider.querySelectorAll(".details-slide-photo");
-
-  let index =
-    Number(container.dataset.index || 0);
-
-  index += direction;
-
-  if (index < 0) {
-    index = photos.length - 1;
-  }
-
-  if (index >= photos.length) {
-    index = 0;
-  }
-
-  container.dataset.index = index;
-
-  track.style.transform =
-    `translateX(-${index * 100}%)`;
-
-  slider.querySelectorAll(".details-dot").forEach(
-    function(dot, i) {
-      dot.classList.toggle("active", i === index);
-    }
-  );
-}
-   function setupDetailsPhotoSwipe() {
+setupDetailsPhotoSwipe();
 function changeDetailsPhoto(direction) {
 
   const detailsImages =
@@ -1490,7 +1450,7 @@ function setupDetailsPhotoSwipe() {
 
   }, { passive: true });
 }
-  );
+ 
 
   slider.addEventListener(
     "touchend",
