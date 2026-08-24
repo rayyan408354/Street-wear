@@ -981,14 +981,25 @@ async function addProduct(){
 
         stock: totalStock,
 
-        stock_s: 0,
+stock_s: variantData.reduce(
+  (total, v) => total + v.stock_s,
+  0
+),
 
-        stock_m: 0,
+stock_m: variantData.reduce(
+  (total, v) => total + v.stock_m,
+  0
+),
 
-        stock_l: 0,
+stock_l: variantData.reduce(
+  (total, v) => total + v.stock_l,
+  0
+),
 
-        stock_xl: 0
-
+stock_xl: variantData.reduce(
+  (total, v) => total + v.stock_xl,
+  0
+)
       }])
       .select("id")
       .single();
