@@ -1432,57 +1432,72 @@ async function toggleStock(
 
 async function deleteProduct(id){
 
-  const confirmDelete =
-    confirm(
-      "Are you sure you want to permanently delete this product?"
-    );
-
+  const confirmDelete = confirm(
+    "Are you sure you want to permanently delete this product?"
+  );
 
   if(!confirmDelete){
     return;
   }
 
-
-  const {
-    error
-  } =
+  // Delete product variants first
+  const { error: variantError } =
     await supabaseClient
-      .from("product")
+      .from("product_variants")
       .delete()
-      .eq(
-        "id",
-        id
-      );
+      .eq("product_id", id);
 
-
-  if(error){
+  if(variantError){
 
     alert(
-      "Could not delete product: " +
-      error.message
+      "Could not delete product variants: " +
+      variantError.message
     );
 
     return;
-
   }
 
+  // Delete product photos
+  const { error: imageError } =
+    await supabaseClient
+      .from("product_images")
+      .delete()
+      .eq("product_id", id);
+
+  if(imageError){
+
+    alert(
+      "Could not delete product photos: " +
+      imageError.message
+    );
+
+    return;
+  }
+
+  // Delete the main product
+  const { error: productError } =
+    await supabaseClient
+      .from("product")
+      .delete()
+      .eq("id", id);
+
+  if(productError){
+
+    alert(
+      "Could not delete product: " +
+      productError.message
+    );
+
+    return;
+  }
 
   alert(
     "Product deleted successfully."
   );
 
-
   await loadProducts();
-
   await loadOrderProducts();
-
 }
-
-
-/* ==============================
-   CONFIRM ORDER
-================================ */
-
 async function confirmOrder(){
 
   const productId =
