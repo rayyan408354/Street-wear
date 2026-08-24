@@ -6,19 +6,22 @@
 <title>Street#Wear Admin</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  
+
 <style>
 *{box-sizing:border-box}
+
 body{
   margin:0;
   font-family:Arial,Helvetica,sans-serif;
   background:#f5f5f5;
   color:#111;
 }
+
 .container{
   width:min(900px,92%);
   margin:40px auto;
 }
+
 .card{
   background:#fff;
   padding:30px;
@@ -26,8 +29,12 @@ body{
   box-shadow:0 5px 25px rgba(0,0,0,.08);
   margin-bottom:20px;
 }
-h1,h2{margin-top:0}
-input,textarea{
+
+h1,h2{
+  margin-top:0;
+}
+
+input,textarea,select{
   width:100%;
   padding:13px;
   margin:7px 0 15px;
@@ -35,7 +42,12 @@ input,textarea{
   border-radius:6px;
   font-size:15px;
 }
-textarea{min-height:100px;resize:vertical}
+
+textarea{
+  min-height:100px;
+  resize:vertical;
+}
+
 button{
   border:0;
   background:#000;
@@ -45,30 +57,48 @@ button{
   cursor:pointer;
   font-weight:bold;
 }
-button:hover{opacity:.85}
-.logout{float:right;background:#777}
-.hidden{display:none}
+
+button:hover{
+  opacity:.85;
+}
+
+.logout{
+  float:right;
+  background:#777;
+}
+
+.hidden{
+  display:none;
+}
+
 .message{
   padding:12px;
   background:#eee;
   border-radius:6px;
   margin:10px 0;
 }
+
 .product{
   border:1px solid #ddd;
   padding:15px;
   margin:12px 0;
   border-radius:8px;
 }
+
 .product img{
   width:100px;
   height:120px;
   object-fit:cover;
   border-radius:5px;
 }
+
 label{
   font-size:13px;
   font-weight:bold;
+}
+
+.color-variant{
+  margin-bottom:15px;
 }
 </style>
 </head>
@@ -77,255 +107,541 @@ label{
 
 <div class="container">
 
-  <!-- LOGIN -->
-  <div id="login-section" class="card">
-    <h1>Street#Wear Admin</h1>
-    <p>Private admin login</p>
+<!-- ==============================
+     LOGIN
+================================ -->
 
-    <label>Email</label>
-    <input id="login-email"
-           type="email"
-           value="streetwear.official@gmail.com">
+<div id="login-section" class="card">
 
-    <label>Password</label>
-    <input id="login-password"
-           type="password"
-           placeholder="Admin password">
+  <h1>Street#Wear Admin</h1>
+  <p>Private admin login</p>
 
-    
+  <label>Email</label>
+
+  <input
+    id="login-email"
+    type="email"
+    value="streetwear.official@gmail.com"
+  >
+
+  <label>Password</label>
+
+  <input
+    id="login-password"
+    type="password"
+    placeholder="Admin password"
+  >
+
+  <button
+    id="login-button"
+    type="button"
+  >
+    LOGIN
+  </button>
+
+  <div
+    id="login-message"
+    class="message hidden">
+  </div>
+
+</div>
+
+
+<!-- ==============================
+     DASHBOARD
+================================ -->
+
+<div id="dashboard" class="hidden">
+
+  <div class="card">
+
     <button
-  id="login-button"
-  type="button"
-  onclick="alert('BUTTON WORKS'); window.login();">
-  LOGIN
+      class="logout"
+      onclick="logout()">
+      LOGOUT
     </button>
-    <div id="login-message" class="message hidden"></div>
+
+    <h1>Street#Wear Admin</h1>
+
+    <p>Product Management Dashboard</p>
+
   </div>
 
-  <!-- DASHBOARD -->
-  <div id="dashboard" class="hidden">
 
-    <div class="card">
-      <button class="logout" onclick="logout()">LOGOUT</button>
-      <h1>Street#Wear Admin</h1>
-      <p>Product Management Dashboard</p>
-    </div>
+  <!-- ==============================
+       ADD PRODUCT
+  ================================= -->
 
-    <div class="card">
-      <h2>Add Product</h2>
+  <div class="card">
 
-      <label>Product Name</label>
-      <input id="product-name" type="text" placeholder="Fearless Oversized Tee">
+    <h2>Add Product</h2>
 
-      <label>Price (₹)</label>
-      <input id="product-price" type="number" placeholder="499">
-
-      <label>Description</label>
-      <textarea id="product-description"
-        placeholder="Premium oversized streetwear fit"></textarea>
-
-      <label>Product Photo</label>
-<input id="product-photo"
-  type="file"
-  accept="image/*"
-  multiple>
-
-<label>Or Image URL</label>
-<input id="product-image"
-  type="url"
-  placeholder="https://...">
-
-      <label>Sizes</label>
-      <input id="product-sizes"
-        type="text"
-        placeholder="S, M, L, XL">
-
-      <label>Product Colors & Stock</label>
-
-<div id="color-variants">
-
-  <div class="color-variant">
+    <label>Product Name</label>
 
     <input
+      id="product-name"
       type="text"
-      class="variant-color"
-      placeholder="Color e.g. Black"
+      placeholder="Fearless Oversized Tee"
     >
 
-    <input
-      type="number"
-      class="variant-stock-s"
-      min="0"
-      placeholder="S Stock"
-    >
+
+    <label>Price (₹)</label>
 
     <input
+      id="product-price"
       type="number"
-      class="variant-stock-m"
-      min="0"
-      placeholder="M Stock"
+      placeholder="499"
     >
 
-    <input
-      type="number"
-      class="variant-stock-l"
-      min="0"
-      placeholder="L Stock"
-    >
+
+    <label>Description</label>
+
+    <textarea
+      id="product-description"
+      placeholder="Premium oversized streetwear fit">
+    </textarea>
+
+
+    <label>Product Photo</label>
 
     <input
-      type="number"
-      class="variant-stock-xl"
-      min="0"
-      placeholder="XL Stock"
+      id="product-photo"
+      type="file"
+      accept="image/*"
+      multiple
     >
+
+
+    <label>Or Image URL</label>
+
+    <input
+      id="product-image"
+      type="url"
+      placeholder="https://..."
+    >
+
+
+    <label>Sizes</label>
+
+    <input
+      id="product-sizes"
+      type="text"
+      placeholder="S, M, L, XL"
+    >
+
+
+    <label>Product Colors & Stock</label>
+
+    <div id="color-variants">
+
+      <div class="color-variant">
+
+        <input
+          type="text"
+          class="variant-color"
+          placeholder="Color e.g. Black"
+        >
+
+        <input
+          type="number"
+          class="variant-stock-s"
+          min="0"
+          placeholder="S Stock"
+        >
+
+        <input
+          type="number"
+          class="variant-stock-m"
+          min="0"
+          placeholder="M Stock"
+        >
+
+        <input
+          type="number"
+          class="variant-stock-l"
+          min="0"
+          placeholder="L Stock"
+        >
+
+        <input
+          type="number"
+          class="variant-stock-xl"
+          min="0"
+          placeholder="XL Stock"
+        >
+
+      </div>
+
+    </div>
+
+
+    <button
+      type="button"
+      onclick="addColorVariant()"
+      style="margin-bottom:15px;">
+      + ADD ANOTHER COLOR
+    </button>
+
+
+    <button
+      type="button"
+      onclick="addProduct()">
+      ADD PRODUCT
+    </button>
+
+
+    <div
+      id="product-message"
+      class="message hidden">
+    </div>
+
+  </div>
+
+
+  <!-- ==============================
+       CONFIRM ORDER
+  ================================= -->
+
+  <div class="card">
+
+    <h2>Confirm Order</h2>
+
+    <label>Product</label>
+
+    <select id="order-product">
+
+      <option value="">
+        Select Product
+      </option>
+
+    </select>
+
+
+    <label>Size</label>
+
+    <select id="order-size">
+
+      <option value="">
+        Select Size
+      </option>
+
+      <option value="S">S</option>
+      <option value="M">M</option>
+      <option value="L">L</option>
+      <option value="XL">XL</option>
+
+    </select>
+
+
+    <label>Quantity</label>
+
+    <input
+      id="order-quantity"
+      type="number"
+      min="1"
+      value="1"
+    >
+
+
+    <button
+      type="button"
+      onclick="confirmOrder()">
+      CONFIRM ORDER
+    </button>
+
+
+    <div
+      id="order-message"
+      class="message hidden">
+    </div>
+
+  </div>
+
+
+  <!-- ==============================
+       PRODUCTS
+  ================================= -->
+
+  <div class="card">
+
+    <h2>Products</h2>
+
+    <div id="products-list">
+      Loading...
+    </div>
 
   </div>
 
 </div>
 
-<button
-  type="button"
-  onclick="addColorVariant()"
-  style="margin-bottom:15px;"
->
-  + ADD ANOTHER COLOR
-</button>
-      <button onclick="addProduct()">ADD PRODUCT</button>
-
-      <div id="product-message" class="message hidden"></div>
-    </div>
-    <hr style="margin:30px 0;">
-
-<h2>Confirm Order</h2>
-
-<label>Product</label>
-<select id="order-product">
-  <option value="">Select Product</option>
-</select>
-
-<label>Size</label>
-<select id="order-size">
-  <option value="">Select Size</option>
-  <option value="S">S</option>
-  <option value="M">M</option>
-  <option value="L">L</option>
-  <option value="XL">XL</option>
-</select>
-
-<label>Quantity</label>
-<input
-  id="order-quantity"
-  type="number"
-  min="1"
-  value="1"
-  placeholder="1"
->
-
-<button onclick="confirmOrder()">
-  CONFIRM ORDER
-</button>
-
-<div id="order-message" class="message hidden"></div>
-
-    <div class="card">
-      <h2>Products</h2>
-      <div id="products-list">Loading...</div>
-    </div>
-
-  </div>
-
 </div>
+
+
+<!-- ==============================
+     JAVASCRIPT
+================================ -->
 
 <script>
-const SUPABASE_URL = "https://ezfldwapvcownpozhxww.supabase.co";
+
+console.log("ADMIN SCRIPT STARTED");
 
 
-const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_NOoVPD0PlqvsdEhiFh6Spg_ctXTd1ve";
+/* ==============================
+   SUPABASE
+================================ */
 
-const supabaseClient = window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_PUBLISHABLE_KEY
-);
-window.login = async function login() {
-  alert("LOGIN FUNCTION WORKS");
+const SUPABASE_URL =
+  "https://ezfldwapvcownpozhxww.supabase.co";
 
-  const email = document.getElementById("login-email").value.trim();
-  const password = document.getElementById("login-password").value;
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_NOoVPD0PlqvsdEhiFh6Spg_ctXTd1ve";
 
-  console.log("EMAIL:", email);
-  console.log("PASSWORD ENTERED:", password.length > 0);
+const supabaseClient =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
 
-  const message = document.getElementById("login-message");
+
+console.log("SUPABASE CLIENT CREATED");
+
+
+/* ==============================
+   LOGIN
+================================ */
+
+async function login(){
+
+  console.log("LOGIN FUNCTION STARTED");
+
+  const email =
+    document.getElementById("login-email")
+      .value
+      .trim();
+
+  const password =
+    document.getElementById("login-password")
+      .value;
+
+  const message =
+    document.getElementById("login-message");
+
 
   message.classList.remove("hidden");
-  message.textContent = "Logging in...";
 
-  try {
+  message.textContent =
+    "Logging in...";
 
-    const { data, error } =
+
+  console.log("EMAIL:", email);
+
+  console.log(
+    "PASSWORD ENTERED:",
+    password.length > 0
+  );
+
+
+  try{
+
+    const result =
       await supabaseClient.auth.signInWithPassword({
+
         email: email,
+
         password: password
+
       });
 
-    console.log("LOGIN RESULT:", data);
-    console.log("LOGIN ERROR:", error);
 
-    if (error) {
-      message.textContent = "Login error: " + error.message;
+    const data = result.data;
+
+    const error = result.error;
+
+
+    console.log(
+      "LOGIN RESULT:",
+      data
+    );
+
+    console.log(
+      "LOGIN ERROR:",
+      error
+    );
+
+
+    if(error){
+
+      message.textContent =
+        "Login error: " +
+        error.message;
+
+      console.error(
+        "LOGIN ERROR:",
+        error
+      );
+
       return;
     }
 
-    message.textContent = "Login successful!";
-
-    document.getElementById("login-section")
-      .classList.add("hidden");
-
-    document.getElementById("dashboard")
-      .classList.remove("hidden");
-
-    loadProducts();
-
-  } catch (err) {
-
-    console.error("LOGIN CRASH:", err);
 
     message.textContent =
-      "Login crashed: " + err.message;
+      "Login successful!";
+
+
+    document
+      .getElementById("login-section")
+      .classList
+      .add("hidden");
+
+
+    document
+      .getElementById("dashboard")
+      .classList
+      .remove("hidden");
+
+
+    await loadProducts();
+
+    await loadOrderProducts();
+
   }
+
+  catch(err){
+
+    console.error(
+      "LOGIN CRASH:",
+      err
+    );
+
+    message.textContent =
+      "Login crashed: " +
+      err.message;
+
+  }
+
 }
 
 
+/* Make login available to button */
 
-  
+window.login = login;
+
+
+console.log(
+  "LOGIN FUNCTION REGISTERED"
+);
+
+
+/* ==============================
+   LOGIN BUTTON
+================================ */
+
+document
+  .getElementById("login-button")
+  .addEventListener(
+    "click",
+    function(){
+
+      console.log(
+        "LOGIN BUTTON CLICKED"
+      );
+
+      login();
+
+    }
+  );
+
+
+/* ==============================
+   LOGOUT
+================================ */
 
 async function logout(){
+
   await supabaseClient.auth.signOut();
-  document.getElementById("dashboard").classList.add("hidden");
-  document.getElementById("login-section").classList.remove("hidden");
-  document.getElementById("login-password").value="";
+
+  document
+    .getElementById("dashboard")
+    .classList
+    .add("hidden");
+
+
+  document
+    .getElementById("login-section")
+    .classList
+    .remove("hidden");
+
+
+  document
+    .getElementById("login-password")
+    .value = "";
+
+
+  document
+    .getElementById("login-message")
+    .classList
+    .add("hidden");
+
 }
+
+
+/* ==============================
+   SHOW DASHBOARD
+================================ */
 
 async function showDashboard(){
-  document.getElementById("login-section").classList.add("hidden");
-  document.getElementById("dashboard").classList.remove("hidden");
-  loadProducts();
+
+  document
+    .getElementById("login-section")
+    .classList
+    .add("hidden");
+
+
+  document
+    .getElementById("dashboard")
+    .classList
+    .remove("hidden");
+
+
+  await loadProducts();
+
+  await loadOrderProducts();
+
 }
-  function addColorVariant() {
+
+
+/* ==============================
+   ADD COLOR VARIANT
+================================ */
+
+function addColorVariant(){
 
   const container =
-    document.getElementById("color-variants");
+    document.getElementById(
+      "color-variants"
+    );
+
 
   const variant =
     document.createElement("div");
 
-  variant.className = "color-variant";
 
-  variant.style.marginTop = "15px";
-  variant.style.padding = "15px";
-  variant.style.border = "1px solid #ddd";
-  variant.style.borderRadius = "8px";
+  variant.className =
+    "color-variant";
+
+
+  variant.style.marginTop =
+    "15px";
+
+  variant.style.padding =
+    "15px";
+
+  variant.style.border =
+    "1px solid #ddd";
+
+  variant.style.borderRadius =
+    "8px";
+
 
   variant.innerHTML = `
 
@@ -365,519 +681,1123 @@ async function showDashboard(){
 
   `;
 
-  container.appendChild(variant);
-}
-async function addProduct(){
 
-  const name = document.getElementById("product-name").value.trim();
-  const price = Number(document.getElementById("product-price").value);
-
-  const description =
-    document.getElementById("product-description").value.trim();
-
-  // Existing image URL option
-  let image_url =
-    document.getElementById("product-image").value.trim();
-
-  const sizes =
-    document.getElementById("product-sizes").value.trim();
-
-  const variants =
-  document.querySelectorAll(".color-variant");
-
-let totalStock = 0;
-let variantData = [];
-
-variants.forEach(function(variant) {
-
-  const color =
-    variant.querySelector(".variant-color").value.trim();
-
-  const stock_s =
-    Number(
-      variant.querySelector(".variant-stock-s").value
-    ) || 0;
-
-  const stock_m =
-    Number(
-      variant.querySelector(".variant-stock-m").value
-    ) || 0;
-
-  const stock_l =
-    Number(
-      variant.querySelector(".variant-stock-l").value
-    ) || 0;
-
-  const stock_xl =
-    Number(
-      variant.querySelector(".variant-stock-xl").value
-    ) || 0;
-
-  const colorTotal =
-    stock_s +
-    stock_m +
-    stock_l +
-    stock_xl;
-
-  totalStock += colorTotal;
-
-  if (color) {
-
-    variantData.push({
-      color: color,
-      stock_s: stock_s,
-      stock_m: stock_m,
-      stock_l: stock_l,
-      stock_xl: stock_xl
-    });
-
-  }
-
-});
-
-  const message =
-    document.getElementById("product-message");
-    message.classList.remove("hidden");
-
-
-  // ==============================
-  // PHOTO UPLOAD
-  // ==============================
-
-  const photoInput = document.getElementById("product-photo");
-
-let uploadedPhotoUrls = [];
-
-if (photoInput && photoInput.files.length > 0) {
-
-  message.innerText = "Uploading photos...";
-
-  for (let i = 0; i < photoInput.files.length; i++) {
-
-  const file = photoInput.files[i];
-
-  message.innerText =
-    "Uploading photo " + (i + 1) + " of " +
-    photoInput.files.length + "...";
-
-  const fileName =
-    Date.now() + "-" + i + "-" +
-    file.name.replace(/\s+/g, "-");
-
-  const filePath = "products/" + fileName;
-
-  const { error: uploadError } =
-    await supabaseClient.storage
-      .from("product-images")
-      .upload(filePath, file);
-
-  if (uploadError) {
-
-    console.error("UPLOAD ERROR:", uploadError);
-
-    message.innerText =
-      "Photo upload failed: " +
-      uploadError.message;
-
-    return;
-  }
-
-  const { data: publicUrlData } =
-    supabaseClient.storage
-      .from("product-images")
-      .getPublicUrl(filePath);
-
-  uploadedPhotoUrls.push(
-    publicUrlData.publicUrl
+  container.appendChild(
+    variant
   );
 
-  console.log("Uploaded:", file.name);
 }
 
-message.innerText =
-  "Photos uploaded. Adding product...";
-  image_url = uploadedPhotoUrls[0];
 
-// ==============================
-// ADD PRODUCT
-// ==============================
+/* ==============================
+   ADD PRODUCT
+================================ */
+
+async function addProduct(){
+
+  const name =
+    document
+      .getElementById("product-name")
+      .value
+      .trim();
 
 
-const { data: newProduct, error } =
-  await supabaseClient
-    .from("product")
-    .insert([{
-      name: name,
-      Price: price,
-      description: description,
-      image_url: image_url,
-      sizes: sizes,
-      color: variantData.map(v => v.color).join(", "),
-      stock: totalStock,
-      stock_s: 0,
-      stock_m: 0,
-      stock_l: 0,
-      stock_xl: 0
-    }])
-    .select("id")
-    .single();
+  const price =
+    Number(
+      document
+        .getElementById("product-price")
+        .value
+    );
 
-if (error) {
-  console.error(error);
 
-  message.innerText =
-    "Error adding product: " + error.message;
+  const description =
+    document
+      .getElementById("product-description")
+      .value
+      .trim();
 
-  message.classList.remove("hidden");
 
-  return;
-}
-  // ==============================
-// SAVE PRODUCT VARIANTS
-// ==============================
+  let image_url =
+    document
+      .getElementById("product-image")
+      .value
+      .trim();
 
-let variantRows = [];
 
-variantData.forEach(function(variant) {
+  const sizes =
+    document
+      .getElementById("product-sizes")
+      .value
+      .trim();
 
-  if (variant.stock_s > 0) {
-    variantRows.push({
-      product_id: newProduct.id,
-      color: variant.color,
-      size: "S",
-      stock: variant.stock_s
-    });
+
+  const message =
+    document.getElementById(
+      "product-message"
+    );
+
+
+  message.classList.remove(
+    "hidden"
+  );
+
+
+  /* ==============================
+     GET VARIANTS
+  ================================= */
+
+  const variants =
+    document.querySelectorAll(
+      ".color-variant"
+    );
+
+
+  let totalStock = 0;
+
+  let variantData = [];
+
+
+  variants.forEach(
+    function(variant){
+
+      const color =
+        variant
+          .querySelector(
+            ".variant-color"
+          )
+          .value
+          .trim();
+
+
+      const stock_s =
+        Number(
+          variant
+            .querySelector(
+              ".variant-stock-s"
+            )
+            .value
+        ) || 0;
+
+
+      const stock_m =
+        Number(
+          variant
+            .querySelector(
+              ".variant-stock-m"
+            )
+            .value
+        ) || 0;
+
+
+      const stock_l =
+        Number(
+          variant
+            .querySelector(
+              ".variant-stock-l"
+            )
+            .value
+        ) || 0;
+
+
+      const stock_xl =
+        Number(
+          variant
+            .querySelector(
+              ".variant-stock-xl"
+            )
+            .value
+        ) || 0;
+
+
+      totalStock +=
+        stock_s +
+        stock_m +
+        stock_l +
+        stock_xl;
+
+
+      if(color){
+
+        variantData.push({
+
+          color: color,
+
+          stock_s: stock_s,
+
+          stock_m: stock_m,
+
+          stock_l: stock_l,
+
+          stock_xl: stock_xl
+
+        });
+
+      }
+
+    }
+  );
+
+
+  /* ==============================
+     PHOTO UPLOAD
+  ================================= */
+
+  const photoInput =
+    document.getElementById(
+      "product-photo"
+    );
+
+
+  let uploadedPhotoUrls = [];
+
+
+  if(
+    photoInput &&
+    photoInput.files.length > 0
+  ){
+
+    message.innerText =
+      "Uploading photos...";
+
+
+    for(
+      let i = 0;
+      i < photoInput.files.length;
+      i++
+    ){
+
+      const file =
+        photoInput.files[i];
+
+
+      message.innerText =
+        "Uploading photo " +
+        (i + 1) +
+        " of " +
+        photoInput.files.length +
+        "...";
+
+
+      const fileName =
+        Date.now() +
+        "-" +
+        i +
+        "-" +
+        file.name.replace(
+          /\s+/g,
+          "-"
+        );
+
+
+      const filePath =
+        "products/" +
+        fileName;
+
+
+      const {
+        error: uploadError
+      } =
+        await supabaseClient
+          .storage
+          .from("product-images")
+          .upload(
+            filePath,
+            file
+          );
+
+
+      if(uploadError){
+
+        console.error(
+          "UPLOAD ERROR:",
+          uploadError
+        );
+
+
+        message.innerText =
+          "Photo upload failed: " +
+          uploadError.message;
+
+
+        return;
+
+      }
+
+
+      const {
+        data: publicUrlData
+      } =
+        supabaseClient
+          .storage
+          .from("product-images")
+          .getPublicUrl(
+            filePath
+          );
+
+
+      uploadedPhotoUrls.push(
+        publicUrlData.publicUrl
+      );
+
+    }
+
+
+    image_url =
+      uploadedPhotoUrls[0];
+
+
+    message.innerText =
+      "Photos uploaded. Adding product...";
+
   }
 
-  if (variant.stock_m > 0) {
-    variantRows.push({
-      product_id: newProduct.id,
-      color: variant.color,
-      size: "M",
-      stock: variant.stock_m
-    });
-  }
 
-  if (variant.stock_l > 0) {
-    variantRows.push({
-      product_id: newProduct.id,
-      color: variant.color,
-      size: "L",
-      stock: variant.stock_l
-    });
-  }
+  /* ==============================
+     INSERT PRODUCT
+  ================================= */
 
-  if (variant.stock_xl > 0) {
-    variantRows.push({
-      product_id: newProduct.id,
-      color: variant.color,
-      size: "XL",
-      stock: variant.stock_xl
-    });
-  }
-
-});
-
-if (variantRows.length > 0) {
-
-  const { error: variantError } =
+  const {
+    data: newProduct,
+    error
+  } =
     await supabaseClient
-      .from("product_variants")
-      .insert(variantRows);
+      .from("product")
+      .insert([{
 
-  if (variantError) {
+        name: name,
 
-    console.error(variantError);
+        Price: price,
+
+        description: description,
+
+        image_url: image_url,
+
+        sizes: sizes,
+
+        color:
+          variantData
+            .map(v => v.color)
+            .join(", "),
+
+        stock: totalStock,
+
+        stock_s: 0,
+
+        stock_m: 0,
+
+        stock_l: 0,
+
+        stock_xl: 0
+
+      }])
+      .select("id")
+      .single();
+
+
+  if(error){
+
+    console.error(
+      "ADD PRODUCT ERROR:",
+      error
+    );
+
 
     message.innerText =
-      "Product added, but variants could not be saved: " +
-      variantError.message;
+      "Error adding product: " +
+      error.message;
 
-    message.classList.remove("hidden");
-
-    return;
-  }
-}
-  // Save all product photos
-if (uploadedPhotoUrls.length > 0) {
-
-  const imageRows = uploadedPhotoUrls.map(function(url) {
-    return {
-      product_id: newProduct.id,
-      image_url: url
-    };
-  });
-
-  const { error: imageError } = await supabaseClient
-    .from("product_images")
-    .insert(imageRows);
-
-  if (imageError) {
-    console.error(imageError);
-
-    message.innerText =
-      "Product added, but some photos could not be saved: " +
-      imageError.message;
-
-    message.classList.remove("hidden");
 
     return;
+
   }
-}
 
-  if (error) {
-  console.error("ADD PRODUCT ERROR:", error);
 
-  alert("ADD PRODUCT ERROR:\n\n" + error.message);
+  /* ==============================
+     SAVE VARIANTS
+  ================================= */
+
+  let variantRows = [];
+
+
+  variantData.forEach(
+    function(variant){
+
+      if(variant.stock_s > 0){
+
+        variantRows.push({
+
+          product_id:
+            newProduct.id,
+
+          color:
+            variant.color,
+
+          size:
+            "S",
+
+          stock:
+            variant.stock_s
+
+        });
+
+      }
+
+
+      if(variant.stock_m > 0){
+
+        variantRows.push({
+
+          product_id:
+            newProduct.id,
+
+          color:
+            variant.color,
+
+          size:
+            "M",
+
+          stock:
+            variant.stock_m
+
+        });
+
+      }
+
+
+      if(variant.stock_l > 0){
+
+        variantRows.push({
+
+          product_id:
+            newProduct.id,
+
+          color:
+            variant.color,
+
+          size:
+            "L",
+
+          stock:
+            variant.stock_l
+
+        });
+
+      }
+
+
+      if(variant.stock_xl > 0){
+
+        variantRows.push({
+
+          product_id:
+            newProduct.id,
+
+          color:
+            variant.color,
+
+          size:
+            "XL",
+
+          stock:
+            variant.stock_xl
+
+        });
+
+      }
+
+    }
+  );
+
+
+  if(
+    variantRows.length > 0
+  ){
+
+    const {
+      error: variantError
+    } =
+      await supabaseClient
+        .from("product_variants")
+        .insert(
+          variantRows
+        );
+
+
+    if(variantError){
+
+      console.error(
+        variantError
+      );
+
+
+      message.innerText =
+        "Product added, but variants could not be saved: " +
+        variantError.message;
+
+
+      return;
+
+    }
+
+  }
+
+
+  /* ==============================
+     SAVE PRODUCT PHOTOS
+  ================================= */
+
+  if(
+    uploadedPhotoUrls.length > 0
+  ){
+
+    const imageRows =
+      uploadedPhotoUrls.map(
+        function(url){
+
+          return {
+
+            product_id:
+              newProduct.id,
+
+            image_url:
+              url
+
+          };
+
+        }
+      );
+
+
+    const {
+      error: imageError
+    } =
+      await supabaseClient
+        .from("product_images")
+        .insert(
+          imageRows
+        );
+
+
+    if(imageError){
+
+      console.error(
+        imageError
+      );
+
+
+      message.innerText =
+        "Product added, but some photos could not be saved: " +
+        imageError.message;
+
+
+      return;
+
+    }
+
+  }
+
 
   message.innerText =
-    "Error adding product: " + error.message;
+    "Product added successfully!";
 
-  message.classList.remove("hidden");
 
-  return;
-  }
-message.innerText =
-  "Product added successfully!";
+  await loadProducts();
 
-message.classList.remove("hidden");
+  await loadOrderProducts();
 
-loadProducts();
 }
 
-  
 
-  
+/* ==============================
+   LOAD PRODUCTS
+================================ */
+
 async function loadProducts(){
 
-  const list=document.getElementById("products-list");
+  const list =
+    document.getElementById(
+      "products-list"
+    );
 
-  const {data,error}=await supabaseClient
-    .from("product")
-    .select("*")
-    .order("created_at",{ascending:false});
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("product")
+      .select("*")
+      .order(
+        "created_at",
+        {
+          ascending:false
+        }
+      );
+
 
   if(error){
-    list.innerHTML="<p>"+error.message+"</p>";
+
+    list.innerHTML =
+      "<p>" +
+      error.message +
+      "</p>";
+
     return;
+
   }
 
-  if(!data || data.length===0){
-    list.innerHTML="<p>No products yet.</p>";
+
+  if(
+    !data ||
+    data.length === 0
+  ){
+
+    list.innerHTML =
+      "<p>No products yet.</p>";
+
     return;
+
   }
 
-  list.innerHTML="";
 
-  data.forEach(product=>{
-    const productId = product.id;
-    console.log("PRODUCT:", product);
+  list.innerHTML = "";
 
-    const div=document.createElement("div");
-    div.className="product";
 
-    const stock = Number(product.stock || 0);
+  data.forEach(
+    product => {
 
-    div.innerHTML=`
-      ${product.image_url ? `<img src="${product.image_url}" alt="">` : ""}
-      <h3>${product.name || ""}</h3>
-      <p>₹${product.Price || 0}</p>
-      <p>Sizes: ${product.sizes || ""}</p>
-      <p>Color: ${product.color || ""}</p>
-      <p>
-        Stock:
-        <strong style="color:${stock > 0 ? "green" : "red"}">
-          ${stock > 0 ? stock + " IN STOCK" : "OUT OF STOCK"}
-        </strong>
-      </p>
+      const productId =
+        product.id;
 
-      <button onclick="toggleStock('${productId}', ${stock})">
-        ${stock > 0 ? "MARK OUT OF STOCK" : "MARK IN STOCK"}
-      </button>
 
-      <button
-        onclick="deleteProduct('${productId}')"
-        style="background:#b00020;margin-left:8px;">
-        DELETE
-      </button>
-    `;
+      const stock =
+        Number(
+          product.stock || 0
+        );
 
-    list.appendChild(div);
-  });
+
+      const div =
+        document.createElement(
+          "div"
+        );
+
+
+      div.className =
+        "product";
+
+
+      div.innerHTML = `
+
+        ${
+          product.image_url
+          ?
+          `<img
+            src="${product.image_url}"
+            alt=""
+          >`
+          :
+          ""
+        }
+
+        <h3>
+          ${product.name || ""}
+        </h3>
+
+        <p>
+          ₹${product.Price || 0}
+        </p>
+
+        <p>
+          Sizes:
+          ${product.sizes || ""}
+        </p>
+
+        <p>
+          Color:
+          ${product.color || ""}
+        </p>
+
+        <p>
+          Stock:
+          <strong
+            style="color:${
+              stock > 0
+              ? "green"
+              : "red"
+            }">
+            ${
+              stock > 0
+              ?
+              stock +
+              " IN STOCK"
+              :
+              "OUT OF STOCK"
+            }
+          </strong>
+        </p>
+
+
+        <button
+          onclick="toggleStock(
+            '${productId}',
+            ${stock}
+          )">
+
+          ${
+            stock > 0
+            ?
+            "MARK OUT OF STOCK"
+            :
+            "MARK IN STOCK"
+          }
+
+        </button>
+
+
+        <button
+          onclick="deleteProduct(
+            '${productId}'
+          )"
+          style="
+            background:#b00020;
+            margin-left:8px;
+          ">
+
+          DELETE
+
+        </button>
+
+      `;
+
+
+      list.appendChild(
+        div
+      );
+
+    }
+  );
+
 }
 
 
-async function toggleStock(id,currentStock){
+/* ==============================
+   TOGGLE STOCK
+================================ */
 
-  const newStock = currentStock > 0 ? 0 : 1;
+async function toggleStock(
+  id,
+  currentStock
+){
 
-  const {error}=await supabaseClient
-    .from("product")
-    .update({stock:newStock})
-    .eq("id",id);
+  const newStock =
+    currentStock > 0
+    ? 0
+    : 1;
+
+
+  const {
+    error
+  } =
+    await supabaseClient
+      .from("product")
+      .update({
+        stock:newStock
+      })
+      .eq(
+        "id",
+        id
+      );
+
 
   if(error){
-    alert("Could not update stock: " + error.message);
+
+    alert(
+      "Could not update stock: " +
+      error.message
+    );
+
     return;
+
   }
 
-  loadProducts();
+
+  await loadProducts();
+
 }
 
+
+/* ==============================
+   DELETE PRODUCT
+================================ */
 
 async function deleteProduct(id){
 
-  const confirmDelete = confirm(
-    "Are you sure you want to permanently delete this product?"
-  );
+  const confirmDelete =
+    confirm(
+      "Are you sure you want to permanently delete this product?"
+    );
+
 
   if(!confirmDelete){
     return;
   }
 
-  const {error}=await supabaseClient
-    .from("product")
-    .delete()
-    .eq("id",id);
 
-  if(error){
-    alert("Could not delete product: " + error.message);
-    return;
-  }
-
-  alert("Product deleted successfully.");
-
-  loadProducts();
-}
-
-supabaseClient.auth.getSession().then(({data})=>{
-  if(data.session){
-    showDashboard();
-
- 
-  }
-});
-  
-
-async function confirmOrder() {
-
-  const productId =
-    document.getElementById("order-product").value;
-
-  const size =
-    document.getElementById("order-size").value;
-
-  const quantity =
-    Number(document.getElementById("order-quantity").value);
-
-  const message =
-    document.getElementById("order-message");
-
-  message.classList.remove("hidden");
-
-  if (!productId || !size || !quantity || quantity < 1) {
-    message.textContent =
-      "Please select a product, size and valid quantity.";
-    return;
-  }
-
-  const { data: product, error: fetchError } =
+  const {
+    error
+  } =
     await supabaseClient
       .from("product")
-      .select("id,name,stock,stock_s,stock_m,stock_l,stock_xl")
-      .eq("id", productId)
+      .delete()
+      .eq(
+        "id",
+        id
+      );
+
+
+  if(error){
+
+    alert(
+      "Could not delete product: " +
+      error.message
+    );
+
+    return;
+
+  }
+
+
+  alert(
+    "Product deleted successfully."
+  );
+
+
+  await loadProducts();
+
+  await loadOrderProducts();
+
+}
+
+
+/* ==============================
+   CONFIRM ORDER
+================================ */
+
+async function confirmOrder(){
+
+  const productId =
+    document
+      .getElementById(
+        "order-product"
+      )
+      .value;
+
+
+  const size =
+    document
+      .getElementById(
+        "order-size"
+      )
+      .value;
+
+
+  const quantity =
+    Number(
+      document
+        .getElementById(
+          "order-quantity"
+        )
+        .value
+    );
+
+
+  const message =
+    document.getElementById(
+      "order-message"
+    );
+
+
+  message.classList.remove(
+    "hidden"
+  );
+
+
+  if(
+    !productId ||
+    !size ||
+    !quantity ||
+    quantity < 1
+  ){
+
+    message.textContent =
+      "Please select a product, size and valid quantity.";
+
+    return;
+
+  }
+
+
+  const {
+    data: product,
+    error: fetchError
+  } =
+    await supabaseClient
+      .from("product")
+      .select(
+        "id,name,stock,stock_s,stock_m,stock_l,stock_xl"
+      )
+      .eq(
+        "id",
+        productId
+      )
       .single();
 
-  if (fetchError || !product) {
+
+  if(
+    fetchError ||
+    !product
+  ){
+
     message.textContent =
       "Could not find the product.";
+
     return;
+
   }
 
-  const column = "stock_" + size.toLowerCase();
+
+  const column =
+    "stock_" +
+    size.toLowerCase();
+
 
   const currentStock =
-    Number(product[column] || 0);
+    Number(
+      product[column] || 0
+    );
 
-  if (currentStock < quantity) {
+
+  if(
+    currentStock < quantity
+  ){
+
     message.textContent =
-      "Not enough " + size + " stock. Available: " + currentStock;
+      "Not enough " +
+      size +
+      " stock. Available: " +
+      currentStock;
+
     return;
+
   }
 
+
   const newSizeStock =
-    currentStock - quantity;
+    currentStock -
+    quantity;
+
 
   const newTotalStock =
-    Number(product.stock || 0) - quantity;
+    Number(
+      product.stock || 0
+    ) -
+    quantity;
+
 
   const updateData = {};
 
-  updateData[column] = newSizeStock;
-  updateData.stock = Math.max(0, newTotalStock);
 
-  const { error: updateError } =
+  updateData[column] =
+    newSizeStock;
+
+
+  updateData.stock =
+    Math.max(
+      0,
+      newTotalStock
+    );
+
+
+  const {
+    error: updateError
+  } =
     await supabaseClient
       .from("product")
-      .update(updateData)
-      .eq("id", productId);
+      .update(
+        updateData
+      )
+      .eq(
+        "id",
+        productId
+      );
 
-  if (updateError) {
+
+  if(updateError){
+
     message.textContent =
       "Could not confirm order: " +
       updateError.message;
+
     return;
+
   }
+
 
   message.textContent =
     "Order confirmed! " +
     product.name +
-    " (" + size + ") × " +
+    " (" +
+    size +
+    ") × " +
     quantity +
     " deducted from stock.";
 
-  document.getElementById("order-product").value = "";
-  document.getElementById("order-size").value = "";
-  document.getElementById("order-quantity").value = 1;
 
-  loadProducts();
+  document
+    .getElementById(
+      "order-product"
+    )
+    .value = "";
+
+
+  document
+    .getElementById(
+      "order-size"
+    )
+    .value = "";
+
+
+  document
+    .getElementById(
+      "order-quantity"
+    )
+    .value = 1;
+
+
+  await loadProducts();
+
 }
 
 
-async function loadOrderProducts() {
-  const select = document.getElementById("order-product");
+/* ==============================
+   LOAD ORDER PRODUCTS
+================================ */
 
-  if (!select) return;
+async function loadOrderProducts(){
 
-  const { data, error } = await supabaseClient
-    .from("product")
-    .select("*")
-    .order("created_at", { ascending: false });
+  const select =
+    document.getElementById(
+      "order-product"
+    );
 
-  if (error) {
-    console.error("Could not load order products:", error.message);
+
+  if(!select){
     return;
   }
 
-  select.innerHTML = '<option value="">Select Product</option>';
 
-  if (!data || data.length === 0) {
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("product")
+      .select("*")
+      .order(
+        "created_at",
+        {
+          ascending:false
+        }
+      );
+
+
+  if(error){
+
+    console.error(
+      "Could not load order products:",
+      error.message
+    );
+
     return;
+
   }
 
-  data.forEach(product => {
-    const option = document.createElement("option");
 
-    option.value = product.id;
-    option.textContent = product.name || "Unnamed Product";
+  select.innerHTML =
+    '<option value="">Select Product</option>';
 
-    select.appendChild(option);
-  });
+
+  if(
+    !data ||
+    data.length === 0
+  ){
+
+    return;
+
+  }
+
+
+  data.forEach(
+    product => {
+
+      const option =
+        document.createElement(
+          "option"
+        );
+
+
+      option.value =
+        product.id;
+
+
+      option.textContent =
+        product.name ||
+        "Unnamed Product";
+
+
+      select.appendChild(
+        option
+      );
+
+    }
+  );
+
 }
 
 
+/* ==============================
+   CHECK EXISTING SESSION
+================================ */
 
-loadOrderProducts();
+supabaseClient.auth
+  .getSession()
+  .then(
+    async function(result){
+
+      console.log(
+        "SESSION CHECK:",
+        result.data
+      );
+
+
+      if(
+        result.data &&
+        result.data.session
+      ){
+
+        await showDashboard();
+
+      }
+
+    }
+  );
+
+
+console.log(
+  "ADMIN SCRIPT READY"
+);
+
 </script>
+
 </body>
 </html>
