@@ -6,81 +6,7 @@
 <title>Street#Wear Admin</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script>
-const SUPABASE_URL = "https://ezfldwapvcownpozhxww.supabase.co";
-
-const SUPABASE_PUBLISHABLE_KEY =
-  "sb_publishable_NOoVPD0PlqvsdEhiFh6Spg_ctXTd1ve";
-
-const supabaseClient = window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_PUBLISHABLE_KEY
-);
-
-alert("SUPABASE CLIENT CREATED");
-
-async function login() {
-
-  const email =
-    document.getElementById("login-email").value.trim();
-
-  const password =
-    document.getElementById("login-password").value;
-
-  const message =
-    document.getElementById("login-message");
-
-  message.classList.remove("hidden");
-  message.textContent = "Logging in...";
-
-  try {
-
-    const { data, error } =
-      await supabaseClient.auth.signInWithPassword({
-        email: email,
-        password: password
-      });
-
-    console.log("LOGIN RESULT:", data);
-    console.log("LOGIN ERROR:", error);
-
-    if (error) {
-      message.textContent =
-        "Login error: " + error.message;
-      return;
-    }
-
-    message.textContent =
-      "Login successful!";
-
-    document.getElementById("login-section")
-      .classList.add("hidden");
-
-    document.getElementById("dashboard")
-      .classList.remove("hidden");
-
-    loadProducts();
-
-  } catch (err) {
-
-    console.error("LOGIN CRASH:", err);
-
-    message.textContent =
-      "Login crashed: " + err.message;
-  }
-}
-window.addEventListener("DOMContentLoaded", function () {
-
-  const loginButton =
-    document.getElementById("login-button");
-
-  console.log("LOGIN BUTTON FOUND:", loginButton);
-
-  loginButton.addEventListener("click", login);
-
-});
-  </script>
-
+  
 <style>
 *{box-sizing:border-box}
 body{
@@ -166,8 +92,7 @@ label{
            type="password"
            placeholder="Admin password">
 
-    <button id="login-button">LOGIN</button>
-       type="button">LOGIN</button>
+    <button id="login-button" type="button">LOGIN</button>
     <div id="login-message" class="message hidden"></div>
   </div>
 
@@ -309,33 +234,68 @@ label{
 <script>
 const SUPABASE_URL = "https://ezfldwapvcownpozhxww.supabase.co";
 
-/*
-  IMPORTANT:
-  Paste your Supabase PUBLISHABLE key between the quotes below.
-  Do NOT use the Secret key.
-*/
+
 const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_NOoVPD0PlqvsdEhiFh6Spg_ctXTd1ve";
 
-let supabaseClient;
+const supabaseClient = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_PUBLISHABLE_KEY
+);
+async function login() {
 
-try {
-  supabaseClient = window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_PUBLISHABLE_KEY
-  );
+  alert("LOGIN FUNCTION WORKS");
 
-  alert("SUPABASE CLIENT CREATED");
-} catch (error) {
-  alert("SUPABASE CLIENT ERROR: " + error.message);
-  console.error(error);
+  const email =
+    document.getElementById("login-email").value.trim();
+
+  const password =
+    document.getElementById("login-password").value;
+
+  const message =
+    document.getElementById("login-message");
+
+  message.classList.remove("hidden");
+  message.textContent = "Logging in...";
+
+  try {
+
+    const { data, error } =
+      await supabaseClient.auth.signInWithPassword({
+        email: email,
+        password: password
+      });
+
+    console.log("LOGIN RESULT:", data);
+    console.log("LOGIN ERROR:", error);
+
+    if (error) {
+      message.textContent =
+        "Login error: " + error.message;
+      return;
+    }
+
+    message.textContent = "Login successful!";
+
+    document.getElementById("login-section")
+      .classList.add("hidden");
+
+    document.getElementById("dashboard")
+      .classList.remove("hidden");
+
+    loadProducts();
+
+  } catch (err) {
+
+    console.error("LOGIN CRASH:", err);
+
+    message.textContent =
+      "Login crashed: " + err.message;
+  }
 }
+
+
+
   
-
-alert("SUPABASE CLIENT CREATED");
-function login() {
-  alert("LOGIN FUNCTION IS WORKING");
-}
-
 
 async function logout(){
   await supabaseClient.auth.signOut();
@@ -912,9 +872,19 @@ async function loadOrderProducts() {
   });
 }
 
-loadOrderProducts()
-  document.getElementById("login-button").addEventListener("click", function () {
-  alert("LOGIN BUTTON WORKS");
+loadOrderProducts();
+
+window.addEventListener("DOMContentLoaded", function () {
+
+  const loginButton =
+    document.getElementById("login-button");
+
+  console.log("LOGIN BUTTON FOUND:", loginButton);
+
+  if (loginButton) {
+    loginButton.addEventListener("click", login);
+  }
+
 });
 </script>
 </body>
