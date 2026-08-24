@@ -250,14 +250,13 @@ async function login() {
 
   alert("LOGIN FUNCTION WORKS");
 
-  const email =
-    document.getElementById("login-email").value.trim();
+  const email = document.getElementById("login-email").value.trim();
+  const password = document.getElementById("login-password").value;
 
-  const password =
-    document.getElementById("login-password").value;
+  console.log("EMAIL:", email);
+  console.log("PASSWORD ENTERED:", password.length > 0);
 
-  const message =
-    document.getElementById("login-message");
+  const message = document.getElementById("login-message");
 
   message.classList.remove("hidden");
   message.textContent = "Logging in...";
@@ -274,8 +273,7 @@ async function login() {
     console.log("LOGIN ERROR:", error);
 
     if (error) {
-      message.textContent =
-        "Login error: " + error.message;
+      message.textContent = "Login error: " + error.message;
       return;
     }
 
