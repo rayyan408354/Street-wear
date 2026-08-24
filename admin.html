@@ -71,13 +71,12 @@ async function login() {
 }
 window.addEventListener("DOMContentLoaded", function () {
 
-  const loginButton = document.getElementById("login-button");
+  const loginButton =
+    document.getElementById("login-button");
 
   console.log("LOGIN BUTTON FOUND:", loginButton);
 
-  loginButton.addEventListener("click", function () {
-    alert("LOGIN FUNCTION WORKS");
-  });
+  loginButton.addEventListener("click", login);
 
 });
   </script>
@@ -168,7 +167,7 @@ label{
            placeholder="Admin password">
 
     <button id="login-button">LOGIN</button>
-
+       type="button">LOGIN</button>
     <div id="login-message" class="message hidden"></div>
   </div>
 
