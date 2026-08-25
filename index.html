@@ -1174,12 +1174,100 @@ function placeWhatsAppOrder() {
 
 
 
-
 /* ==============================
    PRODUCT PHOTO NEXT / PREVIOUS
 ================================ */
 
-</script>
+function changeProductPhoto(button, direction) {
 
+  if (!button) return;
+
+  const slider = button.closest(".photo-slider");
+
+  if (!slider) return;
+
+  const track = slider.querySelector(".photo-track");
+  const photos = slider.querySelectorAll(".slide-photo");
+
+  if (!track || photos.length <= 1) return;
+
+  let index = Number(slider.dataset.index || 0);
+
+  index += direction;
+
+  if (index < 0) {
+    index = photos.length - 1;
+  }
+
+  if (index >= photos.length) {
+    index = 0;
+  }
+
+  slider.dataset.index = index;
+
+  track.style.transform =
+    `translateX(-${index * 100}%)`;
+
+  const dots = slider.querySelectorAll(".photo-dot");
+
+  dots.forEach(function(dot, i) {
+
+    if (i === index) {
+      dot.classList.add("active");
+    } else {
+      dot.classList.remove("active");
+    }
+
+  });
+
+}
+
+
+/* ==============================
+   PHOTO SWIPE
+================================ */
+
+function setupPhotoSwipe(container) {
+
+  if (!container) return;
+
+  const slider = container.querySelector(".photo-slider");
+
+  if (!slider) return;
+
+  let startX = 0;
+  let endX = 0;
+
+  slider.addEventListener("touchstart", function(e) {
+
+    startX = e.touches[0].clientX;
+
+  }, { passive: true });
+
+
+  slider.addEventListener("touchend", function(e) {
+
+    endX = e.changedTouches[0].clientX;
+
+    const difference = startX - endX;
+
+    if (Math.abs(difference) < 50) return;
+
+    const direction = difference > 0 ? 1 : -1;
+
+    const button = document.createElement("button");
+
+    button.style.display = "none";
+
+    slider.appendChild(button);
+
+    changeProductPhoto(button, direction);
+
+    button.remove();
+
+  }, { passive: true });
+
+}
+</script>
 </body>
 </html>
