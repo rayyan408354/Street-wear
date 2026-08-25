@@ -619,13 +619,7 @@ footer{background:#050505;color:#fff;padding:70px 6% 30px}.footer-grid{display:g
       <!-- PRODUCT IMAGE -->
       <div class="product-details-images">
 
-        <img
-          id="product-details-image"
-          class="product-details-main-image"
-          src=""
-          alt="Product"
-        >
-
+        
       </div>
 
       <!-- PRODUCT INFORMATION -->
@@ -1411,73 +1405,13 @@ function changeDetailsPhoto(direction) {
   });
 }
 
+detailsImages.dataset.index = "0";
 
-function setupDetailsPhotoSwipe() {
+setupDetailsPhotoSwipe();
 
-  const detailsImages =
-    document.getElementById("product-details-images");
+name.textContent =
+  product.name || "";
 
-  if (!detailsImages) return;
-
-  const slider =
-    detailsImages.querySelector(".details-photo-slider");
-
-  if (!slider) return;
-
-  const photos =
-    slider.querySelectorAll(".details-slide-photo");
-
-  if (photos.length <= 1) return;
-
-  let startX = 0;
-
-  slider.addEventListener("touchstart", function(e) {
-    startX = e.touches[0].clientX;
-  }, { passive: true });
-
-  slider.addEventListener("touchend", function(e) {
-
-    const endX = e.changedTouches[0].clientX;
-    const difference = startX - endX;
-
-    if (Math.abs(difference) < 40) return;
-
-    if (difference > 0) {
-      changeDetailsPhoto(1);
-    } else {
-      changeDetailsPhoto(-1);
-    }
-
-  }, { passive: true });
-}
- 
-
-  slider.addEventListener(
-    "touchend",
-    function(e) {
-
-      const endX =
-        e.changedTouches[0].clientX;
-
-      const difference =
-        startX - endX;
-
-      if (Math.abs(difference) < 40) {
-        return;
-      }
-
-      if (difference > 0) {
-        changeDetailsPhoto(1);
-      } else {
-        changeDetailsPhoto(-1);
-      }
-
-    },
-    { passive: true }
-  );
-}
-  name.textContent =
-    product.name || "";
 
   price.textContent =
     "₹" + (product.Price || 0);
