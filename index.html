@@ -1728,65 +1728,43 @@ function setupPhotoSwipe(product) {
 
 function setupPhotoSwipe(product) {
 
-  const slider =
-    product.querySelector(".photo-slider");
+  const slider = product.querySelector(".photo-slider");
 
   if (!slider) return;
 
-  const photos =
-    slider.querySelectorAll(".slide-photo");
+  const photos = slider.querySelectorAll(".slide-photo");
 
   if (photos.length <= 1) return;
 
   let startX = 0;
 
-  slider.addEventListener(
-    "touchstart",
-    function(e) {
+  slider.addEventListener("touchstart", function(e) {
+    startX = e.touches[0].clientX;
+  }, { passive: true });
 
-      startX =
-        e.touches[0].clientX;
+  slider.addEventListener("touchend", function(e) {
 
-    },
-    { passive: true }
-  );
+    const endX = e.changedTouches[0].clientX;
+    const difference = startX - endX;
 
-  slider.addEventListener(
-    "touchend",
-    function(e) {
+    if (Math.abs(difference) < 40) {
+      return;
+    }
 
-      const endX =
-        e.changedTouches[0].clientX;
+    if (difference > 0) {
+      changeProductPhoto(
+        slider.querySelector(".slider-next"),
+        1
+      );
+    } else {
+      changeProductPhoto(
+        slider.querySelector(".slider-prev"),
+        -1
+      );
+    }
 
-      const difference =
-        startX - endX;
-
-      if (Math.abs(difference) < 40) {
-        return;
-      }
-
-      if (difference > 0) {
-
-        changeProductPhoto(
-          slider.querySelector(".slider-next"),
-          1
-        );
-
-      } else {
-
-        changeProductPhoto(
-          slider.querySelector(".slider-prev"),
-          -1
-        );
-
-      }
-
-    },
-    { passive: true }
-  );
+  }, { passive: true });
 }
-
-
 /* SEARCH */
 
 function toggleSearch() {
