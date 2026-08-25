@@ -1217,10 +1217,12 @@ function placeWhatsAppOrder() {
 
     const photoUrls = [];
 
-    if (product.image_url) {
-      photoUrls.push(product.image_url);
-    }
+if (product.image_url) {
+  photoUrls.push(product.image_url.trim());
+}
 
+console.log("Product:", product.name);
+console.log("Image URL:", product.image_url);
     const stock =
       Number(product.stock || 0);
 
