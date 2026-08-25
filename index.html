@@ -1283,141 +1283,83 @@ function changeProductPhoto(button, direction) {
 }
 
 /* SEARCH */
- function openProductDetails(product, photoUrls) {
+ 
+function openProductDetails(product, photoUrls) {
 
-  const overlay =
-    document.getElementById("product-details-overlay");
+  const overlay = document.getElementById("product-details-overlay");
+  const detailsImages = document.getElementById("product-details-images");
 
-  const image =
-    document.getElementById("product-details-image");
+  const name = document.getElementById("product-details-name");
+  const price = document.getElementById("product-details-price");
+  const description = document.getElementById("product-details-description");
+  const stock = document.getElementById("product-details-stock");
+  const sizesContainer = document.getElementById("product-details-sizes");
+  const addButton = document.getElementById("product-details-add");
 
-  const name =
-    document.getElementById("product-details-name");
+  /* =========================
+     PRODUCT PHOTOS
+  ========================= */
 
-  const price =
-    document.getElementById("product-details-price");
+  detailsImages.innerHTML = `
+    <div class="details-photo-slider">
 
-  const description =
-    document.getElementById("product-details-description");
+      <div class="details-photo-track">
+        ${photoUrls.map(url => `
+          <img
+            src="${url}"
+            class="details-slide-photo"
+            alt="${product.name || "Street#Wear Product"}"
+          >
+        `).join("")}
+      </div>
 
-  const stock =
-    document.getElementById("product-details-stock");
+      ${
+        photoUrls.length > 1
+          ? `
+            <button
+              class="details-prev"
+              type="button"
+              onclick="changeDetailsPhoto(-1)"
+            >
+              ‹
+            </button>
 
-  const sizesContainer =
-    document.getElementById("product-details-sizes");
+            <button
+              class="details-next"
+              type="button"
+              onclick="changeDetailsPhoto(1)"
+            >
+              ›
+            </button>
 
-  const addButton =
-    document.getElementById("product-details-add");
+            <div class="details-photo-dots">
+              ${photoUrls.map((_, index) => `
+                <span
+                  class="details-dot ${index === 0 ? "active" : ""}"
+                ></span>
+              `).join("")}
+            </div>
+          `
+          : ""
+      }
 
-
-  // PRODUCT DETAILS PHOTO SLIDER
-
-const detailsImages =
-  document.getElementById("product-details-images");
-
-let currentDetailsPhoto = 0;
-
-detailsImages.innerHTML = `
-  <div class="details-photo-slider">
-
-    <div class="details-photo-track">
-      ${photoUrls.map((url, index) => `
-        <img
-          src="${url}"
-          class="details-slide-photo"
-          alt="${product.name || "Street#Wear Product"}"
-        >
-      `).join("")}
     </div>
+  `;
 
-    ${
-      photoUrls.length > 1
-        ? `
-          <button
-            class="details-prev"
-            type="button"
-            onclick="changeDetailsPhoto(-1)"
-          >
-            ‹
-          </button>
+  detailsImages.dataset.index = "0";
 
-          <button
-            class="details-next"
-            type="button"
-            onclick="changeDetailsPhoto(1)"
-          >
-            ›
-          </button>
+  /* =========================
+     PRODUCT INFORMATION
+  ========================= */
 
-          <div class="details-photo-dots">
-            ${photoUrls.map((_, index) => `
-              <span
-                class="details-dot ${index === 0 ? "active" : ""}"
-              ></span>
-            `).join("")}
-          </div>
-                  `
-      : ""
-    }
-
-  </div>
-`;
-
-detailsImages.dataset.index = "0";
-
-setupDetailsPhotoSwipe();
-function changeDetailsPhoto(direction) {
-
-  const detailsImages =
-    document.getElementById("product-details-images");
-
-  const track =
-    detailsImages.querySelector(".details-photo-track");
-
-  const photos =
-    detailsImages.querySelectorAll(".details-slide-photo");
-
-  if (!track || photos.length <= 1) return;
-
-  let index =
-    Number(detailsImages.dataset.index || 0);
-
-  index += direction;
-
-  if (index < 0) {
-    index = photos.length - 1;
-  }
-
-  if (index >= photos.length) {
-    index = 0;
-  }
-
-  detailsImages.dataset.index = index;
-
-  track.style.transform =
-    `translateX(-${index * 100}%)`;
-
-  const dots =
-    detailsImages.querySelectorAll(".details-dot");
-
-  dots.forEach(function(dot, i) {
-    dot.classList.toggle("active", i === index);
-  });
-}
-
-detailsImages.dataset.index = "0";
-
-setupDetailsPhotoSwipe();
-
-name.textContent =
-  product.name || "";
-
+  name.textContent = product.name || "";
 
   price.textContent =
     "₹" + (product.Price || 0);
 
   description.textContent =
-    product.description || "Premium Street#Wear product.";
+    product.description ||
+    "Premium Street#Wear product.";
 
   const totalStock =
     Number(product.stock || 0);
@@ -1427,6 +1369,9 @@ name.textContent =
       ? "✓ IN STOCK"
       : "OUT OF STOCK";
 
+  /* =========================
+     SIZES
+  ========================= */
 
   const sizes = product.sizes
     ? product.sizes
@@ -1434,30 +1379,24 @@ name.textContent =
         .map(size => size.trim())
     : ["S", "M", "L", "XL"];
 
-
   sizesContainer.innerHTML = "";
 
   sizes.forEach(function(size, index) {
 
     const sizeStock =
       Number(
-        product[
-          "stock_" + size.toLowerCase()
-        ]
+        product["stock_" + size.toLowerCase()]
       ) || 0;
 
     const button =
       document.createElement("button");
 
     button.className = "size";
-
-    button.textContent =
-      size;
+    button.textContent = size;
 
     if (sizeStock <= 0) {
 
       button.disabled = true;
-
       button.style.background = "#ddd";
       button.style.color = "#888";
       button.style.cursor = "not-allowed";
@@ -1474,46 +1413,36 @@ name.textContent =
           });
 
         button.classList.add("selected");
-
       };
 
       if (index === 0) {
         button.classList.add("selected");
       }
-
     }
 
     sizesContainer.appendChild(button);
-
   });
 
+  /* =========================
+     ADD TO BAG
+  ========================= */
 
-  addButton.disabled =
-    totalStock <= 0;
+  addButton.disabled = totalStock <= 0;
 
   if (totalStock <= 0) {
 
-    addButton.textContent =
-      "OUT OF STOCK";
-
-    addButton.style.background =
-      "#999";
+    addButton.textContent = "OUT OF STOCK";
+    addButton.style.background = "#999";
 
   } else {
 
-    addButton.textContent =
-      "ADD TO BAG";
-
-    addButton.style.background =
-      "#000";
-
+    addButton.textContent = "ADD TO BAG";
+    addButton.style.background = "#000";
 
     addButton.onclick = function() {
 
       const selected =
-        sizesContainer.querySelector(
-          ".size.selected"
-        );
+        sizesContainer.querySelector(".size.selected");
 
       const size =
         selected
@@ -1532,7 +1461,6 @@ name.textContent =
           );
 
         });
-
 
       if (existing) {
 
@@ -1566,14 +1494,141 @@ name.textContent =
 
   }
 
+  /* =========================
+     SHOW PRODUCT DETAILS
+  ========================= */
 
-  overlay.style.display =
-    "block";
+  overlay.style.display = "block";
 
-  document.body.style.overflow =
-    "hidden";
+  document.body.style.overflow = "hidden";
+
+  /* =========================
+     ENABLE SWIPE
+  ========================= */
+
+  setupDetailsPhotoSwipe();
 }
 
+
+/* =========================
+   DETAILS PHOTO NEXT/PREV
+========================= */
+
+function changeDetailsPhoto(direction) {
+
+  const detailsImages =
+    document.getElementById("product-details-images");
+
+  const track =
+    detailsImages.querySelector(".details-photo-track");
+
+  const photos =
+    detailsImages.querySelectorAll(".details-slide-photo");
+
+  if (!track || photos.length <= 1) {
+    return;
+  }
+
+  let index =
+    Number(detailsImages.dataset.index || 0);
+
+  index += direction;
+
+  if (index < 0) {
+    index = photos.length - 1;
+  }
+
+  if (index >= photos.length) {
+    index = 0;
+  }
+
+  detailsImages.dataset.index = index;
+
+  track.style.transform =
+    `translateX(-${index * 100}%)`;
+
+  const dots =
+    detailsImages.querySelectorAll(".details-dot");
+
+  dots.forEach(function(dot, i) {
+
+    dot.classList.toggle(
+      "active",
+      i === index
+    );
+
+  });
+
+}
+
+
+/* =========================
+   DETAILS PHOTO SWIPE
+========================= */
+
+function setupDetailsPhotoSwipe() {
+
+  const detailsImages =
+    document.getElementById("product-details-images");
+
+  const slider =
+    detailsImages.querySelector(".details-photo-slider");
+
+  if (!slider) {
+    return;
+  }
+
+  const photos =
+    slider.querySelectorAll(".details-slide-photo");
+
+  if (photos.length <= 1) {
+    return;
+  }
+
+  let startX = 0;
+
+  slider.addEventListener(
+    "touchstart",
+    function(e) {
+
+      startX =
+        e.touches[0].clientX;
+
+    },
+    { passive: true }
+  );
+
+  slider.addEventListener(
+    "touchend",
+    function(e) {
+
+      const endX =
+        e.changedTouches[0].clientX;
+
+      const difference =
+        startX - endX;
+
+      if (Math.abs(difference) < 40) {
+        return;
+      }
+
+      if (difference > 0) {
+
+        changeDetailsPhoto(1);
+
+      } else {
+
+        changeDetailsPhoto(-1);
+
+      }
+
+    },
+    { passive: true }
+  );
+}
+
+
+    
 
 function closeProductDetails() {
 
