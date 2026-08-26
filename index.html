@@ -985,7 +985,31 @@ copyright {
   color: white !important;
   opacity: 1;
 }
+/* ==============================
+   PRODUCT COLOR BUTTONS
+================================ */
 
+.product-colors {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 15px;
+}
+
+.color-button {
+  background: white;
+  border: 1px solid #ccc;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.color-button.selected {
+  background: black;
+  color: white;
+  border-color: black;
+}
 /* ==============================
    MOBILE
 ================================ */
@@ -1888,8 +1912,26 @@ function selectSize(button) {
   );
 
 }
+/* ==============================
+   COLOR SELECTION
+================================ */
 
+function selectColor(button) {
 
+  const parent =
+    button.parentElement;
+
+  parent
+    .querySelectorAll(".color-button")
+    .forEach(function(btn) {
+
+      btn.classList.remove("selected");
+
+    });
+
+  button.classList.add("selected");
+
+}
 /* ==============================
    ADD PRODUCT TO BAG
 ================================ */
@@ -1912,6 +1954,22 @@ function addProduct(button) {
       product.dataset.price || 0
     );
 
+
+  /* GET SELECTED COLOR */
+
+  const selectedColor =
+    product.querySelector(
+      ".color-button.selected"
+    );
+
+  const color =
+    selectedColor
+      ? selectedColor.textContent.trim()
+      : "Not specified";
+
+
+  /* GET SELECTED SIZE */
+
   const selected =
     product.querySelector(
       ".size.selected"
@@ -1923,12 +1981,17 @@ function addProduct(button) {
       : "M";
 
 
+  /* CHECK SAME PRODUCT + COLOR + SIZE */
+
   const existing =
     cart.find(function(item) {
 
       return (
         String(item.productId) ===
         String(productId) &&
+
+        item.color === color &&
+
         item.size === size
       );
 
@@ -1952,6 +2015,9 @@ function addProduct(button) {
       price:
         price,
 
+      color:
+        color,
+
       size:
         size,
 
@@ -1962,51 +2028,13 @@ function addProduct(button) {
 
   }
 
+
   updateCart();
 
   openCart();
 
 }
 
-
-/* ==============================
-   CART QUANTITY
-================================ */
-
-function changeQuantity(
-  index,
-  amount
-) {
-
-  if (!cart[index]) return;
-
-  cart[index].quantity +=
-    amount;
-
-  if (
-    cart[index].quantity <= 0
-  ) {
-
-    cart.splice(index, 1);
-
-  }
-
-  updateCart();
-
-}
-
-
-/* ==============================
-   REMOVE
-================================ */
-
-function removeItem(index) {
-
-  cart.splice(index, 1);
-
-  updateCart();
-
-}
 
 
 /* ==============================
@@ -2269,7 +2297,9 @@ function getCurrentLocation() {
 }
 
 
-/* ==============================
+
+
+  /* ==============================
    WHATSAPP ORDER
 ================================ */
 
@@ -2330,6 +2360,10 @@ function placeWhatsAppOrder() {
       .value;
 
 
+  /* ==============================
+     VALIDATION
+  ============================== */
+
   if (!name) {
 
     alert(
@@ -2385,6 +2419,10 @@ function placeWhatsAppOrder() {
   }
 
 
+  /* ==============================
+     CREATE WHATSAPP MESSAGE
+  ============================== */
+
   let total = 0;
 
 
@@ -2395,6 +2433,8 @@ function placeWhatsAppOrder() {
   message +=
     "*NEW ORDER*\n\n";
 
+
+  /* CUSTOMER DETAILS */
 
   message +=
     "*Customer Details*\n";
@@ -2424,6 +2464,8 @@ function placeWhatsAppOrder() {
     "\n";
 
 
+  /* LOCATION */
+
   if (
     customerLatitude !== null &&
     customerLongitude !== null
@@ -2438,6 +2480,8 @@ function placeWhatsAppOrder() {
 
   }
 
+
+  /* ORDER DETAILS */
 
   message +=
     "\n*Order Details*\n";
@@ -2458,6 +2502,8 @@ function placeWhatsAppOrder() {
       message +=
         "- " +
         item.name +
+        " | Color: " +
+        (item.color || "Not specified") +
         " | Size: " +
         item.size +
         " | Qty: " +
@@ -2470,20 +2516,28 @@ function placeWhatsAppOrder() {
   );
 
 
+  /* TOTAL */
+
   message +=
     "\n*Total: ₹" +
     total +
     "*\n";
 
 
+  /* PAYMENT */
+
   message +=
     "\n*Payment Method*\n" +
     paymentMethod;
 
 
+  /* FINAL MESSAGE */
+
   message +=
     "\nPlease confirm my order and share payment/delivery details.";
 
+
+  /* OPEN WHATSAPP */
 
   window.open(
 
@@ -2495,7 +2549,6 @@ function placeWhatsAppOrder() {
   );
 
 }
-
 
 /* ==================================================
    PRODUCT PHOTO NEXT / PREVIOUS
@@ -3152,11 +3205,32 @@ async function loadCustomerProducts() {
             </h3>
 
 
-            <div class="product-category">
+            <span class="size-label">
+  SELECT COLOR
+</span>
 
-              ${product.color || "Streetwear"}
+<div class="product-colors">
 
-            </div>
+  ${
+    (product.color || "Streetwear")
+      .split(",")
+      .map(function(color) {
+
+        return `
+          <button
+            type="button"
+            class="color-button"
+            onclick="selectColor(this)"
+          >
+            ${color.trim()}
+          </button>
+        `;
+
+      })
+      .join("")
+  }
+
+</div>
 
 
             <div class="price">
