@@ -3129,33 +3129,94 @@ async function loadCustomerProducts() {
 
             "";
 
+/* ==============================
+   SIZE BUTTONS WITH STOCK
+================================ */
 
-        /*
-          SIZE BUTTONS
-        */
+const sizeHTML =
+  sizes
+    .map(
+      function(size) {
 
-        const sizeHTML =
-          sizes
-            .map(
-              function(size) {
+        let sizeStock = 0;
 
-                return `
+        /* GET STOCK FOR EACH SIZE */
 
-                  <button
-                    type="button"
-                    class="size"
-                    onclick="
-                      selectSize(this)
-                    "
-                  >
-                    ${size}
-                  </button>
+        if (size === "S") {
 
-                `;
+          sizeStock =
+            Number(product.stock_s || 0);
 
-              }
-            )
-            .join("");
+        } else if (size === "M") {
+
+          sizeStock =
+            Number(product.stock_m || 0);
+
+        } else if (size === "L") {
+
+          sizeStock =
+            Number(product.stock_l || 0);
+
+        } else if (size === "XL") {
+
+          sizeStock =
+            Number(product.stock_xl || 0);
+
+        }
+
+
+        /* OUT OF STOCK SIZE */
+
+        if (sizeStock <= 0) {
+
+          return `
+
+            <button
+              type="button"
+              class="size"
+              disabled
+              style="
+                opacity:0.45;
+                text-decoration:line-through;
+                cursor:not-allowed;
+              "
+            >
+              ${size}
+              <small
+                style="
+                  display:block;
+                  font-size:8px;
+                  margin-top:2px;
+                "
+              >
+                OUT OF STOCK
+              </small>
+            </button>
+
+          `;
+
+        }
+
+
+        /* AVAILABLE SIZE */
+
+        return `
+
+          <button
+            type="button"
+            class="size"
+            onclick="
+              selectSize(this)
+            "
+          >
+            ${size}
+          </button>
+
+        `;
+
+      }
+    )
+    .join("");
 
 
         /*
