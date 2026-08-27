@@ -1260,7 +1260,345 @@ copyright {
   }
 
 }
+/* ==========================================
+   STREET#WEAR PREMIUM DESIGN UPDATE
+========================================== */
 
+/* HERO IMPROVEMENTS */
+
+.hero {
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::after {
+  content: "S#W";
+  position: absolute;
+  right: 5%;
+  bottom: 3%;
+  font-size: clamp(100px, 18vw, 280px);
+  font-weight: 900;
+  line-height: 1;
+  color: rgba(255,255,255,.04);
+  pointer-events: none;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+}
+
+.hero h1 {
+  text-shadow: 0 8px 35px rgba(0,0,0,.35);
+}
+
+.hero-text {
+  max-width: 500px;
+}
+
+.hero-note {
+  margin-top: 28px;
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: #aaa;
+  font-weight: bold;
+}
+
+
+/* ==========================================
+   TRUST STRIP
+========================================== */
+
+.trust-strip {
+  background: #050505;
+  color: white;
+
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+
+  border-top: 1px solid #222;
+  border-bottom: 1px solid #222;
+}
+
+.trust-item {
+  padding: 25px 20px;
+
+  text-align: center;
+
+  border-right: 1px solid #222;
+}
+
+.trust-item:last-child {
+  border-right: none;
+}
+
+.trust-item strong {
+  display: block;
+
+  font-size: 12px;
+
+  letter-spacing: 2px;
+
+  margin-bottom: 7px;
+}
+
+.trust-item span {
+  display: block;
+
+  color: #888;
+
+  font-size: 11px;
+}
+
+
+/* ==========================================
+   SECTION IMPROVEMENTS
+========================================== */
+
+#shop {
+  background: #f7f7f7;
+}
+
+.section-heading {
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.section-heading h2 {
+  font-weight: 900;
+}
+
+
+/* ==========================================
+   PRODUCT CARD
+========================================== */
+
+.product {
+  position: relative;
+
+  transition:
+    transform .3s ease,
+    box-shadow .3s ease;
+}
+
+.product:hover {
+  transform: translateY(-5px);
+
+  box-shadow:
+    0 15px 35px rgba(0,0,0,.10);
+}
+
+.product-image {
+  background: #e9e9e9;
+}
+
+.product-info {
+  padding: 22px;
+}
+
+.product-info h3 {
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: -.2px;
+}
+
+.price {
+  font-size: 20px;
+}
+
+
+/* ==========================================
+   PRODUCT BUTTON
+========================================== */
+
+.add-cart {
+  position: relative;
+
+  overflow: hidden;
+
+  transition:
+    background .25s ease,
+    transform .2s ease;
+}
+
+.add-cart:hover {
+  background: #333;
+}
+
+.add-cart:active {
+  transform: scale(.98);
+}
+
+
+/* ==========================================
+   SIZE BUTTONS
+========================================== */
+
+.size,
+.color-button {
+  transition:
+    background .2s ease,
+    color .2s ease,
+    border-color .2s ease;
+}
+
+.size:hover:not(:disabled),
+.color-button:hover {
+  border-color: #111;
+}
+
+
+/* ==========================================
+   SLIDER BUTTONS
+========================================== */
+
+.slider-prev,
+.slider-next {
+  opacity: .75;
+
+  transition:
+    opacity .2s ease,
+    transform .2s ease;
+}
+
+.slider-prev:hover,
+.slider-next:hover {
+  opacity: 1;
+}
+
+
+/* ==========================================
+   BRAND SECTION
+========================================== */
+
+.brand-section {
+  position: relative;
+}
+
+.brand-content h2 {
+  font-weight: 900;
+}
+
+.brand-content p {
+  font-size: 15px;
+}
+
+
+/* ==========================================
+   INSTAGRAM SECTION
+========================================== */
+
+.social {
+  padding-top: 100px;
+  padding-bottom: 100px;
+}
+
+.social h2 {
+  font-weight: 900;
+}
+
+.instagram {
+  transition:
+    background .2s ease,
+    transform .2s ease;
+}
+
+.instagram:hover {
+  background: #333;
+  transform: translateY(-2px);
+}
+
+
+/* ==========================================
+   FOOTER
+========================================== */
+
+footer {
+  border-top: 1px solid #222;
+}
+
+footer h3 {
+  font-weight: 900;
+}
+
+
+/* ==========================================
+   MOBILE
+========================================== */
+
+@media(max-width:650px) {
+
+  .hero {
+    min-height: 88vh;
+
+    padding:
+      55px 22px;
+  }
+
+  .hero h1 {
+    font-size: 62px;
+
+    line-height: .86;
+
+    letter-spacing: -4px;
+  }
+
+  .hero-text {
+    font-size: 16px;
+    margin: 28px 0;
+  }
+
+  .hero-note {
+    font-size: 9px;
+    letter-spacing: 1.5px;
+  }
+
+  .trust-strip {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .trust-item {
+    padding: 20px 10px;
+
+    border-bottom: 1px solid #222;
+  }
+
+  .trust-item:nth-child(2) {
+    border-right: none;
+  }
+
+  .trust-item:nth-child(3) {
+    border-bottom: none;
+  }
+
+  .trust-item:nth-child(4) {
+    border-right: none;
+    border-bottom: none;
+  }
+
+  .section-heading h2 {
+    font-size: 48px;
+    line-height: .9;
+  }
+
+  .product {
+    box-shadow: none;
+  }
+
+  .product:hover {
+    transform: none;
+  }
+
+  .product-info {
+    padding: 16px;
+  }
+
+  .photo-slider {
+    height: 470px;
+  }
+
+}
 </style>
 
 </head>
@@ -1346,53 +1684,45 @@ copyright {
      HERO
 ================================ -->
 
-<section
-  class="hero"
-  id="home"
->
+<section class="hero" id="home">
 
   <div class="hero-content">
 
     <div class="eyebrow">
-      STREETWEAR / 2026 COLLECTION
+      STREET#WEAR / FIRST DROP
     </div>
 
     <h1>
-      Own<br>
-      Your<br>
-      <span>Street.</span>
+      OWN<br>
+      YOUR<br>
+      <span>STREET.</span>
     </h1>
 
     <p class="hero-text">
-
-      Street#Wear is a Gen-Z streetwear
-      brand bringing premium oversized
-      T-shirts and bold streetwear styles.
-
+      Oversized fits. Bold attitude.
+      Streetwear made for those who
+      don't follow the crowd.
     </p>
 
     <div class="hero-buttons">
 
-      <a
-        href="#shop"
-        class="primary-button"
-      >
-        Shop New Drops
+      <a href="#shop" class="primary-button">
+        SHOP THE DROP →
       </a>
 
-      <a
-        href="#about"
-        class="secondary-button"
-      >
-        Our Story
+      <a href="#about" class="secondary-button">
+        OUR STORY
       </a>
 
+    </div>
+
+    <div class="hero-note">
+      COD AVAILABLE • LIMITED FIRST DROP
     </div>
 
   </div>
 
 </section>
-
 
 <!-- MARQUEE -->
 
@@ -1409,7 +1739,33 @@ copyright {
 
 </div>
 
+<!-- ==============================
+     TRUST STRIP
+================================ -->
 
+<div class="trust-strip">
+
+  <div class="trust-item">
+    <strong>COD</strong>
+    <span>Cash on Delivery</span>
+  </div>
+
+  <div class="trust-item">
+    <strong>QUALITY</strong>
+    <span>Checked Before Shipping</span>
+  </div>
+
+  <div class="trust-item">
+    <strong>EXCHANGE</strong>
+    <span>Easy Size Exchange</span>
+  </div>
+
+  <div class="trust-item">
+    <strong>SUPPORT</strong>
+    <span>WhatsApp Assistance</span>
+  </div>
+
+</div>
 <!-- ==============================
      SHOP
 ================================ -->
@@ -1421,19 +1777,22 @@ copyright {
     <div>
 
       <p class="eyebrow">
-        LATEST DROP
-      </p>
+  STREET#WEAR / DROP 01
+</p>
 
-      <h2>
-        New<br>
-        Drops.
-      </h2>
+<h2>
+  THE<br>
+  FIRST<br>
+  DROP.
+</h2>
 
     </div>
 
     <p>
-      Discover our first collection
-      of oversized streetwear.
+  Our first collection of
+  oversized fits, everyday
+  essentials and street-ready
+  silhouettes.
     </p>
 
   </div>
