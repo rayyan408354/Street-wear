@@ -1843,6 +1843,32 @@ transform: scale(1.025);
 transition:
 transform .5s ease;
 }
+   /* FOOTER RESPONSIVE FIX */
+
+.footer-grid {
+  grid-template-columns:
+    2fr 1fr 1fr 1fr;
+  gap: 30px;
+}
+
+@media(max-width:900px) {
+
+  .footer-grid {
+    grid-template-columns:
+      1fr 1fr;
+    gap: 35px;
+  }
+
+}
+
+@media(max-width:650px) {
+
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+}
 </style>
 
 </head>
@@ -2174,15 +2200,7 @@ display:block;
   <a href="#about">About</a>
 
 </div>
-<div>  <h3>
-    Customer Care
-  </h3>  <a href="#shipping">
-    Shipping
-  </a>  <a href="#exchange">
-    Size Exchange
-  </a>  <a href="#contact">
-    Contact Support
-  </a></div>
+
 
 <div>
 
