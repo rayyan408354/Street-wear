@@ -184,6 +184,13 @@ label{
       placeholder="Fearless Oversized Tee"
     >
 
+<label>Drop</label>
+
+<input
+  id="product-drop"
+  type="text"
+  placeholder="DROP 01"
+>
 
     <label>Price (₹)</label>
 
@@ -200,23 +207,7 @@ label{
       id="product-description"
       placeholder="Premium oversized streetwear fit">
     </textarea>
-<label>Drop / Collection</label>
 
-<select id="product-drop">
-
-  <option value="Drop 01">
-    Drop 01
-  </option>
-
-  <option value="Drop 02">
-    Drop 02
-  </option>
-
-  <option value="Drop 03">
-    Drop 03
-  </option>
-
-</select>
 
     <label>Product Photo</label>
 
@@ -717,7 +708,11 @@ async function addProduct(){
       .value
       .trim();
 
-
+const drop =
+  document
+    .getElementById("product-drop")
+    .value
+    .trim();
   const price =
     Number(
       document
@@ -731,10 +726,6 @@ async function addProduct(){
       .getElementById("product-description")
       .value
       .trim();
-const drop =
-  document
-    .getElementById("product-drop")
-    .value;
 
   let image_url =
     document
