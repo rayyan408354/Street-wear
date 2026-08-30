@@ -2867,7 +2867,62 @@ function updateCart() {
     total;
 
 }
+/* ==============================
+   CHANGE QUANTITY
+================================ */
 
+function changeQuantity(index, change) {
+
+  if (
+    index < 0 ||
+    index >= cart.length
+  ) {
+    return;
+  }
+
+  cart[index].quantity += change;
+
+
+  /* REMOVE ITEM IF QUANTITY BECOMES 0 */
+
+  if (cart[index].quantity <= 0) {
+
+    cart.splice(index, 1);
+
+  }
+
+
+  /* UPDATE CART + SAVE TO LOCAL STORAGE */
+
+  updateCart();
+
+}
+
+
+/* ==============================
+   REMOVE ITEM
+================================ */
+
+function removeItem(index) {
+
+  if (
+    index < 0 ||
+    index >= cart.length
+  ) {
+    return;
+  }
+
+
+  /* REMOVE ITEM */
+
+  cart.splice(index, 1);
+
+
+  /* UPDATE CART + SAVE TO LOCAL STORAGE */
+
+  updateCart();
+
+}
 
 /* ==============================
    CART OPEN
