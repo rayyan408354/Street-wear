@@ -2722,7 +2722,23 @@ function updateCart() {
     document.getElementById(
       "cart-total"
     );
+/* SAVE BAG */
 
+  try {
+
+    localStorage.setItem(
+      "streetwear_cart",
+      JSON.stringify(cart)
+    );
+
+  } catch (error) {
+
+    console.error(
+      "Could not save bag:",
+      error
+    );
+
+  }
 
   if (
     !cartCount ||
@@ -4143,7 +4159,51 @@ document.addEventListener(
   "DOMContentLoaded",
   function() {
 
+    /* RESTORE BAG FROM PREVIOUS SESSION */
+
+    try {
+
+      const savedCart =
+        localStorage.getItem("streetwear_cart");
+
+      if (savedCart) {
+
+        cart =
+          JSON.parse(savedCart);
+
+      }
+
+    } catch (error) {
+
+      console.error(
+        "Could not restore bag:",
+        error
+      );
+
+      cart = [];
+
+    }
+
+
+    /* UPDATE BAG */
+
+    updateCart();
+
+
+    /* LOAD PRODUCTS */
+
     loadCustomerProducts();
+
+
+    /* OPEN BAG IF URL HAS #cart */
+
+    if (
+      window.location.hash === "#cart"
+    ) {
+
+      openCart();
+
+    }
 
   }
 );
