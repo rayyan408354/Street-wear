@@ -3557,7 +3557,23 @@ async function loadCustomerProducts() {
 
         div.dataset.productId =
           product.id;
+div.style.cursor = "pointer";
 
+div.addEventListener("click", function(e) {
+
+  if (
+    e.target.closest("button") ||
+    e.target.closest(".size") ||
+    e.target.closest(".color-button")
+  ) {
+    return;
+  }
+
+  window.location.href =
+    "product.html?id=" +
+    encodeURIComponent(product.id);
+
+});
 
         div.dataset.name =
           product.name || "";
