@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Product | Street#Wear</title>
+
+<meta name="description" content="Street#Wear product details">
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
+
+<style>
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background: #f5f5f5;
+  color: #111;
+}
+
+/* HEADER */
+
+header {
+  height: 72px;
+  background: #050505;
+  color: white;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 6%;
+
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.logo {
+  font-size: 25px;
+  font-weight: 900;
+}
+
+.logo span {
+  color: #888;
+}
+
+.header-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.header-button {
+  border: 1px solid #555;
+  background: transparent;
+  color: white;
+  padding: 10px 14px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+/* PRODUCT PAGE */
+
+.product-page {
+  max-width: 1300px;
+  margin: auto;
+  padding: 35px 6% 80px;
+}
+
+.back-button {
+  display: inline-block;
+  background: black;
+  color: white;
+  text-decoration: none;
+  padding: 12px 18px;
+  font-size: 12px;
+  font-weight: 900;
+  margin-bottom: 35px;
+}
+
+/* PRODUCT */
+
+.product-details {
+  display: grid;
+  grid-template-columns: 1.1fr .9fr;
+  gap: 55px;
+}
+
+/* IMAGES */
+
+.product-images {
+  background: #e8e8e8;
+}
+
+.main-image {
+  width: 100%;
+  aspect-ratio: 1 / 1.15;
+  object-fit: cover;
+  display: block;
+}
+
+.thumbnail-row {
+  display: flex;
+  gap: 8px;
+  padding: 10px;
+  overflow-x: auto;
+  background: white;
+}
+
+.thumbnail {
+  width: 75px;
+  height: 75px;
+  object-fit: cover;
+  cursor: pointer;
+  border: 2px solid transparent;
+}
+
+.thumbnail.active {
+  border-color: black;
+}
+
+/* INFO */
+
+.product-info {
+  padding: 10px 0;
+}
+
+.product-info h1 {
+  font-size: clamp(35px, 5vw, 65px);
+  line-height: .95;
+  text-transform: uppercase;
+  letter-spacing: -3px;
+}
+
+.price {
+  font-size: 28px;
+  font-weight: 900;
+  margin: 22px 0;
+}
+
+.description {
+  color: #666;
+  line-height: 1.7;
+  margin-bottom: 30px;
+}
+
+.label {
+  display: block;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  margin-bottom: 10px;
+}
+
+.colors,
+.sizes {
+  display: flex;
+  gap: 7px;
+  flex-wrap: wrap;
+  margin-bottom: 25px;
+}
+
+.color-button,
+.size-button {
+  background: white;
+  border: 1px solid #ccc;
+  padding: 11px 15px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 12px;
+}
+
+.color-button.selected,
+.size-button.selected {
+  background: black;
+  color: white;
+  border-color: black;
+}
+
+.size-button:disabled {
+  opacity: .4;
+  text-decoration: line-through;
+  cursor: not-allowed;
+}
+
+/* ADD BUTTON */
+
+.add-button {
+  width: 100%;
+  background: black;
+  color: white;
+  border: none;
+  padding: 18px;
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  cursor: pointer;
+}
+
+.add-button:hover {
+  background: #333;
+}
+
+/* STOCK */
+
+.stock {
+  font-size: 13px;
+  font-weight: bold;
+  margin-bottom: 25px;
+}
+
+/* LOADING */
+
+.loading {
+  text-align: center;
+  padding: 100px 20px;
+}
+
+/* MOBILE */
+
+@media(max-width:700px) {
+
+  .product-page {
+    padding: 20px 15px 60px;
+  }
+
+  .product-details {
+    grid-template-columns: 1fr;
+    gap: 25px;
+  }
+
+  .product-info h1 {
+    font-size: 42px;
+  }
+
+  .main-image {
+    aspect-ratio: 1 / 1.15;
+  }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+  <div class="logo">
+    Street<span>#</span>Wear
+  </div>
+
+  <div class="header-buttons">
+
+    <a href="index.html" class="header-button">
+      SHOP
+    </a>
+
+    <button
+      class="header-button"
+      onclick="goToCart()"
+    >
+      BAG (<span id="cart-count">0</span>)
+    </button>
+
+  </div>
+
+</header>
+
+
+<main class="product-page">
+
+  <a href="index.html#shop" class="back-button">
+    ← BACK TO SHOP
+  </a>
+
+  <div id="product-container">
+
+    <div class="loading">
+      Loading product...
+    </div>
+
+  </div>
+
+</main>
+
+
+<script>
+
+let product = null;
+
+let images = [];
+
+let selectedSize = null;
+
+let selectedColor = null;
+
+
+/* ==============================
+   GET PRODUCT ID
+============================== */
+
+const params =
+  new URLSearchParams(
+    window.location.search
+  );
+
+const productId =
+  params.get("id");
+
+
+/* ==============================
+   LOAD PRODUCT
+============================== */
+
+async function loadProduct() {
+
+  const container =
+    document.getElementById(
+      "product-container"
+    );
+
+  if (!productId) {
+
+    container.innerHTML =
+      "<div class='loading'>Product not found.</div>";
+
+    return;
+
+  }
+
+  try {
+
+    /* GET PRODUCT */
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from("product")
+        .select("*")
+        .eq("id", productId)
+        .single();
+
+
+    if (error || !data) {
+
+      console.error(error);
+
+      container.innerHTML =
+        "<div class='loading'>Product not found.</div>";
+
+      return;
+
+    }
+
+
+    product = data;
+
+
+    /* GET PHOTOS */
+
+    const {
+      data: productImages
+    } =
+      await supabaseClient
+        .from("product_images")
+        .select("*")
+        .eq("product_id", product.id);
+
+
+    images = productImages || [];
+
+
+    /* FALLBACK IMAGE */
+
+    if (
+      images.length === 0 &&
+      product.image_url
+    ) {
+
+      images = [
+        {
+          image_url:
+            product.image_url
+        }
+      ];
+
+    }
+
+
+    renderProduct();
+
+
+  } catch(error) {
+
+    console.error(error);
+
+    container.innerHTML =
+      "<div class='loading'>Unable to load product.</div>";
+
+  }
+
+}
+
+
+/* ==============================
+   RENDER PRODUCT
+============================== */
+
+function renderProduct() {
+
+  const container =
+    document.getElementById(
+      "product-container"
+    );
+
+
+  /* COLORS */
+
+  const colors =
+    (product.color || "Streetwear")
+      .split(",")
+      .map(
+        function(color) {
+
+          return color.trim();
+
+        }
+      )
+      .filter(Boolean);
+
+
+  selectedColor =
+    colors[0] || "Streetwear";
+
+
+  /* SIZES */
+
+  let sizes = [];
+
+  if (product.sizes) {
+
+    sizes =
+      product.sizes
+        .split(",")
+        .map(
+          function(size) {
+
+            return size.trim();
+
+          }
+        )
+        .filter(Boolean);
+
+  }
+
+
+  if (sizes.length === 0) {
+
+    sizes =
+      ["S", "M", "L", "XL"];
+
+  }
+
+
+  /* FIRST AVAILABLE SIZE */
+
+  for (const size of sizes) {
+
+    if (getSizeStock(size) > 0) {
+
+      selectedSize = size;
+
+      break;
+
+    }
+
+  }
+
+
+  /* IMAGES */
+
+  let mainImage = "";
+
+  if (images.length > 0) {
+
+    mainImage =
+      images[0].image_url;
+
+  }
+
+
+  const thumbnails =
+    images
+      .map(
+        function(image, index) {
+
+          return `
+
+            <img
+              src="${image.image_url}"
+              class="thumbnail ${
+                index === 0
+                  ? "active"
+                  : ""
+              }"
+              onclick="changeMainImage(
+                this,
+                '${image.image_url}'
+              )"
+            >
+
+          `;
+
+        }
+      )
+      .join("");
+
+
+  /* COLORS HTML */
+
+  const colorHTML =
+    colors
+      .map(
+        function(color, index) {
+
+          return `
+
+            <button
+              type="button"
+              class="color-button ${
+                index === 0
+                  ? "selected"
+                  : ""
+              }"
+              onclick="selectColor(this)"
+            >
+              ${color}
+            </button>
+
+          `;
+
+        }
+      )
+      .join("");
+
+
+  /* SIZES HTML */
+
+  const sizeHTML =
+    sizes
+      .map(
+        function(size) {
+
+          const stock =
+            getSizeStock(size);
+
+          return `
+
+            <button
+              type="button"
+              class="size-button ${
+                size === selectedSize
+                  ? "selected"
+                  : ""
+              }"
+              ${
+                stock <= 0
+                  ? "disabled"
+                  : ""
+              }
+              onclick="selectSize(this)"
+            >
+              ${size}
+            </button>
+
+          `;
+
+        }
+      )
+      .join("");
+
+
+  const totalStock =
+    getTotalStock();
+
+
+  container.innerHTML = `
+
+    <div class="product-details">
+
+      <div class="product-images">
+
+        ${
+          mainImage
+
+            ?
+
+            `
+            <img
+              id="main-image"
+              class="main-image"
+              src="${mainImage}"
+              alt="${product.name}"
+            >
+            `
+
+            :
+
+            `
+            <div
+              style="
+                height:500px;
+                display:flex;
+                align-items:center;
+                justify-content:center;
+                color:#777;
+              "
+            >
+              No image
+            </div>
+            `
+        }
+
+
+        <div class="thumbnail-row">
+
+          ${thumbnails}
+
+        </div>
+
+      </div>
+
+
+      <div class="product-info">
+
+        <h1>
+          ${product.name || ""}
+        </h1>
+
+
+        <div class="price">
+          ₹${product.Price || 0}
+        </div>
+
+
+        <p class="description">
+          ${
+            product.description ||
+            "Premium Street#Wear streetwear."
+          }
+        </p>
+
+
+        <div class="stock">
+
+          ${
+            totalStock > 0
+
+              ? "✓ IN STOCK"
+
+              : "OUT OF STOCK"
+
+          }
+
+        </div>
+
+
+        <span class="label">
+          SELECT COLOR
+        </span>
+
+
+        <div class="colors">
+
+          ${colorHTML}
+
+        </div>
+
+
+        <span class="label">
+          SELECT SIZE
+        </span>
+
+
+        <div class="sizes">
+
+          ${sizeHTML}
+
+        </div>
+
+
+        <button
+          class="add-button"
+          ${
+            totalStock <= 0
+              ? "disabled"
+              : ""
+          }
+          onclick="addToBag()"
+        >
+
+          ${
+            totalStock <= 0
+              ? "OUT OF STOCK"
+              : "ADD TO BAG"
+          }
+
+        </button>
+
+      </div>
+
+    </div>
+
+  `;
+
+
+  updateCartCount();
+
+}
+
+
+/* ==============================
+   SIZE STOCK
+============================== */
+
+function getSizeStock(size) {
+
+  if (size === "S")
+    return Number(product.stock_s || 0);
+
+  if (size === "M")
+    return Number(product.stock_m || 0);
+
+  if (size === "L")
+    return Number(product.stock_l || 0);
+
+  if (size === "XL")
+    return Number(product.stock_xl || 0);
+
+  return 0;
+
+}
+
+
+/* ==============================
+   TOTAL STOCK
+============================== */
+
+function getTotalStock() {
+
+  return (
+    Number(product.stock_s || 0) +
+    Number(product.stock_m || 0) +
+    Number(product.stock_l || 0) +
+    Number(product.stock_xl || 0)
+  );
+
+}
+
+
+/* ==============================
+   IMAGE
+============================== */
+
+function changeMainImage(
+  thumbnail,
+  url
+) {
+
+  const main =
+    document.getElementById(
+      "main-image"
+    );
+
+  if (!main) return;
+
+  main.src = url;
+
+
+  document
+    .querySelectorAll(".thumbnail")
+    .forEach(
+      function(item) {
+
+        item.classList.remove(
+          "active"
+        );
+
+      }
+    );
+
+
+  thumbnail.classList.add(
+    "active"
+  );
+
+}
+
+
+/* ==============================
+   COLOR
+============================== */
+
+function selectColor(button) {
+
+  document
+    .querySelectorAll(
+      ".color-button"
+    )
+    .forEach(
+      function(btn) {
+
+        btn.classList.remove(
+          "selected"
+        );
+
+      }
+    );
+
+
+  button.classList.add(
+    "selected"
+  );
+
+
+  selectedColor =
+    button.textContent.trim();
+
+}
+
+
+/* ==============================
+   SIZE
+============================== */
+
+function selectSize(button) {
+
+  if (button.disabled) return;
+
+
+  document
+    .querySelectorAll(
+      ".size-button"
+    )
+    .forEach(
+      function(btn) {
+
+        btn.classList.remove(
+          "selected"
+        );
+
+      }
+    );
+
+
+  button.classList.add(
+    "selected"
+  );
+
+
+  selectedSize =
+    button.textContent.trim();
+
+}
+
+
+/* ==============================
+   ADD TO BAG
+============================== */
+
+function addToBag() {
+
+  if (!selectedSize) {
+
+    alert(
+      "Please select an available size."
+    );
+
+    return;
+
+  }
+
+
+  if (!selectedColor) {
+
+    alert(
+      "Please select a color."
+    );
+
+    return;
+
+  }
+
+
+  const stock =
+    getSizeStock(
+      selectedSize
+    );
+
+
+  if (stock <= 0) {
+
+    alert(
+      "This size is out of stock."
+    );
+
+    return;
+
+  }
+
+
+  let cart =
+    JSON.parse(
+      localStorage.getItem(
+        "streetwear_cart"
+      ) || "[]"
+    );
+
+
+  const existing =
+    cart.find(
+      function(item) {
+
+        return (
+          String(item.productId) ===
+          String(product.id) &&
+
+          item.size ===
+          selectedSize &&
+
+          item.color ===
+          selectedColor
+        );
+
+      }
+    );
+
+
+  if (existing) {
+
+    if (
+      existing.quantity >= stock
+    ) {
+
+      alert(
+        "Maximum available stock reached."
+      );
+
+      return;
+
+    }
+
+    existing.quantity += 1;
+
+  } else {
+
+    cart.push({
+
+      productId:
+        product.id,
+
+      name:
+        product.name,
+
+      price:
+        Number(product.Price || 0),
+
+      color:
+        selectedColor,
+
+      size:
+        selectedSize,
+
+      quantity:
+        1
+
+    });
+
+  }
+
+
+  localStorage.setItem(
+    "streetwear_cart",
+    JSON.stringify(cart)
+  );
+
+
+  updateCartCount();
+
+
+  alert(
+    "Added to your bag."
+  );
+
+}
+
+
+/* ==============================
+   CART COUNT
+============================== */
+
+function updateCartCount() {
+
+  const cart =
+    JSON.parse(
+      localStorage.getItem(
+        "streetwear_cart"
+      ) || "[]"
+    );
+
+
+  const count =
+    cart.reduce(
+      function(total, item) {
+
+        return (
+          total +
+          Number(item.quantity || 0)
+        );
+
+      },
+      0
+    );
+
+
+  const element =
+    document.getElementById(
+      "cart-count"
+    );
+
+
+  if (element) {
+
+    element.textContent =
+      count;
+
+  }
+
+}
+
+
+/* ==============================
+   GO TO CART
+============================== */
+
+function goToCart() {
+
+  window.location.href =
+    "index.html#cart";
+
+}
+
+
+/* ==============================
+   START
+============================== */
+
+document.addEventListener(
+  "DOMContentLoaded",
+  function() {
+
+    loadProduct();
+
+  }
+);
+
+</script>
+
+</body>
+</html>
