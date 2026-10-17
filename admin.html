@@ -3139,10 +3139,15 @@ async function confirmOrder(){
     .maybeSingle();
 
   if(variantUpdateError || !updatedVariant){
-    message.textContent = "Stock was not changed. Please refresh and try again.";
-    if(variantUpdateError) console.error("Variant stock update error:", variantUpdateError);
-    return;
-  }
+  console.error("Variant stock update error:", variantUpdateError);
+  console.log("Updated variant result:", updatedVariant);
+
+  message.textContent = variantUpdateError
+    ? "Database error: " + variantUpdateError.message
+    : "No variant row was updated. Check product ID, color, size and stock in Supabase.";
+
+  return;
+}
 
   // Keep the product's summary stock in sync with the variant stock.
   const column = "stock_" + size.toLowerCase();
