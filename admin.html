@@ -3130,6 +3130,15 @@ async function confirmOrder(){
   }
 
   // Only update the selected color-and-size variant if its stock is unchanged.
+  console.log("DEBUG ORDER:", {
+  productId,
+  variantId: variant?.id,
+  color,
+  size,
+  quantity,
+  currentVariantStock,
+  variant
+});
   const { data: updatedVariant, error: variantUpdateError } = await supabaseClient
     .from("product_variants")
     .update({ stock: currentVariantStock - quantity })
