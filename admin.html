@@ -8,7 +8,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Street#Wear Admin</title>
+<title>GUرOOR Admin</title>
 
 
 
@@ -137,9 +137,7 @@ button:hover{
 
 
 .hidden{
-
-  display:none;
-
+  display:none;
 }
 
 
@@ -228,7 +226,7 @@ label{
 
 
 
-  <h1>Street#Wear Admin</h1>
+  <h1>GUرOOR Admin</h1>
 
   <p>Private admin login</p>
 
@@ -244,7 +242,7 @@ label{
 
     type="email"
 
-    value="streetwear.official@gmail.com"
+    value="guroor.india17@gmail.com"
 
   >
 
@@ -277,7 +275,13 @@ label{
     LOGIN
 
   </button>
-
+<button
+  id="forgot-password-button"
+  type="button"
+  style="margin-top:10px;background:#555;"
+>
+  FORGOT PASSWORD?
+</button>
 
 
   <div
@@ -304,6 +308,35 @@ label{
 
 
 
+<div id="reset-section" class="card hidden">
+
+  <h1>GUرOOR Admin</h1>
+  <h2>Set New Password</h2>
+
+  <p>Enter your new admin password below.</p>
+
+  <label>New Password</label>
+  <input
+    id="new-password"
+    type="password"
+    placeholder="Enter new password"
+  >
+
+  <label>Confirm New Password</label>
+  <input
+    id="confirm-password"
+    type="password"
+    placeholder="Confirm new password"
+  >
+
+  <button type="button" id="reset-password-button">
+    UPDATE PASSWORD
+  </button>
+
+  <div id="reset-message" class="message hidden"></div>
+
+</div>
+
 <div id="dashboard" class="hidden">
 
 
@@ -324,7 +357,7 @@ label{
 
 
 
-    <h1>Street#Wear Admin</h1>
+    <h1>GUرOOR Admin</h1>
 
 
 
@@ -835,9 +868,104 @@ const supabaseClient =
 
 
 console.log("SUPABASE CLIENT CREATED");
+/* ==============================
+   PASSWORD RESET
+================================ */
 
+// Detect a password-reset link
+const currentParams = new URLSearchParams(window.location.search);
+const hashParams = new URLSearchParams(window.location.hash.substring(1));
 
+const isRecoveryLink =
+  currentParams.has("code") ||
+  hashParams.get("type") === "recovery";
 
+// Show the reset form when Supabase detects recovery
+supabaseClient.auth.onAuthStateChange(function(event) {
+
+  if(event === "PASSWORD_RECOVERY") {
+    document.getElementById("login-section").classList.add("hidden");
+    document.getElementById("dashboard").classList.add("hidden");
+    document.getElementById("reset-section").classList.remove("hidden");
+  }
+
+});
+
+// Update the password
+async function resetPassword() {
+
+  const password = document.getElementById("new-password").value;
+  const confirmPassword = document.getElementById("confirm-password").value;
+  const message = document.getElementById("reset-message");
+
+  message.classList.remove("hidden");
+
+  if(password.length < 8) {
+    message.textContent = "Password must be at least 8 characters.";
+    return;
+  }
+
+  if(password !== confirmPassword) {
+    message.textContent = "Passwords do not match.";
+    return;
+  }
+
+  message.textContent = "Updating password...";
+
+  const { error } = await supabaseClient.auth.updateUser({
+    password: password
+  });
+
+  if(error) {
+    message.textContent = "Error: " + error.message;
+    return;
+  }
+
+  await supabaseClient.auth.signOut();
+
+  document.getElementById("reset-section").classList.add("hidden");
+  document.getElementById("login-section").classList.remove("hidden");
+  document.getElementById("login-password").value = "";
+
+  message.textContent = "Password updated successfully.";
+
+  const loginMessage = document.getElementById("login-message");
+  loginMessage.classList.remove("hidden");
+  loginMessage.textContent = "Password updated! Please log in with your new password.";
+
+  // Remove recovery parameters from the address bar
+  window.history.replaceState({}, document.title, window.location.pathname);
+}
+
+document
+  .getElementById("reset-password-button")
+  .addEventListener("click", resetPassword);
+
+async function sendPasswordReset() {
+
+  const email = document.getElementById("login-email").value.trim();
+  const message = document.getElementById("login-message");
+
+  message.classList.remove("hidden");
+  message.textContent = "Sending password reset email...";
+
+  const redirectUrl = "https://rayyan408354.github.io/Street-wear/admin.html";
+
+  const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
+    redirectTo: redirectUrl
+  });
+
+  if(error) {
+    message.textContent = "Error: " + error.message;
+    return;
+  }
+
+  message.textContent = "Password reset email sent! Check your Gmail.";
+}
+
+document
+  .getElementById("forgot-password-button")
+  .addEventListener("click", sendPasswordReset);
 
 
 /* ==============================
@@ -3366,59 +3494,25 @@ async function loadOrderProducts(){
 document.getElementById("order-product").addEventListener("change", loadOrderColors);
 document.getElementById("order-size").addEventListener("change", loadOrderColors);
 
+
 supabaseClient.auth
+  .getSession()
+  .then(async function(result) {
 
-  .getSession()
+    console.log("SESSION CHECK:", result.data);
 
-  .then(
+    if (
+      !isRecoveryLink &&
+      result.data &&
+      result.data.session
+    ) {
+      await showDashboard();
+    }
 
-    async function(result){
+  });
 
+console.log("ADMIN SCRIPT READY");
 
-
-      console.log(
-
-        "SESSION CHECK:",
-
-        result.data
-
-      );
-
-
-
-
-
-      if(
-
-        result.data &&
-
-        result.data.session
-
-      ){
-
-
-
-        await showDashboard();
-
-
-
-      }
-
-
-
-    }
-
-  );
-
-
-
-
-
-console.log(
-
-  "ADMIN SCRIPT READY"
-
-);
 
 
 
