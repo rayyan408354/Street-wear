@@ -1,0 +1,361 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Product | GUرOOR</title>
+<meta name="description" content="GUرOOR product details">
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,Helvetica,sans-serif;background:#f5f5f5;color:#111}
+header{height:72px;background:#050505;color:white;display:flex;align-items:center;justify-content:space-between;padding:0 6%;position:sticky;top:0;z-index:100}
+.logo{font-size:25px;font-weight:900}
+.logo span{color:#888}
+.header-buttons{display:flex;gap:8px}
+.header-button{border:1px solid #555;background:transparent;color:white;padding:10px 14px;cursor:pointer;text-decoration:none}
+.product-page{max-width:1300px;margin:auto;padding:35px 6% 80px}
+.back-button{display:inline-block;background:black;color:white;text-decoration:none;padding:12px 18px;font-size:12px;font-weight:900;margin-bottom:35px}
+.product-details{display:grid;grid-template-columns:1.1fr .9fr;gap:55px}
+.product-images{background:#e8e8e8}
+.main-image{width:100%;aspect-ratio:1/1.15;object-fit:cover;display:block}
+.thumbnail-row{display:flex;gap:8px;padding:10px;overflow-x:auto;background:white}
+.thumbnail{width:75px;height:75px;object-fit:cover;cursor:pointer;border:2px solid transparent}
+.thumbnail.active{border-color:black}
+.product-info{padding:10px 0}
+.product-info h1{font-size:clamp(35px,5vw,65px);line-height:.95;text-transform:uppercase;letter-spacing:-3px}
+.price{font-size:28px;font-weight:900;margin:22px 0}
+.description{color:#666;line-height:1.7;margin-bottom:30px}
+.label{display:block;font-size:11px;font-weight:900;letter-spacing:2px;margin-bottom:10px}
+.colors,.sizes{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:25px}
+.color-button,.size-button{background:white;border:1px solid #ccc;padding:11px 15px;cursor:pointer;font-weight:bold;font-size:12px}
+.color-button.selected,.size-button.selected{background:black;color:white;border-color:black}
+.size-button:disabled{opacity:.4;text-decoration:line-through;cursor:not-allowed}
+.add-button{width:100%;background:black;color:white;border:none;padding:18px;font-size:13px;font-weight:900;letter-spacing:2px;cursor:pointer}
+.add-button:hover{background:#333}
+.add-button:disabled{background:#888;cursor:not-allowed}
+.stock{font-size:13px;font-weight:bold;margin-bottom:25px}
+.loading{text-align:center;padding:100px 20px}
+@media(max-width:700px){
+.product-page{padding:20px 15px 60px}
+.product-details{grid-template-columns:1fr;gap:25px}
+.product-info h1{font-size:42px}
+.main-image{aspect-ratio:1/1.15}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">GU<span>ر</span>OOR</div>
+  <div class="header-buttons">
+    <a href="index.html" class="header-button">SHOP</a>
+    <button class="header-button" onclick="goToCart()">
+      BAG (<span id="cart-count">0</span>)
+    </button>
+  </div>
+</header>
+
+<main class="product-page">
+  <a href="index.html#shop" class="back-button">← BACK TO SHOP</a>
+  <div id="product-container">
+    <div class="loading">Loading product...</div>
+  </div>
+</main>
+
+<script>
+let product = null;
+let images = [];
+let variants = [];
+let selectedSize = null;
+let selectedColor = null;
+
+const params = new URLSearchParams(window.location.search);
+const productId = params.get("id");
+
+function getVariantStock(color, size) {
+  const variant = variants.find(function(v) {
+    return String(v.color).toLowerCase() === String(color).toLowerCase() &&
+           String(v.size).toUpperCase() === String(size).toUpperCase();
+  });
+
+  return variant ? Number(variant.stock || 0) : 0;
+}
+
+function getColors() {
+  return [...new Set(variants.map(v => v.color).filter(Boolean))];
+}
+
+function getSizes() {
+  if (Array.isArray(product.sizes)) return product.sizes;
+  if (typeof product.sizes === "string") {
+    return product.sizes.split(",").map(s => s.trim()).filter(Boolean);
+  }
+  return ["S", "M", "L", "XL"];
+}
+
+function getCart() {
+  try {
+    return JSON.parse(localStorage.getItem("streetwear_cart")) || [];
+  } catch(e) {
+    return [];
+  }
+}
+
+function saveCart(cart) {
+  localStorage.setItem("streetwear_cart", JSON.stringify(cart));
+  updateCartCount();
+}
+
+function updateCartCount() {
+  const cart = getCart();
+  const count = cart.reduce((sum, item) => sum + Number(item.quantity || 0), 0);
+  const el = document.getElementById("cart-count");
+  if (el) el.textContent = count;
+}
+
+function goToCart() {
+  window.location.href = "cart.html";
+}
+
+async function loadProduct() {
+  const container = document.getElementById("product-container");
+
+  if (!productId) {
+    container.innerHTML = '<div class="loading">Product not found.</div>';
+    return;
+  }
+
+  try {
+    const { data, error } = await supabaseClient
+      .from("product")
+      .select("*")
+      .eq("id", productId)
+      .single();
+
+    if (error || !data) {
+      throw error || new Error("Product not found");
+    }
+
+    product = data;
+
+    const { data: variantData, error: variantError } = await supabaseClient
+      .from("product_variants")
+      .select("id,product_id,color,size,stock")
+      .eq("product_id", product.id);
+
+    if (variantError) throw variantError;
+    variants = variantData || [];
+
+    const { data: imageData, error: imageError } = await supabaseClient
+      .from("product_images")
+      .select("*")
+      .eq("product_id", product.id);
+
+    if (imageError) console.error("Image loading:", imageError);
+
+    images = (imageData || []).map(function(img) {
+      return img.image_url || img.image || img.url || img.public_url;
+    }).filter(Boolean);
+
+    if (images.length === 0 && product.image_url) {
+      images = [product.image_url];
+    }
+
+    selectedColor = getColors()[0] || null;
+
+    const sizes = getSizes();
+    selectedSize = sizes.find(size => getVariantStock(selectedColor, size) > 0) || null;
+
+    renderProduct();
+
+  } catch(error) {
+    console.error("Product loading error:", error);
+    container.innerHTML =
+      '<div class="loading">Could not load product. Please refresh the page.<br><br>' +
+      error.message + '</div>';
+  }
+}
+
+function renderProduct() {
+  const container = document.getElementById("product-container");
+
+  const imageHTML = images.length
+    ? `<img id="main-image" class="main-image" src="${images[0]}" alt="${product.name}">`
+    : `<div class="main-image loading">No product image available</div>`;
+
+  const thumbnailsHTML = images.map((img, index) =>
+    `<img class="thumbnail ${index === 0 ? "active" : ""}"
+      src="${img}" alt="Product image ${index + 1}"
+      onclick="changeMainImage(${index})">`
+  ).join("");
+
+  const colors = getColors();
+
+  const colorHTML = colors.length
+    ? colors.map(color =>
+      `<button class="color-button ${color === selectedColor ? "selected" : ""}"
+       onclick="selectColor('${String(color).replace(/'/g, "\\'")}')">${color}</button>`
+    ).join("")
+    : '<p>No colors available</p>';
+
+  const sizes = getSizes();
+
+  const sizeHTML = sizes.map(size => {
+    const stock = getVariantStock(selectedColor, size);
+    return `<button class="size-button ${size === selectedSize ? "selected" : ""}"
+      data-size="${size}" ${stock <= 0 ? "disabled" : ""}
+      onclick="selectSize('${size}')">${size}</button>`;
+  }).join("");
+
+  const price = product.Price ?? product.price ?? "";
+
+  container.innerHTML = `
+    <div class="product-details">
+      <div class="product-images">
+        ${imageHTML}
+        <div class="thumbnail-row">${thumbnailsHTML}</div>
+      </div>
+
+      <div class="product-info">
+        <h1>${product.name || "Product"}</h1>
+        <div class="price">₹${price}</div>
+        <p class="description">${product.description || "Premium streetwear. Own your style."}</p>
+
+        <span class="label">SELECT COLOR</span>
+        <div class="colors">${colorHTML}</div>
+
+        <span class="label">SELECT SIZE</span>
+        <div class="sizes">${sizeHTML}</div>
+
+        <div class="stock" id="stock-message"></div>
+
+        <button class="add-button" id="add-button" onclick="addToBag()">
+          ADD TO BAG
+        </button>
+      </div>
+    </div>
+  `;
+
+  refreshVariantUI();
+}
+
+function changeMainImage(index) {
+  if (!images[index]) return;
+
+  document.getElementById("main-image").src = images[index];
+
+  document.querySelectorAll(".thumbnail").forEach((img, i) => {
+    img.classList.toggle("active", i === index);
+  });
+}
+
+function selectColor(color) {
+  selectedColor = color;
+
+  const sizes = getSizes();
+  selectedSize = sizes.find(size => getVariantStock(color, size) > 0) || null;
+
+  renderProduct();
+}
+
+function selectSize(size) {
+  if (getVariantStock(selectedColor, size) <= 0) return;
+
+  selectedSize = size;
+  refreshVariantUI();
+}
+
+function refreshVariantUI() {
+  document.querySelectorAll(".color-button").forEach(button => {
+    button.classList.toggle("selected", button.textContent === selectedColor);
+  });
+
+  document.querySelectorAll(".size-button").forEach(button => {
+    const size = button.dataset.size;
+    const stock = getVariantStock(selectedColor, size);
+
+    button.disabled = stock <= 0;
+    button.classList.toggle("selected", size === selectedSize);
+  });
+
+  const stock = selectedSize ? getVariantStock(selectedColor, selectedSize) : 0;
+
+  const stockMessage = document.getElementById("stock-message");
+  const addButton = document.getElementById("add-button");
+
+  if (!selectedColor) {
+    stockMessage.textContent = "No stock variants available.";
+  } else if (!selectedSize) {
+    stockMessage.textContent = "OUT OF STOCK";
+  } else {
+    stockMessage.textContent = stock + " AVAILABLE";
+  }
+
+  addButton.disabled = !selectedSize || stock <= 0;
+  addButton.textContent = addButton.disabled ? "OUT OF STOCK" : "ADD TO BAG";
+}
+
+function addToBag() {
+  if (!selectedColor || !selectedSize) return;
+
+  const availableStock = getVariantStock(selectedColor, selectedSize);
+
+  if (availableStock <= 0) {
+    alert("Sorry, this variant is out of stock.");
+    return;
+  }
+
+  const cart = getCart();
+
+  const existing = cart.find(item =>
+    String(item.productId) === String(product.id) &&
+    item.size === selectedSize &&
+    item.color === selectedColor
+  );
+
+  const currentQuantity = existing ? Number(existing.quantity || 0) : 0;
+
+  if (currentQuantity >= availableStock) {
+    alert("Maximum available stock reached.");
+    return;
+  }
+
+  if (existing) {
+    existing.quantity = currentQuantity + 1;
+  } else {
+    cart.push({
+      productId: product.id,
+      name: product.name,
+      price: Number(product.Price ?? product.price ?? 0),
+      image: images[0] || product.image_url || "",
+      size: selectedSize,
+      color: selectedColor,
+      quantity: 1
+    });
+  }
+
+  saveCart(cart);
+  alert("Added to bag!");
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+  updateCartCount();
+
+  if (typeof supabaseClient === "undefined") {
+    document.getElementById("product-container").innerHTML =
+      '<div class="loading">Supabase connection not found. Check supabase.js.</div>';
+    return;
+  }
+
+  loadProduct();
+});
+</script>
+
+</body>
+</html>
