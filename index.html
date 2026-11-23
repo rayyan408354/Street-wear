@@ -6,10 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Street#Wear | Oversized Streetwear & T-Shirts</title>
+<title>GUرOOR | Oversized Streetwear & T-Shirts</title>
 
 <meta name="description"
-content="Shop Street#Wear — premium oversized streetwear and Gen-Z oversized T-shirts.">
+content="Shop GUرOOR — premium oversized streetwear and Gen-Z oversized T-shirts.">
 
 <meta name="robots" content="index, follow">
 
@@ -1261,7 +1261,7 @@ copyright {
 
 }
 /* ==========================================
-   STREET#WEAR PREMIUM DESIGN UPDATE
+   GUرOOR PREMIUM DESIGN UPDATE
 ========================================== */
 
 /* HERO IMPROVEMENTS */
@@ -1272,7 +1272,7 @@ copyright {
 }
 
 .hero::after {
-  content: "S#W";
+  content: "GUرOOR";
   position: absolute;
   right: 5%;
   bottom: 3%;
@@ -1637,7 +1637,7 @@ border-bottom: 1px solid #222;
 }
 
 .street-editorial::before {
-content: "STREET#WEAR";
+content: "GUرOOR";
 
 position: absolute;
 
@@ -1869,6 +1869,63 @@ transform .5s ease;
   }
 
 }
+
+/* GUرOOR HEADER FIX */
+
+.main-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 72px;
+  padding: 0 4%;
+  background: #050505;
+  width: 100%;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 25px;
+  margin-left: auto;
+}
+
+.header-right nav {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+  white-space: nowrap;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.header-actions button {
+  white-space: nowrap;
+}
+
+@media (max-width: 650px) {
+  .main-header {
+    padding: 0 12px;
+  }
+
+  .logo {
+    font-size: 19px;
+  }
+
+  .header-right {
+    gap: 8px;
+  }
+
+  .header-right nav {
+    display: none;
+  }
+}
+
 </style>
 
 </head>
@@ -1881,50 +1938,37 @@ transform .5s ease;
      HEADER
 ================================ -->
 
-<header>
+
+
+<header class="main-header">
 
   <div class="logo">
-    Street<span>#</span>Wear
+    GUرOOR
   </div>
 
-  <nav>
+  <div class="header-right">
 
-    <a href="#home">Home</a>
+    <nav>
+      <a href="#home">HOME</a>
+      <a href="#shop">SHOP</a>
+      <a href="#about">ABOUT</a>
+      <a href="#contact">CONTACT</a>
+    </nav>
 
-    <a href="#shop">Shop</a>
+    <div class="header-actions">
+      <button class="search-button" onclick="toggleSearch()">
+        🔍
+      </button>
 
-    <a href="#about">About</a>
-
-    <a href="#contact">Contact</a>
-
-  </nav>
-
-  <div
-    style="
-      display:flex;
-      align-items:center;
-      gap:8px;
-    "
-  >
-
-    <button
-      class="search-button"
-      onclick="toggleSearch()"
-    >
-      🔍
-    </button>
-
-    <button
-      class="cart-button"
-      onclick="openCart()"
-    >
-      BAG
-      (<span id="cart-count">0</span>)
-    </button>
+      <button class="cart-button" onclick="openCart()">
+        BAG (<span id="cart-count">0</span>)
+      </button>
+    </div>
 
   </div>
 
 </header>
+
 
 
 <!-- SEARCH -->
@@ -1959,19 +2003,17 @@ transform .5s ease;
   <div class="hero-content">
 
     <div class="eyebrow">
-      STREET#WEAR / FIRST DROP
+      GUرOOR / FIRST DROP
     </div>
 
     <h1>
-      OWN<br>
-      YOUR<br>
-      <span>STREET.</span>
-    </h1>
+  WEAR<br>
+  YOUR<br>
+  <span>PEACE.</span>
+</h1>
 
     <p class="hero-text">
-      Oversized fits. Bold attitude.
-      Streetwear made for those who
-      don't follow the crowd.
+     Oversized silhouettes. Unapologetic style. Made for those who never follow the rules.
     </p>
 
     <div class="hero-buttons">
@@ -1987,7 +2029,7 @@ transform .5s ease;
     </div>
 
     <div class="hero-note">
-      COD AVAILABLE • LIMITED FIRST DROP
+     • LIMITED FIRST DROP
     </div>
 
   </div>
@@ -2000,9 +2042,9 @@ transform .5s ease;
 
   <div class="marquee-track">
 
-    STREET#WEAR • OWN YOUR STREET •
+    GUرOOR • NOT MADE TO FIT IN •
     NEW DROP • OVERSIZED FIT •
-    STREET#WEAR • OWN YOUR STREET •
+    GUرOOR • NOT MADE TO FIT IN •
     NEW DROP • OVERSIZED FIT •
 
   </div>
@@ -2013,10 +2055,7 @@ transform .5s ease;
      TRUST STRIP
 ================================ -->
 
-<div class="trust-strip">  <div class="trust-item">
-    <strong>COD AVAILABLE</strong>
-    <span>Pay when your order arrives</span>
-  </div>  <div class="trust-item">
+ <div class="trust-item">
     <strong>QUALITY CHECKED</strong>
     <span>Every order checked before dispatch</span>
   </div>  <div class="trust-item">
@@ -2042,7 +2081,7 @@ display:block;
    </div><!-- ==============================
      STREETWEAR EDITORIAL
 ================================ --><section class="street-editorial">  <div class="editorial-top">
-    <span>STREET#WEAR / DROP 01</span>
+    <span>GUرOOR / DROP 01</span>
     <span>EST. 2026</span>
   </div>  <div class="editorial-title">
     <span>NO</span>
@@ -2066,7 +2105,7 @@ display:block;
     <div>
 
       <p class="eyebrow">
-  STREET#WEAR / DROP 01
+  GUرOOR / DROP 01
 </p>
 
 <h2>
@@ -2115,20 +2154,19 @@ display:block;
   <div class="brand-content">
 
     <small>
-      THE STREET#WEAR MINDSET
+      THE GUرOOR MINDSET
     </small>
 
     <h2>
 
-      WEAR<br>
-      YOUR<br>
-      PRIDE.
+      BUILT DIFFERENT.<br>
+WORN DIFFERENT.
 
     </h2>
 
     <p>
 
-      Street#Wear is built around
+      GUرOOR is built around
       individuality, confidence and
       street culture.
 
@@ -2150,7 +2188,7 @@ display:block;
   </p>
 
   <h2>
-    @Street#Wear
+    @GUرOOR
   </h2>
 
   <p>
@@ -2176,7 +2214,7 @@ display:block;
 <footer id="contact">  <div class="footer-grid"><div>
 
   <h3>
-    Street#Wear
+    GUرOOR
   </h3>
 
   <p>
@@ -2252,7 +2290,7 @@ display:block;
 
 </div>
 
-  </div>  <div class="copyright">© 2026 Street#Wear.
+  </div>  <div class="copyright">© 2026 GUرOOR.
 All rights reserved.
 
   </div></footer>
@@ -2473,9 +2511,7 @@ All rights reserved.
           Select Payment Method
         </option>
 
-        <option value="Cash on Delivery">
-          Cash on Delivery (COD)
-        </option>
+        
 
         <option value="Online Payment">
           Online Payment
@@ -2557,147 +2593,315 @@ let customerLongitude = null;
    SIZE SELECTION
 ================================ */
 
+
 function selectSize(button) {
+  if (button.disabled) return;
 
-  const parent =
-    button.parentElement;
+  const product = button.closest(".product");
+  if (!product) return;
 
-  parent
-    .querySelectorAll(".size")
-    .forEach(function(btn) {
+  product.querySelectorAll(".size").forEach(function(btn) {
+    btn.classList.remove("selected");
+  });
 
-      btn.classList.remove(
-        "selected"
-      );
+  button.classList.add("selected");
+}
 
+function selectColor(button) {
+  const product = button.closest(".product");
+  if (!product) return;
+
+  product.querySelectorAll(".color-button").forEach(function(btn) {
+    btn.classList.remove("selected");
+  });
+
+  button.classList.add("selected");
+
+  const color = button.textContent.trim();
+  const variants = JSON.parse(product.dataset.variants || "[]");
+
+  product.querySelectorAll(".size").forEach(function(sizeButton) {
+    const size = sizeButton.textContent.trim().split(/\s+/)[0];
+
+    const variant = variants.find(function(v) {
+      return v.color.trim() === color &&
+             v.size.trim() === size;
     });
 
-  button.classList.add(
-    "selected"
-  );
+    const available = variant && Number(variant.stock) > 0;
 
+    sizeButton.disabled = !available;
+    sizeButton.classList.remove("selected");
+
+    sizeButton.style.opacity = available ? "1" : "0.45";
+    sizeButton.style.textDecoration = available ? "none" : "line-through";
+  });
 }
+
+function addProduct(button) {
+  const product = button.closest(".product");
+  if (!product) return;
+
+  const selectedColor = product.querySelector(".color-button.selected");
+  const selectedSize = product.querySelector(".size.selected");
+
+  if (!selectedColor || !selectedSize) {
+    alert("Please select a colour and size.");
+    return;
+  }
+
+  const color = selectedColor.textContent.trim();
+  const size = selectedSize.textContent.trim().split(/\s+/)[0];
+  const variants = JSON.parse(product.dataset.variants || "[]");
+
+  const variant = variants.find(function(v) {
+    return v.color.trim() === color &&
+           v.size.trim() === size;
+  });
+
+  if (!variant || Number(variant.stock) <= 0) {
+    alert("Sorry, this colour and size is out of stock.");
+    return;
+  }
+
+  const existing = cart.find(function(item) {
+    return String(item.productId) === String(product.dataset.productId) &&
+           item.color === color &&
+           item.size === size;
+  });
+
+  const cartQuantity = existing ? existing.quantity : 0;
+
+  if (cartQuantity >= Number(variant.stock)) {
+    alert("Sorry, only " + variant.stock + " units are available.");
+    return;
+  }
+
+  if (existing) {
+    existing.quantity += 1;
+  } else {
+    cart.push({
+      productId: product.dataset.productId,
+      name: product.dataset.name,
+      price: Number(product.dataset.price || 0),
+      color: color,
+      size: size,
+      quantity: 1
+    });
+  }
+
+  updateCart();
+  openCart();
+}
+
 /* ==============================
    COLOR SELECTION
 ================================ */
 
+
+function selectSize(button) {
+  if (button.disabled) return;
+
+  const product = button.closest(".product");
+  if (!product) return;
+
+  product.querySelectorAll(".size").forEach(function(btn) {
+    btn.classList.remove("selected");
+  });
+
+  button.classList.add("selected");
+}
+
 function selectColor(button) {
+  const product = button.closest(".product");
+  if (!product) return;
 
-  const parent =
-    button.parentElement;
-
-  parent
-    .querySelectorAll(".color-button")
-    .forEach(function(btn) {
-
-      btn.classList.remove("selected");
-
-    });
+  product.querySelectorAll(".color-button").forEach(function(btn) {
+    btn.classList.remove("selected");
+  });
 
   button.classList.add("selected");
 
+  const color = button.textContent.trim();
+  const variants = JSON.parse(product.dataset.variants || "[]");
+
+  product.querySelectorAll(".size").forEach(function(sizeButton) {
+    const size = sizeButton.textContent.trim().split(/\s+/)[0];
+
+    const variant = variants.find(function(v) {
+      return v.color.trim() === color &&
+             v.size.trim() === size;
+    });
+
+    const available = variant && Number(variant.stock) > 0;
+
+    sizeButton.disabled = !available;
+    sizeButton.classList.remove("selected");
+
+    sizeButton.style.opacity = available ? "1" : "0.45";
+    sizeButton.style.textDecoration = available ? "none" : "line-through";
+  });
 }
+
+function addProduct(button) {
+  const product = button.closest(".product");
+  if (!product) return;
+
+  const selectedColor = product.querySelector(".color-button.selected");
+  const selectedSize = product.querySelector(".size.selected");
+
+  if (!selectedColor || !selectedSize) {
+    alert("Please select a colour and size.");
+    return;
+  }
+
+  const color = selectedColor.textContent.trim();
+  const size = selectedSize.textContent.trim().split(/\s+/)[0];
+  const variants = JSON.parse(product.dataset.variants || "[]");
+
+  const variant = variants.find(function(v) {
+    return v.color.trim() === color &&
+           v.size.trim() === size;
+  });
+
+  if (!variant || Number(variant.stock) <= 0) {
+    alert("Sorry, this colour and size is out of stock.");
+    return;
+  }
+
+  const existing = cart.find(function(item) {
+    return String(item.productId) === String(product.dataset.productId) &&
+           item.color === color &&
+           item.size === size;
+  });
+
+  const cartQuantity = existing ? existing.quantity : 0;
+
+  if (cartQuantity >= Number(variant.stock)) {
+    alert("Sorry, only " + variant.stock + " units are available.");
+    return;
+  }
+
+  if (existing) {
+    existing.quantity += 1;
+  } else {
+    cart.push({
+      productId: product.dataset.productId,
+      name: product.dataset.name,
+      price: Number(product.dataset.price || 0),
+      color: color,
+      size: size,
+      quantity: 1
+    });
+  }
+
+  updateCart();
+  openCart();
+}
+
 /* ==============================
    ADD PRODUCT TO BAG
 ================================ */
 
-function addProduct(button) {
 
-  const product =
-    button.closest(".product");
+function selectSize(button) {
+  if (button.disabled) return;
 
+  const product = button.closest(".product");
   if (!product) return;
 
-  const productId =
-    product.dataset.productId;
+  product.querySelectorAll(".size").forEach(function(btn) {
+    btn.classList.remove("selected");
+  });
 
-  const name =
-    product.dataset.name;
+  button.classList.add("selected");
+}
 
-  const price =
-    Number(
-      product.dataset.price || 0
-    );
+function selectColor(button) {
+  const product = button.closest(".product");
+  if (!product) return;
 
+  product.querySelectorAll(".color-button").forEach(function(btn) {
+    btn.classList.remove("selected");
+  });
 
-  /* GET SELECTED COLOR */
+  button.classList.add("selected");
 
-  const selectedColor =
-    product.querySelector(
-      ".color-button.selected"
-    );
+  const color = button.textContent.trim();
+  const variants = JSON.parse(product.dataset.variants || "[]");
 
-  const color =
-    selectedColor
-      ? selectedColor.textContent.trim()
-      : "Not specified";
+  product.querySelectorAll(".size").forEach(function(sizeButton) {
+    const size = sizeButton.textContent.trim().split(/\s+/)[0];
 
-
-  /* GET SELECTED SIZE */
-
-  const selected =
-    product.querySelector(
-      ".size.selected"
-    );
-
-  const size =
-    selected
-      ? selected.textContent.trim()
-      : "M";
-
-
-  /* CHECK SAME PRODUCT + COLOR + SIZE */
-
-  const existing =
-    cart.find(function(item) {
-
-      return (
-        String(item.productId) ===
-        String(productId) &&
-
-        item.color === color &&
-
-        item.size === size
-      );
-
+    const variant = variants.find(function(v) {
+      return v.color.trim() === color &&
+             v.size.trim() === size;
     });
 
+    const available = variant && Number(variant.stock) > 0;
 
-  if (existing) {
+    sizeButton.disabled = !available;
+    sizeButton.classList.remove("selected");
 
-    existing.quantity += 1;
+    sizeButton.style.opacity = available ? "1" : "0.45";
+    sizeButton.style.textDecoration = available ? "none" : "line-through";
+  });
+}
 
-  } else {
+function addProduct(button) {
+  const product = button.closest(".product");
+  if (!product) return;
 
-    cart.push({
+  const selectedColor = product.querySelector(".color-button.selected");
+  const selectedSize = product.querySelector(".size.selected");
 
-      productId:
-        productId,
-
-      name:
-        name,
-
-      price:
-        price,
-
-      color:
-        color,
-
-      size:
-        size,
-
-      quantity:
-        1
-
-    });
-
+  if (!selectedColor || !selectedSize) {
+    alert("Please select a colour and size.");
+    return;
   }
 
+  const color = selectedColor.textContent.trim();
+  const size = selectedSize.textContent.trim().split(/\s+/)[0];
+  const variants = JSON.parse(product.dataset.variants || "[]");
+
+  const variant = variants.find(function(v) {
+    return v.color.trim() === color &&
+           v.size.trim() === size;
+  });
+
+  if (!variant || Number(variant.stock) <= 0) {
+    alert("Sorry, this colour and size is out of stock.");
+    return;
+  }
+
+  const existing = cart.find(function(item) {
+    return String(item.productId) === String(product.dataset.productId) &&
+           item.color === color &&
+           item.size === size;
+  });
+
+  const cartQuantity = existing ? existing.quantity : 0;
+
+  if (cartQuantity >= Number(variant.stock)) {
+    alert("Sorry, only " + variant.stock + " units are available.");
+    return;
+  }
+
+  if (existing) {
+    existing.quantity += 1;
+  } else {
+    cart.push({
+      productId: product.dataset.productId,
+      name: product.dataset.name,
+      price: Number(product.dataset.price || 0),
+      color: color,
+      size: size,
+      quantity: 1
+    });
+  }
 
   updateCart();
-
   openCart();
-
 }
 
 
@@ -2871,32 +3075,54 @@ function updateCart() {
    CHANGE QUANTITY
 ================================ */
 
-function changeQuantity(index, change) {
 
-  if (
-    index < 0 ||
-    index >= cart.length
-  ) {
+function changeQuantity(index, change) {
+  if (index < 0 || index >= cart.length) {
     return;
   }
 
-  cart[index].quantity += change;
+  const item = cart[index];
 
+  // Check stock before increasing quantity
+  if (change > 0) {
+    const product = Array.from(
+      document.querySelectorAll(".product")
+    ).find(function(p) {
+      return String(p.dataset.productId) === String(item.productId);
+    });
 
-  /* REMOVE ITEM IF QUANTITY BECOMES 0 */
+    if (!product) {
+      alert("Please refresh the page to check stock.");
+      return;
+    }
 
-  if (cart[index].quantity <= 0) {
+    const variants = JSON.parse(product.dataset.variants || "[]");
 
-    cart.splice(index, 1);
+    const variant = variants.find(function(v) {
+      return v.color.trim() === item.color &&
+             v.size.trim() === item.size;
+    });
 
+    if (!variant) {
+      alert("Unable to verify stock. Please refresh the page.");
+      return;
+    }
+
+    if (item.quantity + 1 > Number(variant.stock)) {
+      alert("Sorry, only " + variant.stock + " units are available.");
+      return;
+    }
   }
 
+  item.quantity += change;
 
-  /* UPDATE CART + SAVE TO LOCAL STORAGE */
+  if (item.quantity <= 0) {
+    cart.splice(index, 1);
+  }
 
   updateCart();
-
 }
+
 
 
 /* ==============================
@@ -3163,7 +3389,7 @@ function placeWhatsAppOrder() {
 
 
   let message =
-    "Hi Street#Wear!\n\n";
+    "Hi GUرOOR!\n\n";
 
 
   message +=
@@ -3587,7 +3813,16 @@ async function loadCustomerProducts() {
       );
 
     }
+const {
+  data: variants,
+  error: variantError
+} = await supabaseClient
+  .from("product_variants")
+  .select("product_id, color, size, stock");
 
+if (variantError) {
+  console.error("Variant stock error:", variantError);
+}
 
     productGrid.innerHTML = "";
 
@@ -3757,7 +3992,7 @@ div.addEventListener("click", function(e) {
                     <img
                       src="${url}"
                       class="slide-photo"
-                      alt="${product.name || "Street#Wear Product"}"
+                      alt="${product.name || "GUرOOR Product"}"
                     >
 
                   `;
@@ -3885,90 +4120,44 @@ div.addEventListener("click", function(e) {
    SIZE BUTTONS WITH STOCK
 ================================ */
 
-const sizeHTML =
-  sizes
-    .map(
-      function(size) {
 
-        let sizeStock = 0;
+const productVariants = (variants || []).filter(function(v) {
+  return String(v.product_id) === String(product.id);
+});
+div.dataset.variants = JSON.stringify(productVariants);
+const sizeHTML = sizes.map(function(size) {
 
-        /* GET STOCK FOR EACH SIZE */
+  const hasStock = productVariants.some(function(v) {
+    return v.size === size && Number(v.stock) > 0;
+  });
 
-        if (size === "S") {
+  if (!hasStock) {
+    return `
+      <button
+        type="button"
+        class="size"
+        disabled
+        style="opacity:0.45;text-decoration:line-through;cursor:not-allowed;"
+      >
+        ${size}
+        <small style="display:block;font-size:8px;margin-top:2px;">
+          OUT OF STOCK
+        </small>
+      </button>
+    `;
+  }
 
-          sizeStock =
-            Number(product.stock_s || 0);
+  return `
+    <button
+      type="button"
+      class="size"
+      onclick="selectSize(this)"
+    >
+      ${size}
+    </button>
+  `;
+}).join("");
 
-        } else if (size === "M") {
-
-          sizeStock =
-            Number(product.stock_m || 0);
-
-        } else if (size === "L") {
-
-          sizeStock =
-            Number(product.stock_l || 0);
-
-        } else if (size === "XL") {
-
-          sizeStock =
-            Number(product.stock_xl || 0);
-
-        }
-
-
-        /* OUT OF STOCK SIZE */
-
-        if (sizeStock <= 0) {
-
-          return `
-
-            <button
-              type="button"
-              class="size"
-              disabled
-              style="
-                opacity:0.45;
-                text-decoration:line-through;
-                cursor:not-allowed;
-              "
-            >
-              ${size}
-              <small
-                style="
-                  display:block;
-                  font-size:8px;
-                  margin-top:2px;
-                "
-              >
-                OUT OF STOCK
-              </small>
-            </button>
-
-          `;
-
-        }
-
-
-        /* AVAILABLE SIZE */
-
-        return `
-
-          <button
-            type="button"
-            class="size"
-            onclick="
-              selectSize(this)
-            "
-          >
-            ${size}
-          </button>
-
-        `;
-
-      }
-    )
-    .join("");
 
 
         /*
