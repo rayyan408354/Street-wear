@@ -2507,15 +2507,19 @@ All rights reserved.
         "
       >
 
-        <option value="">
-          Select Payment Method
-        </option>
-
         
+<option value="">
+  Select Payment Method
+</option>
 
-        <option value="Online Payment">
-          Online Payment
-        </option>
+<option value="Cash on Delivery (COD)">
+  Cash on Delivery (COD)
+</option>
+
+<option value="Online Payment">
+  Online Payment
+</option>
+
 
       </select>
 
@@ -3012,10 +3016,11 @@ function updateCart() {
 
         <div class="cart-item-meta">
 
-          Size: ${item.size}
-          · ₹${item.price} each
+  Color: ${item.color || "Not selected"}
+  · Size: ${item.size}
+  · ₹${item.price} each
 
-        </div>
+</div>
 
         <div class="qty-row">
 
