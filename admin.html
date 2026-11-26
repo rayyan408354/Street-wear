@@ -3126,17 +3126,29 @@ async function deleteProduct(id){
 
 
 
-  // Delete the main product
+  // Delete the main product and verify deletion
 
-  const { error: productError } =
+const { data: deletedProduct, error: productError } =
+  await supabaseClient
+    .from("product")
+    .delete()
+    .eq("id", id)
+    .select("id");
 
-    await supabaseClient
+if(productError){
+  alert(
+    "Could not delete product: " +
+    productError.message
+  );
+  return;
+}
 
-      .from("product")
-
-      .delete()
-
-      .eq("id", id);
+if(!deletedProduct || deletedProduct.length === 0){
+  alert(
+    "No product was deleted. Check Supabase DELETE permissions (RLS)."
+  );
+  return;
+}
 
 
 
