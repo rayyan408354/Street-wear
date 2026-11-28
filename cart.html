@@ -175,6 +175,7 @@ function renderCart(){
             <input id="customer-name" required placeholder="Your name">
 
             
+
 <label for="customer-phone">PHONE NUMBER *</label>
 <input
   id="customer-phone"
@@ -184,21 +185,12 @@ function renderCart(){
   pattern="[6-9][0-9]{9}"
   maxlength="10"
   placeholder="10-digit mobile number"
-  oninput="
-    this.value = this.value.replace(/\D/g, '').slice(0,10);
-    document.getElementById('checkout-message').textContent = '';
-  "
 >
-```
 
-**Save with `Ctrl + S`.**
+<label for="customer-address">FULL ADDRESS *</label>
+<textarea id="customer-address" required
+  placeholder="House number, building, street, area"></textarea>
 
-Your existing `placeOrder()` function already blocks invalid numbers, so don't change that function yet.
-
-Next, test with `1234567890`. It should not allow the order to proceed.
-            <label for="customer-address">FULL ADDRESS *</label>
-            <textarea id="customer-address" required
-              placeholder="House number, building, street, area"></textarea>
 
             <label for="customer-pincode">PINCODE *</label>
             <input id="customer-pincode" required
@@ -216,6 +208,19 @@ Next, test with `1234567890`. It should not allow the order to proceed.
   `;
 
   document.getElementById("checkout-form").addEventListener("submit", placeOrder);
+  const phoneInput = document.getElementById("customer-phone");
+
+phoneInput.addEventListener("input", function () {
+  phoneInput.value = phoneInput.value.replace(/\D/g, "").slice(0, 10);
+
+  const message = document.getElementById("checkout-message");
+
+  if (phoneInput.value.length > 0 && !/^[6-9][0-9]{9}$/.test(phoneInput.value)) {
+    message.textContent = "Please enter a valid 10-digit Indian mobile number.";
+  } else {
+    message.textContent = "";
+  }
+});
 }
 
 function changeQuantity(index,change){
